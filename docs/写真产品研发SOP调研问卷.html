@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>写真产品研发 SOP 调研问卷</title>
+<style>
+  :root {
+    --primary: #4F46E5;
+    --primary-light: #EEF2FF;
+    --primary-dark: #3730A3;
+    --text: #1F2937;
+    --text-secondary: #6B7280;
+    --border: #E5E7EB;
+    --bg: #F9FAFB;
+    --white: #FFFFFF;
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 32px 20px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(79,70,229,0.3);
+  }
+
+  .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .header p { font-size: 14px; opacity: 0.9; }
+
+  .progress-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    margin-top: 16px;
+    border-radius: 2px;
+    overflow: hidden;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: white;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+
+  .container {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 20px 16px 100px;
+  }
+
+  .intro-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--primary);
+  }
+
+  .intro-card h2 { font-size: 16px; color: var(--primary); margin-bottom: 12px; }
+  .intro-card ul { padding-left: 18px; font-size: 14px; color: var(--text-secondary); }
+  .intro-card li { margin-bottom: 6px; }
+
+  .section {
+    background: var(--white);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .section.hidden-section { display: none; }
+
+  .section-header {
+    padding: 16px 20px;
+    background: var(--primary-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+  }
+
+  .section-header h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-header .badge {
+    background: var(--primary);
+    color: white;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+
+  .section-header .arrow {
+    font-size: 12px;
+    color: var(--primary);
+    transition: transform 0.2s;
+  }
+
+  .section-header.collapsed .arrow { transform: rotate(-90deg); }
+
+  .section-body { padding: 20px; }
+  .section-body.collapsed { display: none; }
+
+  .sub-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+    padding: 12px 0 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+    margin-top: 8px;
+  }
+
+  .sub-section-title:first-child { margin-top: 0; }
+
+  .question {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #F3F4F6;
+  }
+
+  .question:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .question-label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 6px;
+    line-height: 1.5;
+  }
+
+  .q-num {
+    color: var(--primary);
+    font-weight: 600;
+    min-width: 28px;
+    flex-shrink: 0;
+  }
+
+  .q-tag {
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .q-tag.single { background: #DBEAFE; color: #1D4ED8; }
+  .q-tag.multi { background: #D1FAE5; color: #065F46; }
+  .q-tag.text { background: #FEF3C7; color: #92400E; }
+  .q-tag.score { background: #EDE9FE; color: #5B21B6; }
+
+  .options { display: flex; flex-direction: column; gap: 8px; }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--bg);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 2px solid transparent;
+    font-size: 14px;
+  }
+
+  .option:hover { background: var(--primary-light); }
+
+  .option.selected {
+    background: var(--primary-light);
+    border-color: var(--primary);
+  }
+
+  .option input { margin-top: 3px; accent-color: var(--primary); cursor: pointer; }
+
+  .option-other-input {
+    margin-top: 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    width: 100%;
+    display: none;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .option-other-input:focus { border-color: var(--primary); }
+
+  .text-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    line-height: 1.5;
+  }
+
+  .text-input:focus { border-color: var(--primary); }
+
+  .short-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .short-input:focus { border-color: var(--primary); }
+
+  .score-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .score-label {
+    font-size: 13px;
+    color: var(--text);
+    min-width: 200px;
+    flex: 1;
+  }
+
+  .score-btns { display: flex; gap: 6px; }
+
+  .score-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--white);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .score-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+  .score-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+  }
+
+  .role-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .role-card {
+    padding: 14px;
+    background: var(--bg);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    font-size: 14px;
+  }
+
+  .role-card:hover { background: var(--primary-light); }
+
+  .role-card.selected {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: 600;
+  }
+
+  .phase-selector {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .phase-card {
+    padding: 14px 16px;
+    background: var(--bg);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .phase-card:hover { background: var(--primary-light); }
+
+  .phase-card.selected {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    font-weight: 500;
+  }
+
+  .phase-card input { accent-color: var(--primary); }
+
+  .filter-hint {
+    background: #FEF3C7;
+    border: 1px solid #FDE68A;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #92400E;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    padding: 12px 20px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    z-index: 100;
+  }
+
+  .btn {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+
+  .btn-primary:hover { background: var(--primary-dark); }
+
+  .btn-outline {
+    background: var(--white);
+    color: var(--primary);
+    border: 2px solid var(--primary);
+  }
+
+  .btn-outline:hover { background: var(--primary-light); }
+
+  .btn-success {
+    background: var(--success);
+    color: white;
+  }
+
+  .btn-success:hover { opacity: 0.9; }
+
+  .toast {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: #065F46;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 12px 12px 100px; }
+    .role-selector { grid-template-columns: repeat(2, 1fr); }
+    .score-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .score-label { min-width: auto; }
+    .header h1 { font-size: 18px; }
+  }
+
+  @media print {
+    .header { position: static; }
+    .bottom-bar { display: none; }
+    .section.hidden-section { display: block !important; }
+    .section-body.collapsed { display: block !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>写真产品研发 SOP 调研问卷</h1>
+  <p>AI部门 · 了解实际工作流程，设计内部效率工具</p>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="container">
+
+  <div class="intro-card">
+    <h2>填写说明</h2>
+    <ul>
+      <li>本问卷目的是了解实际工作流程，不存在"标准答案"</li>
+      <li>请根据您的<strong>岗位</strong>和<strong>参与的环节</strong>选择作答</li>
+      <li>选择岗位和环节后，系统会自动显示相关问题</li>
+      <li>填写过程中可随时保存，数据保存在本地浏览器</li>
+      <li>预计填写时间：15-25分钟</li>
+    </ul>
+  </div>
+
+  <!-- 基本信息 -->
+  <div class="section" data-section="basic">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h3>基本信息</h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q1</span><span>您的姓名</span><span class="q-tag text">填空</span></div>
+        <input type="text" class="short-input" data-key="q1" placeholder="请输入姓名">
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q2</span><span>所属部门</span><span class="q-tag text">填空</span></div>
+        <input type="text" class="short-input" data-key="q2" placeholder="请输入部门名称">
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q3</span><span>您在写真产品研发中的主要角色</span><span class="q-tag single">单选</span></div>
+        <div class="role-selector" data-key="q3">
+          <div class="role-card" data-value="product" onclick="selectRole(this)">产品策划</div>
+          <div class="role-card" data-value="photo" onclick="selectRole(this)">摄影师</div>
+          <div class="role-card" data-value="stylist" onclick="selectRole(this)">造型/化妆师</div>
+          <div class="role-card" data-value="retoucher" onclick="selectRole(this)">后期修图师</div>
+          <div class="role-card" data-value="design" onclick="selectRole(this)">视觉设计</div>
+          <div class="role-card" data-value="marketing" onclick="selectRole(this)">市场推广</div>
+          <div class="role-card" data-value="store" onclick="selectRole(this)">门店运营</div>
+          <div class="role-card" data-value="manage" onclick="selectRole(this)">管理层</div>
+        </div>
+      </div>
+
+      <div class="question" id="q4-wrap" style="display:none">
+        <div class="question-label"><span class="q-num">Q4</span><span>您参与过以下哪些环节？（可多选，将显示对应问题）</span><span class="q-tag multi">多选</span></div>
+        <div class="phase-selector" data-key="q4">
+          <label class="phase-card" data-value="p1"><input type="checkbox"> 阶段1：风格定义与趋势洞察</label>
+          <label class="phase-card" data-value="p2"><input type="checkbox"> 阶段2：主题策划与产品定义</label>
+          <label class="phase-card" data-value="p3"><input type="checkbox"> 阶段3：视觉方案设计</label>
+          <label class="phase-card" data-value="p4"><input type="checkbox"> 阶段4：样片拍摄执行</label>
+          <label class="phase-card" data-value="p5"><input type="checkbox"> 阶段5：后期制作与交付</label>
+          <label class="phase-card" data-value="p6"><input type="checkbox"> 阶段6：上市与市场反馈</label>
+          <label class="phase-card" data-value="p7"><input type="checkbox"> 阶段7：复盘与知识沉淀</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 阶段1 -->
+  <div class="section hidden-section" data-section="phase1">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h3>阶段1：风格定义与趋势洞察 <span class="badge">7题</span></h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-section-title">1.1 趋势信息来源</div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q5</span><span>您平时从哪些渠道获取风格趋势信息？</span><span class="q-tag multi">多选</span></div>
+        <div class="options" data-key="q5" data-type="multi">
+          <label class="option"><input type="checkbox" value="xiaohongshu"> 小红书</label>
+          <label class="option"><input type="checkbox" value="douyin"> 抖音</label>
+          <label class="option"><input type="checkbox" value="weibo"> 微博</label>
+          <label class="option"><input type="checkbox" value="instagram"> Instagram/Pinterest等海外平台</label>
+          <label class="option"><input type="checkbox" value="exhibition"> 时装周/摄影展/艺术展</label>
+          <label class="option"><input type="checkbox" value="competitor"> 竞品品牌的官方账号和门店</label>
+          <label class="option"><input type="checkbox" value="related"> 美妆/时尚/影视等关联行业</label>
+          <label class="option"><input type="checkbox" value="community"> 行业公众号/社群</label>
+          <label class="option"><input type="checkbox" value="other"><input type="text" class="option-other-input" placeholder="请说明其他渠道"> 其他</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q6</span><span>收集趋势信息的频率？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q6" data-type="single">
+          <label class="option"><input type="radio" name="q6" value="daily"> 几乎每天</label>
+          <label class="option"><input type="radio" name="q6" value="weekly_few"> 每周几次</label>
+          <label class="option"><input type="radio" name="q6" value="weekly"> 每周一次集中收集</label>
+          <label class="option"><input type="radio" name="q6" value="monthly"> 每月集中1-2次</label>
+          <label class="option"><input type="radio" name="q6" value="random"> 没有固定频率，随机搜索</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q7</span><span>每次花在趋势信息收集上的时间？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q7" data-type="single">
+          <label class="option"><input type="radio" name="q7" value="30min"> 不到30分钟</label>
+          <label class="option"><input type="radio" name="q7" value="1h"> 30分钟-1小时</label>
+          <label class="option"><input type="radio" name="q7" value="2h"> 1-2小时</label>
+          <label class="option"><input type="radio" name="q7" value="2h+"> 2小时以上</label>
+        </div>
+      </div>
+
+      <div class="sub-section-title">1.2 趋势分析与判断</div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q8</span><span>判断一个趋势"值不值得追"主要依据什么？</span><span class="q-tag multi">多选</span></div>
+        <div class="options" data-key="q8" data-type="multi">
+          <label class="option"><input type="checkbox" value="intuition"> 个人审美直觉和经验</label>
+          <label class="option"><input type="checkbox" value="team"> 团队讨论共识</label>
+          <label class="option"><input type="checkbox" value="social_data"> 社交媒体数据（点赞量、讨论热度）</label>
+          <label class="option"><input type="checkbox" value="competitor"> 竞品是否也在做</label>
+          <label class="option"><input type="checkbox" value="history"> 历史类似产品的表现数据</label>
+          <label class="option"><input type="checkbox" value="customer"> 目标客户群体的偏好分析</label>
+          <label class="option"><input type="checkbox" value="boss"> 管理层决策</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q9</span><span>过去是否有追过市场反响不好的趋势？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q9" data-type="single">
+          <label class="option"><input type="radio" name="q9" value="often"> 经常有</label>
+          <label class="option"><input type="radio" name="q9" value="sometimes"> 偶尔有</label>
+          <label class="option"><input type="radio" name="q9" value="rare"> 很少有</label>
+          <label class="option"><input type="radio" name="q9" value="never"> 基本没有</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q10</span><span>是否有错过后来爆了的趋势？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q10" data-type="single">
+          <label class="option"><input type="radio" name="q10" value="often"> 经常有</label>
+          <label class="option"><input type="radio" name="q10" value="sometimes"> 偶尔有</label>
+          <label class="option"><input type="radio" name="q10" value="rare"> 很少有</label>
+          <label class="option"><input type="radio" name="q10" value="never"> 基本没有</label>
+        </div>
+      </div>
+
+      <div class="sub-section-title">1.3 灵感整理与风格定义</div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q11</span><span>灵感分享/头脑风暴的频率？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q11" data-type="single">
+          <label class="option"><input type="radio" name="q11" value="weekly"> 每周至少一次</label>
+          <label class="option"><input type="radio" name="q11" value="biweekly"> 每月2-3次</label>
+          <label class="option"><input type="radio" name="q11" value="monthly"> 每月一次</label>
+          <label class="option"><input type="radio" name="q11" value="project"> 有新项目时才组织</label>
+          <label class="option"><input type="radio" name="q11" value="none"> 没有固定的讨论机制</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 阶段2 -->
+  <div class="section hidden-section" data-section="phase2">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h3>阶段2：主题策划与产品定义 <span class="badge">6题</span></h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-section-title">2.1 主题创意</div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q12</span><span>确定了风格方向之后，怎么变成具体拍摄主题的？请简要描述过程</span><span class="q-tag text">简答</span></div>
+        <textarea class="text-input" data-key="q12" placeholder="请描述从风格方向到具体主题的转化过程"></textarea>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q13</span><span>一个风格方向通常衍生出几个主题方案？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q13" data-type="single">
+          <label class="option"><input type="radio" name="q13" value="1"> 1个，直接定</label>
+          <label class="option"><input type="radio" name="q13" value="2-3"> 2-3个备选</label>
+          <label class="option"><input type="radio" name="q13" value="3-5"> 3-5个备选</label>
+          <label class="option"><input type="radio" name="q13" value="5+"> 5个以上</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q14</span><span>季节、节日、热点在主题策划中占多大比重？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q14" data-type="single">
+          <label class="option"><input type="radio" name="q14" value="critical"> 非常重要，大部分主题围绕这些</label>
+          <label class="option"><input type="radio" name="q14" value="important"> 比较重要，会考虑但不完全依赖</label>
+          <label class="option"><input type="radio" name="q14" value="moderate"> 一般，只是参考因素之一</label>
+          <label class="option"><input type="radio" name="q14" value="minor"> 不太重要，主要靠创意驱动</label>
+        </div>
+      </div>
+
+      <div class="sub-section-title">2.2 拍摄方案与产品定义</div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q15</span><span>一份完整的拍摄方案通常包含哪些内容？</span><span class="q-tag multi">多选</span></div>
+        <div class="options" data-key="q15" data-type="multi">
+          <label class="option"><input type="checkbox" value="scene"> 场景设计方案</label>
+          <label class="option"><input type="checkbox" value="clothing"> 服装搭配方案</label>
+          <label class="option"><input type="checkbox" value="makeup"> 妆面造型方案</label>
+          <label class="option"><input type="checkbox" value="props"> 道具清单</label>
+          <label class="option"><input type="checkbox" value="pose"> 姿态/构图参考</label>
+          <label class="option"><input type="checkbox" value="mood"> 情绪/氛围描述</label>
+          <label class="option"><input type="checkbox" value="params"> 拍摄参数参考（光线、焦段等）</label>
+          <label class="option"><input type="checkbox" value="color"> 配色方案</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q16</span><span>方案策划从启动到定稿一般需要多久？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q16" data-type="single">
+          <label class="option"><input type="radio" name="q16" value="3d"> 3天以内</label>
+          <label class="option"><input type="radio" name="q16" value="1w"> 一周左右</label>
+          <label class="option"><input type="radio" name="q16" value="2w"> 1-2周</label>
+          <label class="option"><input type="radio" name="q16" value="2w+"> 2周以上</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q17</span><span>方案中哪个部分最容易反复修改或产生分歧？</span><span class="q-tag multi">多选</span></div>
+        <div class="options" data-key="q17" data-type="multi">
+          <label class="option"><input type="checkbox" value="scene"> 场景设计</label>
+          <label class="option"><input type="checkbox" value="clothing"> 服装搭配</label>
+          <label class="option"><input type="checkbox" value="makeup"> 妆面造型</label>
+          <label class="option"><input type="checkbox" value="style"> 整体风格/调性</label>
+          <label class="option"><input type="checkbox" value="budget"> 成本预算</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 阶段3 -->
+  <div class="section hidden-section" data-section="phase3">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h3>阶段3：视觉方案设计 <span class="badge">7题</span></h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-section-title">3.1 妆面造型</div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q18</span><span>妆面造型设计由谁负责？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q18" data-type="single">
+          <label class="option"><input type="radio" name="q18" value="independent"> 化妆师独立完成</label>
+          <label class="option"><input type="radio" name="q18" value="collab"> 化妆师与策划/摄影师共同讨论</label>
+          <label class="option"><input type="radio" name="q18" value="designer"> 有专门的造型设计师</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q19</span><span>同一种风格对应的造型有没有相对固定的"公式"或"模板"？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q19" data-type="single">
+          <label class="option"><input type="radio" name="q19" value="mature"> 有，比较成熟</label>
+          <label class="option"><input type="radio" name="q19" value="partial"> 有一些，但不够系统</label>
+          <label class="option"><input type="radio" name="q19" value="none"> 基本没有，每次全新设计</label>
+        </div>
+      </div>
+
+      <div class="sub-section-title">3.2 服装搭配</div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q20</span><span>服装来源比例（自有 vs 外采/定制）</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q20" data-type="single">
+          <label class="option"><input type="radio" name="q20" value="all_own"> 几乎全部自有</label>
+          <label class="option"><input type="radio" name="q20" value="mostly_own"> 以自有为主，少量外采</label>
+          <label class="option"><input type="radio" name="q20" value="half"> 自有和外采各半</label>
+          <label class="option"><input type="radio" name="q20" value="mostly_out"> 以外采/定制为主</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q21</span><span>服装的复用率大概是？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q21" data-type="single">
+          <label class="option"><input type="radio" name="q21" value="high"> 很高，大部分服装多次使用</label>
+          <label class="option"><input type="radio" name="q21" value="medium"> 还行，核心款式复用较多</label>
+          <label class="option"><input type="radio" name="q21" value="low"> 较低，不少服装只用了1-2次</label>
+          <label class="option"><input type="radio" name="q21" value="very_low"> 很低，很多拍一次就闲置了</label>
+        </div>
+      </div>
+
+      <div class="sub-section-title">3.3 场景与配色</div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q22</span><span>拍摄场景主要构成？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q22" data-type="single">
+          <label class="option"><input type="radio" name="q22" value="all_studio"> 全部棚拍</label>
+          <label class="option"><input type="radio" name="q22" value="mostly_studio"> 以棚拍为主，少量外景</label>
+          <label class="option"><input type="radio" name="q22" value="half"> 棚拍和外景各半</label>
+          <label class="option"><input type="radio" name="q22" value="mostly_outdoor"> 以外景为主</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q23</span><span>配色从设计到最终成片的一致性如何？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q23" data-type="single">
+          <label class="option"><input type="radio" name="q23" value="great"> 一致性很好</label>
+          <label class="option"><input type="radio" name="q23" value="ok"> 基本能保持一致</label>
+          <label class="option"><input type="radio" name="q23" value="bias"> 经常有偏差但在可接受范围</label>
+          <label class="option"><input type="radio" name="q23" value="bad"> 经常偏差较大，需要反复调整</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q24</span><span>视觉方案从初版到定稿一般要改几轮？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q24" data-type="single">
+          <label class="option"><input type="radio" name="q24" value="1"> 基本一次过</label>
+          <label class="option"><input type="radio" name="q24" value="2"> 1-2轮修改</label>
+          <label class="option"><input type="radio" name="q24" value="3-4"> 3-4轮修改</label>
+          <label class="option"><input type="radio" name="q24" value="4+"> 4轮以上</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 阶段4 -->
+  <div class="section hidden-section" data-section="phase4">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h3>阶段4：样片拍摄执行 <span class="badge">7题</span></h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-section-title">4.1 拍摄前准备</div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q25</span><span>拍摄前有没有标准的准备清单（checklist）？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q25" data-type="single">
+          <label class="option"><input type="radio" name="q25" value="strict"> 有，而且严格执行</label>
+          <label class="option"><input type="radio" name="q25" value="loose"> 有，但执行不严格</label>
+          <label class="option"><input type="radio" name="q25" value="oral"> 有大概的口头约定</label>
+          <label class="option"><input type="radio" name="q25" value="none"> 没有标准清单</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q26</span><span>准备过程中最容易遗漏或出问题的是什么？</span><span class="q-tag text">简答</span></div>
+        <textarea class="text-input" data-key="q26" placeholder="请描述最常出现的遗漏或问题"></textarea>
+      </div>
+
+      <div class="sub-section-title">4.2 拍摄现场执行</div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q27</span><span>一次完整拍摄大概持续多长时间？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q27" data-type="single">
+          <label class="option"><input type="radio" name="q27" value="2h"> 2小时以内</label>
+          <label class="option"><input type="radio" name="q27" value="4h"> 2-4小时</label>
+          <label class="option"><input type="radio" name="q27" value="half"> 半天（4-6小时）</label>
+          <label class="option"><input type="radio" name="q27" value="day"> 一整天</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q28</span><span>摄影师引导模特的方式主要是？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q28" data-type="single">
+          <label class="option"><input type="radio" name="q28" value="fixed"> 有固定的引导套路/话术</label>
+          <label class="option"><input type="radio" name="q28" value="flexible"> 有基本框架但会即兴发挥</label>
+          <label class="option"><input type="radio" name="q28" value="improv"> 主要现场发挥，因人而异</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q29</span><span>一次拍摄大概产出多少张原始照片？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q29" data-type="single">
+          <label class="option"><input type="radio" name="q29" value="100"> 100张以内</label>
+          <label class="option"><input type="radio" name="q29" value="300"> 100-300张</label>
+          <label class="option"><input type="radio" name="q29" value="500"> 300-500张</label>
+          <label class="option"><input type="radio" name="q29" value="1000"> 500-1000张</label>
+          <label class="option"><input type="radio" name="q29" value="1000+"> 1000张以上</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q30</span><span>拍摄时的相机参数、布光参数会做记录吗？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q30" data-type="single">
+          <label class="option"><input type="radio" name="q30" value="always"> 每次都记录</label>
+          <label class="option"><input type="radio" name="q30" value="sometimes"> 偶尔记录</label>
+          <label class="option"><input type="radio" name="q30" value="never"> 基本不记录</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q31</span><span>拍摄现场最影响效率的环节是？</span><span class="q-tag multi">多选</span></div>
+        <div class="options" data-key="q31" data-type="multi">
+          <label class="option"><input type="checkbox" value="change"> 换装耗时</label>
+          <label class="option"><input type="checkbox" value="scene_change"> 换场景/布光调整耗时</label>
+          <label class="option"><input type="checkbox" value="model"> 模特状态/情绪调动</label>
+          <label class="option"><input type="checkbox" value="adjust"> 方案临时调整</label>
+          <label class="option"><input type="checkbox" value="equipment"> 设备问题</label>
+          <label class="option"><input type="checkbox" value="comm"> 人员协调沟通</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 阶段5 -->
+  <div class="section hidden-section" data-section="phase5">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h3>阶段5：后期制作与交付 <span class="badge">6题</span></h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-section-title">5.1 选片</div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q32</span><span>选片分几轮进行？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q32" data-type="single">
+          <label class="option"><input type="radio" name="q32" value="1"> 1轮直接定</label>
+          <label class="option"><input type="radio" name="q32" value="2"> 2轮（粗选+精选）</label>
+          <label class="option"><input type="radio" name="q32" value="3+"> 3轮及以上</label>
+          <label class="option"><input type="radio" name="q32" value="none"> 没有固定轮次</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q33</span><span>选片一般花多长时间？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q33" data-type="single">
+          <label class="option"><input type="radio" name="q33" value="half"> 半天以内</label>
+          <label class="option"><input type="radio" name="q33" value="1d"> 1天</label>
+          <label class="option"><input type="radio" name="q33" value="2-3d"> 2-3天</label>
+          <label class="option"><input type="radio" name="q33" value="3d+"> 3天以上</label>
+        </div>
+      </div>
+
+      <div class="sub-section-title">5.2 精修</div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q34</span><span>一张照片的精修大概花多长时间？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q34" data-type="single">
+          <label class="option"><input type="radio" name="q34" value="10min"> 10分钟以内</label>
+          <label class="option"><input type="radio" name="q34" value="30min"> 10-30分钟</label>
+          <label class="option"><input type="radio" name="q34" value="1h"> 30分钟-1小时</label>
+          <label class="option"><input type="radio" name="q34" value="1h+"> 1小时以上</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q35</span><span>精修中最耗时的步骤是？</span><span class="q-tag multi">多选</span></div>
+        <div class="options" data-key="q35" data-type="multi">
+          <label class="option"><input type="checkbox" value="color"> 调色</label>
+          <label class="option"><input type="checkbox" value="skin"> 磨皮/肤质处理</label>
+          <label class="option"><input type="checkbox" value="body"> 液形/身材调整</label>
+          <label class="option"><input type="checkbox" value="bg"> 背景处理</label>
+          <label class="option"><input type="checkbox" value="detail"> 细节修饰（发丝、衣服褶皱等）</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q36</span><span>不同修图师修出来的风格一致性如何？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q36" data-type="single">
+          <label class="option"><input type="radio" name="q36" value="great"> 一致性很好</label>
+          <label class="option"><input type="radio" name="q36" value="ok"> 基本一致，有小差异</label>
+          <label class="option"><input type="radio" name="q36" value="diff"> 经常有明显差异</label>
+          <label class="option"><input type="radio" name="q36" value="bad"> 差异较大，需要统一返工</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q37</span><span>精修环节的返工率高吗？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q37" data-type="single">
+          <label class="option"><input type="radio" name="q37" value="high"> 很高，经常需要返工</label>
+          <label class="option"><input type="radio" name="q37" value="medium"> 较高，偶尔需要返工</label>
+          <label class="option"><input type="radio" name="q37" value="low"> 一般，少数情况返工</label>
+          <label class="option"><input type="radio" name="q37" value="rare"> 很低，基本一次通过</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 阶段6 -->
+  <div class="section hidden-section" data-section="phase6">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h3>阶段6：上市与市场反馈 <span class="badge">6题</span></h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-section-title">6.1 产品推广与销售</div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q38</span><span>新产品上线一般在哪些渠道推广？</span><span class="q-tag multi">多选</span></div>
+        <div class="options" data-key="q38" data-type="multi">
+          <label class="option"><input type="checkbox" value="xhs"> 小红书</label>
+          <label class="option"><input type="checkbox" value="dy"> 抖音</label>
+          <label class="option"><input type="checkbox" value="wx"> 微信公众号/朋友圈</label>
+          <label class="option"><input type="checkbox" value="dp"> 美团/大众点评</label>
+          <label class="option"><input type="checkbox" value="store"> 门店海报/展架</label>
+          <label class="option"><input type="checkbox" value="event"> 线下活动</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q39</span><span>能否清楚追溯到"某个产品在某门店某段时间卖了多少单"？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q39" data-type="single">
+          <label class="option"><input type="radio" name="q39" value="yes"> 可以，数据很清晰</label>
+          <label class="option"><input type="radio" name="q39" value="rough"> 大致可以，但不够精细</label>
+          <label class="option"><input type="radio" name="q39" value="hard"> 比较困难，数据分散</label>
+          <label class="option"><input type="radio" name="q39" value="no"> 做不到</label>
+        </div>
+      </div>
+
+      <div class="sub-section-title">6.2 客户反馈与舆情</div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q40</span><span>客户反馈主要从哪些渠道获取？</span><span class="q-tag multi">多选</span></div>
+        <div class="options" data-key="q40" data-type="multi">
+          <label class="option"><input type="checkbox" value="review"> 大众点评/美团评价</label>
+          <label class="option"><input type="checkbox" value="ugc"> 社交媒体UGC</label>
+          <label class="option"><input type="checkbox" value="cs"> 门店反馈/客服记录</label>
+          <label class="option"><input type="checkbox" value="survey"> 问卷调查</label>
+          <label class="option"><input type="checkbox" value="private"> 朋友圈/私聊反馈</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q41</span><span>负面反馈传达到产品研发团队的速度如何？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q41" data-type="single">
+          <label class="option"><input type="radio" name="q41" value="fast"> 很快，当天或次日</label>
+          <label class="option"><input type="radio" name="q41" value="week"> 一般，一周内</label>
+          <label class="option"><input type="radio" name="q41" value="slow"> 较慢，需要较长时间</label>
+          <label class="option"><input type="radio" name="q41" value="none"> 基本没有传达机制</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q42</span><span>目前是否在使用舆情监测工具？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q42" data-type="single">
+          <label class="option"><input type="radio" name="q42" value="yes"> 有，正在使用</label>
+          <label class="option"><input type="radio" name="q42" value="stopped"> 之前用过但停了</label>
+          <label class="option"><input type="radio" name="q42" value="plan"> 没有，但正在考虑引入</label>
+          <label class="option"><input type="radio" name="q42" value="no"> 没有，也没考虑过</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q43</span><span>您最希望从舆情数据中获取什么信息？</span><span class="q-tag multi">多选</span></div>
+        <div class="options" data-key="q43" data-type="multi">
+          <label class="option"><input type="checkbox" value="brand"> 品牌整体声量和口碑趋势</label>
+          <label class="option"><input type="checkbox" value="product"> 具体产品的社交媒体讨论</label>
+          <label class="option"><input type="checkbox" value="competitor"> 竞品动态对比</label>
+          <label class="option"><input type="checkbox" value="trend"> 行业趋势和热点</label>
+          <label class="option"><input type="checkbox" value="alert"> 负面信息预警</label>
+          <label class="option"><input type="checkbox" value="ugc"> 客户真实评价和UGC内容</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 阶段7 -->
+  <div class="section hidden-section" data-section="phase7">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h3>阶段7：复盘与知识沉淀 <span class="badge">6题</span></h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="sub-section-title">7.1 产品复盘</div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q44</span><span>复盘的触发方式主要是？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q44" data-type="single">
+          <label class="option"><input type="radio" name="q44" value="periodic"> 固定周期（如每月/每季度）</label>
+          <label class="option"><input type="radio" name="q44" value="project"> 每个产品周期结束后</label>
+          <label class="option"><input type="radio" name="q44" value="issue"> 出现问题时才复盘</label>
+          <label class="option"><input type="radio" name="q44" value="none"> 没有固定触发机制</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q45</span><span>复盘中"为什么成功/失败"的归因主要靠什么？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q45" data-type="single">
+          <label class="option"><input type="radio" name="q45" value="data"> 数据分析</label>
+          <label class="option"><input type="radio" name="q45" value="team"> 团队经验和讨论</label>
+          <label class="option"><input type="radio" name="q45" value="intuition"> 个人直觉判断</label>
+          <label class="option"><input type="radio" name="q45" value="customer"> 客户反馈</label>
+          <label class="option"><input type="radio" name="q45" value="mixed"> 综合以上多种</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q46</span><span>复盘产出的改进措施追踪执行情况如何？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q46" data-type="single">
+          <label class="option"><input type="radio" name="q46" value="track"> 有明确的追踪机制，执行率高</label>
+          <label class="option"><input type="radio" name="q46" value="partial"> 有追踪但执行率一般</label>
+          <label class="option"><input type="radio" name="q46" value="write"> 有措施但很少追踪执行</label>
+          <label class="option"><input type="radio" name="q46" value="none"> 基本写了就完了</label>
+        </div>
+      </div>
+
+      <div class="sub-section-title">7.2 知识沉淀</div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q47</span><span>做过的产品案例有系统地整理和存档吗？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q47" data-type="single">
+          <label class="option"><input type="radio" name="q47" value="system"> 有系统的案例库</label>
+          <label class="option"><input type="radio" name="q47" value="partial"> 有存档但不够系统</label>
+          <label class="option"><input type="radio" name="q47" value="personal"> 有一些，主要靠个人保存</label>
+          <label class="option"><input type="radio" name="q47" value="none"> 基本没有系统存档</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q48</span><span>有没有出现过"之前做过类似的东西但忘了/找不到"的情况？</span><span class="q-tag single">单选</span></div>
+        <div class="options" data-key="q48" data-type="single">
+          <label class="option"><input type="radio" name="q48" value="often"> 经常有</label>
+          <label class="option"><input type="radio" name="q48" value="sometimes"> 偶尔有</label>
+          <label class="option"><input type="radio" name="q48" value="rare"> 很少有</label>
+          <label class="option"><input type="radio" name="q48" value="never"> 基本没有</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q49</span><span>如果要给产品打标签，您认为哪些维度最有价值？</span><span class="q-tag multi">多选</span></div>
+        <div class="options" data-key="q49" data-type="multi">
+          <label class="option"><input type="checkbox" value="style"> 风格类型（复古、日系、韩系等）</label>
+          <label class="option"><input type="checkbox" value="color"> 色调（暖色、冷色、莫兰迪等）</label>
+          <label class="option"><input type="checkbox" value="mood"> 情绪/氛围（青春、高级、治愈等）</label>
+          <label class="option"><input type="checkbox" value="scene"> 场景类型（室内、室外、棚拍等）</label>
+          <label class="option"><input type="checkbox" value="people"> 目标人群（年龄、性别、职业等）</label>
+          <label class="option"><input type="checkbox" value="season"> 季节/节日关联</label>
+          <label class="option"><input type="checkbox" value="difficulty"> 拍摄难度</label>
+          <label class="option"><input type="checkbox" value="performance"> 市场表现（销量、口碑）</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 整体痛点评分 -->
+  <div class="section hidden-section" data-section="overall">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h3>整体痛点评估 <span class="badge">3题</span></h3>
+      <span class="arrow">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q50</span><span>请对以下环节的痛点程度打分（1=没什么问题，5=痛点非常严重）</span><span class="q-tag score">评分</span></div>
+        <div id="scoreBoard">
+          <div class="score-row"><span class="score-label">风格趋势洞察与判断</span><div class="score-btns" data-key="score1"></div></div>
+          <div class="score-row"><span class="score-label">主题策划与创意</span><div class="score-btns" data-key="score2"></div></div>
+          <div class="score-row"><span class="score-label">视觉方案设计（妆面/服装/场景）</span><div class="score-btns" data-key="score3"></div></div>
+          <div class="score-row"><span class="score-label">拍摄执行效率与质量</span><div class="score-btns" data-key="score4"></div></div>
+          <div class="score-row"><span class="score-label">后期制作效率与一致性</span><div class="score-btns" data-key="score5"></div></div>
+          <div class="score-row"><span class="score-label">市场反馈收集与归因分析</span><div class="score-btns" data-key="score6"></div></div>
+          <div class="score-row"><span class="score-label">产品复盘与知识沉淀</span><div class="score-btns" data-key="score7"></div></div>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q51</span><span>如果有AI工具，您最希望先解决哪些问题？（最多选3项）</span><span class="q-tag multi">多选</span></div>
+        <div class="options" data-key="q51" data-type="multi" data-max="3">
+          <label class="option"><input type="checkbox" value="trend"> 自动分析趋势和灵感推荐</label>
+          <label class="option"><input type="checkbox" value="match"> 智能搭配造型/服装/场景方案</label>
+          <label class="option"><input type="checkbox" value="shoot"> 拍摄质量实时检测和引导</label>
+          <label class="option"><input type="radio" name="q51" value="select"> 智能选片和精修辅助</label>
+          <label class="option"><input type="checkbox" value="feedback"> 市场反馈自动归因分析</label>
+          <label class="option"><input type="checkbox" value="tag"> 产品标签自动生成和管理</label>
+          <label class="option"><input type="checkbox" value="opinion"> 舆情监测和预警</label>
+          <label class="option"><input type="checkbox" value="review"> 复盘报告自动生成</label>
+          <label class="option"><input type="checkbox" value="search"> 历史产品智能检索和推荐</label>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="question-label"><span class="q-num">Q52</span><span>您还有什么觉得重要但上面没有涉及到的问题？</span><span class="q-tag text">简答</span></div>
+        <textarea class="text-input" data-key="q52" placeholder="欢迎补充任何您觉得重要的内容"></textarea>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="bottom-bar">
+  <button class="btn btn-outline" onclick="saveData()">保存（下载HTML文件）</button>
+  <button class="btn btn-primary" onclick="submitData()">提交（下载HTML文件发回）</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- 内嵌数据区：保存时会将数据写入此处，随HTML文件一起传播 -->
+<script id="embedded-data" type="application/json">{}</script>
+
+<script>
+// --- 钉钉内置浏览器检测与引导 ---
+(function() {
+  var ua = navigator.userAgent.toLowerCase();
+  var isDingTalk = ua.indexOf('dingtalk') !== -1 || ua.indexOf('dingding') !== -1;
+  var isWX = ua.indexOf('micromessenger') !== -1;
+  var isInApp = isDingTalk || isWX;
+
+  if (isInApp) {
+    var overlay = document.createElement('div');
+    overlay.id = 'browser-guide-overlay';
+    overlay.innerHTML = '<div class="guide-card">'
+      + '<div class="guide-icon">⚠️</div>'
+      + '<div class="guide-title">请用浏览器打开此文件</div>'
+      + '<div class="guide-desc">钉钉内置浏览器不支持保存文件。<br>请按以下步骤操作：</div>'
+      + '<div class="guide-steps">'
+      + '<div class="guide-step"><span class="step-num">1</span><span class="step-text">点击右上角 <b>⋮</b> 菜单</span></div>'
+      + '<div class="guide-step"><span class="step-num">2</span><span class="step-text">选择 <b>"在浏览器中打开"</b></span></div>'
+      + '<div class="guide-step"><span class="step-num">3</span><span class="step-text">在浏览器中填写并保存</span></div>'
+      + '</div>'
+      + '<div class="guide-tip">提示：保存时会下载一个新的HTML文件，请将此文件发回即可。</div>'
+      + '<button class="guide-btn" onclick="document.getElementById(\'browser-guide-overlay\').style.display=\'none\'">我知道了，先看看问卷</button>'
+      + '</div>';
+
+    var style = document.createElement('style');
+    style.textContent = ''
+      + '#browser-guide-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}'
+      + '.guide-card{background:#fff;border-radius:16px;padding:28px 24px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}'
+      + '.guide-icon{font-size:40px;margin-bottom:12px}'
+      + '.guide-title{font-size:18px;font-weight:700;color:#1F2937;margin-bottom:8px}'
+      + '.guide-desc{font-size:13px;color:#6B7280;line-height:1.6;margin-bottom:20px}'
+      + '.guide-steps{text-align:left;margin-bottom:20px}'
+      + '.guide-step{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #F3F4F6}'
+      + '.guide-step:last-child{border-bottom:none}'
+      + '.step-num{width:28px;height:28px;border-radius:50%;background:#4F46E5;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}'
+      + '.step-text{font-size:14px;color:#1F2937}'
+      + '.guide-tip{font-size:12px;color:#9CA3AF;margin-bottom:16px;line-height:1.5}'
+      + '.guide-btn{background:#4F46E5;color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:14px;font-weight:600;cursor:pointer;width:100%}';
+    overlay.appendChild(style);
+    document.addEventListener('DOMContentLoaded', function() { document.body.appendChild(overlay); });
+  }
+})();
+</script>
+
+<script>
+// --- 岗位与阶段的关联映射 ---
+const rolePhaseMap = {
+  product:   ['p1','p2','p7'],
+  photo:     ['p3','p4','p5','p7'],
+  stylist:   ['p3','p4','p7'],
+  retoucher: ['p5','p7'],
+  design:    ['p3','p7'],
+  marketing: ['p6','p7'],
+  store:     ['p6','p7'],
+  manage:    ['p1','p2','p6','p7']
+};
+
+const phaseSectionMap = {
+  p1: 'phase1', p2: 'phase2', p3: 'phase3', p4: 'phase4',
+  p5: 'phase5', p6: 'phase6', p7: 'phase7'
+};
+
+let selectedRole = null;
+let selectedPhases = new Set();
+
+// --- 角色选择 ---
+function selectRole(el) {
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedRole = el.dataset.value;
+
+  // 自动勾选推荐阶段
+  const recommended = rolePhaseMap[selectedRole] || [];
+  document.querySelectorAll('#q4-wrap .phase-card').forEach(card => {
+    const cb = card.querySelector('input[type="checkbox"]');
+    if (recommended.includes(card.dataset.value)) {
+      cb.checked = true;
+      card.classList.add('selected');
+      selectedPhases.add(card.dataset.value);
+    } else {
+      cb.checked = false;
+      card.classList.remove('selected');
+      selectedPhases.delete(card.dataset.value);
+    }
+  });
+
+  document.getElementById('q4-wrap').style.display = 'block';
+  updateVisibleSections();
+}
+
+// --- 阶段勾选 ---
+document.querySelectorAll('.phase-card').forEach(card => {
+  card.addEventListener('change', function(e) {
+    if (e.target.type === 'checkbox') {
+      if (e.target.checked) {
+        card.classList.add('selected');
+        selectedPhases.add(card.dataset.value);
+      } else {
+        card.classList.remove('selected');
+        selectedPhases.delete(card.dataset.value);
+      }
+      updateVisibleSections();
+    }
+  });
+});
+
+// --- 显示/隐藏阶段 ---
+function updateVisibleSections() {
+  Object.entries(phaseSectionMap).forEach(([phase, section]) => {
+    const el = document.querySelector(`[data-section="${section}"]`);
+    if (el) {
+      if (selectedPhases.has(phase)) {
+        el.classList.remove('hidden-section');
+      } else {
+        el.classList.add('hidden-section');
+      }
+    }
+  });
+
+  // 整体评估区：至少选了1个阶段就显示
+  const overallEl = document.querySelector('[data-section="overall"]');
+  if (selectedPhases.size > 0) {
+    overallEl.classList.remove('hidden-section');
+  } else {
+    overallEl.classList.add('hidden-section');
+  }
+
+  updateProgress();
+}
+
+// --- 折叠展开 ---
+function toggleSection(header) {
+  header.classList.toggle('collapsed');
+  const body = header.nextElementSibling;
+  body.classList.toggle('collapsed');
+}
+
+// --- 选项交互 ---
+document.querySelectorAll('.options').forEach(optGroup => {
+  optGroup.querySelectorAll('.option').forEach(opt => {
+    opt.addEventListener('click', function(e) {
+      if (e.target.tagName === 'INPUT') return;
+
+      const input = this.querySelector('input');
+      if (!input) return;
+
+      if (input.type === 'radio') {
+        input.checked = true;
+        // 更新同组选项样式
+        this.closest('.options').querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        this.classList.add('selected');
+      } else if (input.type === 'checkbox') {
+        const max = parseInt(optGroup.dataset.max) || 0;
+        if (max > 0 && !input.checked) {
+          const checked = optGroup.querySelectorAll('input:checked').length;
+          if (checked >= max) {
+            showToast(`最多选择${max}项`);
+            return;
+          }
+        }
+        input.checked = !input.checked;
+        this.classList.toggle('selected', input.checked);
+      }
+    });
+  });
+});
+
+// --- 其他选项输入框 ---
+document.querySelectorAll('.option:has(.option-other-input)').forEach(opt => {
+  const input = opt.querySelector('input[type="checkbox"], input[type="radio"]');
+  const textInput = opt.querySelector('.option-other-input');
+  if (input && textInput) {
+    input.addEventListener('change', () => {
+      textInput.style.display = input.checked ? 'block' : 'none';
+      if (input.checked) textInput.focus();
+    });
+  }
+});
+
+// --- 评分按钮 ---
+document.querySelectorAll('.score-btns').forEach(container => {
+  for (let i = 1; i <= 5; i++) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'score-btn';
+    btn.textContent = i;
+    btn.dataset.value = i;
+    btn.addEventListener('click', function() {
+      container.querySelectorAll('.score-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+    container.appendChild(btn);
+  }
+});
+
+// --- 进度条 ---
+function updateProgress() {
+  const total = countTotalQuestions();
+  const answered = countAnsweredQuestions();
+  const pct = total > 0 ? Math.round((answered / total) * 100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function countTotalQuestions() {
+  let count = 0;
+  document.querySelectorAll('.section:not(.hidden-section)').forEach(sec => {
+    count += sec.querySelectorAll('.question').length;
+  });
+  return count;
+}
+
+function countAnsweredQuestions() {
+  let count = 0;
+  // 填空题
+  document.querySelectorAll('.short-input[data-key], .text-input[data-key]').forEach(el => {
+    if (el.closest('.section.hidden-section')) return;
+    if (el.value.trim()) count++;
+  });
+  // 单选题
+  document.querySelectorAll('.options[data-type="single"]').forEach(group => {
+    if (group.closest('.section.hidden-section')) return;
+    if (group.querySelector('input:checked')) count++;
+  });
+  // 多选题
+  document.querySelectorAll('.options[data-type="multi"]').forEach(group => {
+    if (group.closest('.section.hidden-section')) return;
+    if (group.querySelector('input:checked')) count++;
+  });
+  // 评分题
+  document.querySelectorAll('.score-btns').forEach(group => {
+    if (group.closest('.section.hidden-section')) return;
+    if (group.querySelector('.score-btn.active')) count++;
+  });
+  return count;
+}
+
+// --- 生成带内嵌数据的HTML文件并下载 ---
+function downloadHtmlFile(submitted) {
+  const data = collectData();
+  if (submitted) data._submitted = true;
+
+  // 把数据写入 embedded-data 标签
+  const embeddedEl = document.getElementById('embedded-data');
+  embeddedEl.textContent = JSON.stringify(data);
+
+  // 获取完整的HTML内容
+  const fullHtml = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+  // 生成文件名
+  const name = data.q1 || '未填写';
+  const date = new Date().toLocaleDateString('zh-CN').replace(/\//g, '-');
+  const time = new Date().toTimeString().slice(0,5).replace(':','');
+  const suffix = submitted ? '已提交' : '填写中';
+  const filename = `问卷_${name}_${suffix}_${date}_${time}.html`;
+
+  // 下载
+  const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+
+  return filename;
+}
+
+// --- 保存数据（生成新HTML文件） ---
+function saveData() {
+  const filename = downloadHtmlFile(false);
+  showToast('已保存，请将下载的HTML文件发回');
+}
+
+// --- 提交数据（生成已提交HTML文件） ---
+function submitData() {
+  const data = collectData();
+
+  // 基本校验
+  if (!data.q1 || !data.q2 || !selectedRole) {
+    showToast('请先填写基本信息和选择岗位');
+    return;
+  }
+
+  // 检查是否有实质内容
+  const answeredCount = countAnsweredQuestions();
+  if (answeredCount < 3) {
+    showToast('请至少回答3个问题后再提交');
+    return;
+  }
+
+  const filename = downloadHtmlFile(true);
+  showToast('已提交，请将下载的HTML文件发回');
+}
+
+function collectData() {
+  const data = { _role: selectedRole, _phases: [...selectedPhases], _time: new Date().toISOString() };
+
+  // 填空/简答
+  document.querySelectorAll('[data-key]').forEach(el => {
+    if (el.classList.contains('short-input') || el.classList.contains('text-input')) {
+      data[el.dataset.key] = el.value;
+    }
+  });
+
+  // 单选组
+  document.querySelectorAll('.options[data-type="single"]').forEach(group => {
+    const key = group.dataset.key;
+    const checked = group.querySelector('input:checked');
+    if (checked) data[key] = checked.value;
+  });
+
+  // 多选组
+  document.querySelectorAll('.options[data-type="multi"]').forEach(group => {
+    const key = group.dataset.key;
+    const checked = [...group.querySelectorAll('input:checked')].map(i => i.value);
+    if (checked.length) data[key] = checked;
+  });
+
+  // 评分
+  document.querySelectorAll('.score-btns').forEach(group => {
+    const key = group.dataset.key;
+    const active = group.querySelector('.score-btn.active');
+    if (active) data[key] = parseInt(active.dataset.value);
+  });
+
+  return data;
+}
+
+// --- 加载已保存数据（优先读取内嵌数据，其次localStorage） ---
+function loadSavedData() {
+  let data = null;
+
+  // 优先读取HTML内嵌数据
+  const embeddedEl = document.getElementById('embedded-data');
+  if (embeddedEl) {
+    try {
+      const embedded = JSON.parse(embeddedEl.textContent || '{}');
+      if (Object.keys(embedded).length > 1) { // 不只有{}或仅_meta
+        data = embedded;
+      }
+    } catch(e) {}
+  }
+
+  // 其次读取localStorage
+  if (!data) {
+    const saved = localStorage.getItem('photo_sop_survey');
+    if (saved) {
+      try { data = JSON.parse(saved); } catch(e) {}
+    }
+  }
+
+  if (!data) return;
+
+  try {
+
+    // 基本信息
+    if (data.q1) document.querySelector('[data-key="q1"]').value = data.q1;
+    if (data.q2) document.querySelector('[data-key="q2"]').value = data.q2;
+
+    // 角色
+    if (data._role) {
+      const roleCard = document.querySelector(`.role-card[data-value="${data._role}"]`);
+      if (roleCard) selectRole(roleCard);
+    }
+
+    // 阶段（覆盖自动推荐）
+    if (data._phases) {
+      document.querySelectorAll('.phase-card').forEach(card => {
+        const cb = card.querySelector('input[type="checkbox"]');
+        if (data._phases.includes(card.dataset.value)) {
+          cb.checked = true;
+          card.classList.add('selected');
+          selectedPhases.add(card.dataset.value);
+        } else {
+          cb.checked = false;
+          card.classList.remove('selected');
+          selectedPhases.delete(card.dataset.value);
+        }
+      });
+      updateVisibleSections();
+    }
+
+    // 各题答案
+    Object.entries(data).forEach(([key, value]) => {
+      if (key.startsWith('_') || key === 'q1' || key === 'q2') return;
+
+      // 填空/简答
+      const textEl = document.querySelector(`[data-key="${key}"].text-input, [data-key="${key}"].short-input`);
+      if (textEl) { textEl.value = value; return; }
+
+      // 单选
+      const singleGroup = document.querySelector(`.options[data-key="${key}"][data-type="single"]`);
+      if (singleGroup && typeof value === 'string') {
+        const radio = singleGroup.querySelector(`input[value="${value}"]`);
+        if (radio) {
+          radio.checked = true;
+          radio.closest('.option').classList.add('selected');
+        }
+        return;
+      }
+
+      // 多选
+      const multiGroup = document.querySelector(`.options[data-key="${key}"][data-type="multi"]`);
+      if (multiGroup && Array.isArray(value)) {
+        value.forEach(v => {
+          const cb = multiGroup.querySelector(`input[value="${v}"]`);
+          if (cb) { cb.checked = true; cb.closest('.option').classList.add('selected'); }
+        });
+        return;
+      }
+
+      // 评分
+      const scoreGroup = document.querySelector(`.score-btns[data-key="${key}"]`);
+      if (scoreGroup && typeof value === 'number') {
+        const btn = scoreGroup.querySelector(`.score-btn[data-value="${value}"]`);
+        if (btn) btn.classList.add('active');
+      }
+    });
+
+    updateProgress();
+  } catch(e) { console.error('Load failed:', e); }
+}
+
+// --- Toast ---
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// --- 监听变化更新进度 ---
+document.addEventListener('change', updateProgress);
+document.addEventListener('input', updateProgress);
+
+// --- 初始化 ---
+loadSavedData();
+</script>
+</body>
+</html>

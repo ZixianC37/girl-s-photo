@@ -1,0 +1,163 @@
+<h2>玻璃拟态风格 + 主题切换</h2>
+<p class="subtitle">毛玻璃卡片 + 渐变背景 + 动态主题色切换（点击底部色块切换主题）</p>
+
+<div class="mockup">
+  <div class="mockup-header">预览：Glassmorphism 管理后台</div>
+  <div class="mockup-body" style="padding:0;">
+    <div id="app" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;position:relative;overflow:hidden;min-height:520px;">
+
+      <!-- Animated Background -->
+      <div id="bg" style="position:absolute;inset:0;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);transition:background 0.6s ease;z-index:0;">
+        <div style="position:absolute;width:300px;height:300px;background:rgba(255,255,255,0.08);border-radius:50%;top:-50px;right:-50px;"></div>
+        <div style="position:absolute;width:200px;height:200px;background:rgba(255,255,255,0.06);border-radius:50%;bottom:40px;left:-40px;"></div>
+        <div style="position:absolute;width:150px;height:150px;background:rgba(255,255,255,0.04);border-radius:50%;top:50%;left:40%;"></div>
+      </div>
+
+      <div style="position:relative;z-index:1;display:flex;min-height:520px;">
+
+        <!-- Glass Sidebar -->
+        <div style="width:190px;background:rgba(255,255,255,0.12);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-right:1px solid rgba(255,255,255,0.18);color:#fff;flex-shrink:0;">
+          <div style="padding:18px 16px;font-size:15px;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;gap:8px;">
+            <div style="width:28px;height:28px;background:rgba(255,255,255,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;">🏢</div>
+            业务中台
+          </div>
+          <div style="padding:8px 0;">
+            <div style="padding:10px 16px;background:rgba(255,255,255,0.2);backdrop-filter:blur(10px);border-radius:0 8px 8px 0;margin-right:8px;font-weight:500;">📊 仪表盘</div>
+            <div style="padding:10px 16px;color:rgba(255,255,255,0.7);">🔀 任务路由</div>
+            <div style="padding:10px 16px;color:rgba(255,255,255,0.7);">💬 群映射</div>
+            <div style="padding:10px 16px;color:rgba(255,255,255,0.7);">👥 用户映射</div>
+            <div style="padding:10px 16px;color:rgba(255,255,255,0.7);">📋 任务监控</div>
+            <div style="padding:10px 16px;color:rgba(255,255,255,0.7);">⚙️ 设置</div>
+          </div>
+          <div style="position:absolute;bottom:16px;left:16px;right:8px;">
+            <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,0.1);">
+              <div style="width:28px;height:28px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;">👤</div>
+              <div>
+                <div style="font-size:12px;font-weight:500;">管理员</div>
+                <div style="font-size:10px;opacity:0.6;">admin@company</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div style="flex:1;padding:20px;overflow-y:auto;">
+          <!-- Header -->
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <div>
+              <div style="color:#fff;font-size:20px;font-weight:600;">任务路由配置</div>
+              <div style="color:rgba(255,255,255,0.6);font-size:12px;margin-top:2px;">管理飞书事件到钉钉/企微的路由规则</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <div style="padding:6px 14px;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:8px;color:#fff;font-size:12px;cursor:pointer;">刷新</div>
+              <div style="padding:6px 14px;background:rgba(255,255,255,0.25);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.3);border-radius:8px;color:#fff;font-size:12px;font-weight:500;cursor:pointer;">+ 新建路由</div>
+            </div>
+          </div>
+
+          <!-- Glass Stats -->
+          <div style="display:flex;gap:12px;margin-bottom:20px;">
+            <div style="background:rgba(255,255,255,0.12);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.18);border-radius:14px;padding:16px;flex:1;">
+              <div style="color:rgba(255,255,255,0.6);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">活跃路由</div>
+              <div style="font-size:26px;font-weight:700;color:#fff;margin-top:4px;">5</div>
+              <div style="margin-top:6px;height:3px;background:rgba(255,255,255,0.15);border-radius:2px;"><div style="height:100%;width:70%;background:rgba(255,255,255,0.5);border-radius:2px;"></div></div>
+            </div>
+            <div style="background:rgba(255,255,255,0.12);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.18);border-radius:14px;padding:16px;flex:1;">
+              <div style="color:rgba(255,255,255,0.6);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">Handler</div>
+              <div style="font-size:26px;font-weight:700;color:#fff;margin-top:4px;">3</div>
+              <div style="margin-top:6px;height:3px;background:rgba(255,255,255,0.15);border-radius:2px;"><div style="height:100%;width:100%;background:#69f0ae;border-radius:2px;"></div></div>
+            </div>
+            <div style="background:rgba(255,255,255,0.12);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.18);border-radius:14px;padding:16px;flex:1;">
+              <div style="color:rgba(255,255,255,0.6);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">今日任务</div>
+              <div style="font-size:26px;font-weight:700;color:#fff;margin-top:4px;">12</div>
+              <div style="margin-top:6px;height:3px;background:rgba(255,255,255,0.15);border-radius:2px;"><div style="height:100%;width:50%;background:#ffd54f;border-radius:2px;"></div></div>
+            </div>
+            <div style="background:rgba(255,255,255,0.12);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.18);border-radius:14px;padding:16px;flex:1;">
+              <div style="color:rgba(255,255,255,0.6);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">错误率</div>
+              <div style="font-size:26px;font-weight:700;color:#fff;margin-top:4px;">0.3%</div>
+              <div style="margin-top:6px;height:3px;background:rgba(255,255,255,0.15);border-radius:2px;"><div style="height:100%;width:3%;background:#ff5252;border-radius:2px;"></div></div>
+            </div>
+          </div>
+
+          <!-- Glass Table -->
+          <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.18);border-radius:14px;overflow:hidden;">
+            <table style="width:100%;border-collapse:collapse;">
+              <thead>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+                  <th style="padding:12px 16px;text-align:left;color:rgba(255,255,255,0.6);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">Handler</th>
+                  <th style="padding:12px 16px;text-align:left;color:rgba(255,255,255,0.6);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">飞书表</th>
+                  <th style="padding:12px 16px;text-align:left;color:rgba(255,255,255,0.6);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">平台</th>
+                  <th style="padding:12px 16px;text-align:left;color:rgba(255,255,255,0.6);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">目标群</th>
+                  <th style="padding:12px 16px;text-align:left;color:rgba(255,255,255,0.6);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">状态</th>
+                  <th style="padding:12px 16px;text-align:right;color:rgba(255,255,255,0.6);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                  <td style="padding:12px 16px;color:#fff;font-weight:500;">TastingHandler</td>
+                  <td style="padding:12px 16px;color:rgba(255,255,255,0.8);font-family:monospace;font-size:12px;">tbl_btr8kx...</td>
+                  <td style="padding:12px 16px;"><span style="background:rgba(33,150,243,0.2);color:#90caf9;padding:3px 10px;border-radius:6px;font-size:11px;border:1px solid rgba(33,150,243,0.3);">钉钉</span></td>
+                  <td style="padding:12px 16px;color:rgba(255,255,255,0.8);">品鉴会通知群</td>
+                  <td style="padding:12px 16px;"><span style="display:inline-flex;align-items:center;gap:5px;color:#69f0ae;font-size:12px;"><span style="width:6px;height:6px;background:#69f0ae;border-radius:50%;box-shadow:0 0 6px #69f0ae;"></span>已启用</span></td>
+                  <td style="padding:12px 16px;text-align:right;color:rgba(255,255,255,0.6);font-size:12px;">编辑 · 删除</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.06);">
+                  <td style="padding:12px 16px;color:#fff;font-weight:500;">RDTaskHandler</td>
+                  <td style="padding:12px 16px;color:rgba(255,255,255,0.8);font-family:monospace;font-size:12px;">tbl_m9q2pz...</td>
+                  <td style="padding:12px 16px;"><span style="background:rgba(105,240,174,0.15);color:#69f0ae;padding:3px 10px;border-radius:6px;font-size:11px;border:1px solid rgba(105,240,174,0.25);">双平台</span></td>
+                  <td style="padding:12px 16px;color:rgba(255,255,255,0.8);">研发协作群</td>
+                  <td style="padding:12px 16px;"><span style="display:inline-flex;align-items:center;gap:5px;color:#69f0ae;font-size:12px;"><span style="width:6px;height:6px;background:#69f0ae;border-radius:50%;box-shadow:0 0 6px #69f0ae;"></span>已启用</span></td>
+                  <td style="padding:12px 16px;text-align:right;color:rgba(255,255,255,0.6);font-size:12px;">编辑 · 删除</td>
+                </tr>
+                <tr>
+                  <td style="padding:12px 16px;color:#fff;font-weight:500;">StoreOpsHandler</td>
+                  <td style="padding:12px 16px;color:rgba(255,255,255,0.8);font-family:monospace;font-size:12px;">tbl_k3n7xw...</td>
+                  <td style="padding:12px 16px;"><span style="background:rgba(255,213,79,0.15);color:#ffd54f;padding:3px 10px;border-radius:6px;font-size:11px;border:1px solid rgba(255,213,79,0.25);">企微</span></td>
+                  <td style="padding:12px 16px;color:rgba(255,255,255,0.8);">门店运营群</td>
+                  <td style="padding:12px 16px;"><span style="display:inline-flex;align-items:center;gap:5px;color:rgba(255,255,255,0.4);font-size:12px;"><span style="width:6px;height:6px;background:rgba(255,255,255,0.3);border-radius:50%;"></span>已禁用</span></td>
+                  <td style="padding:12px 16px;text-align:right;color:rgba(255,255,255,0.6);font-size:12px;">编辑 · 删除</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Theme Switcher -->
+          <div style="margin-top:20px;background:rgba(255,255,255,0.1);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.18);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px;">
+            <span style="color:rgba(255,255,255,0.6);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;">主题色</span>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <div onclick="switchTheme('purple')" style="width:32px;height:32px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:50%;cursor:pointer;border:2px solid #fff;box-shadow:0 0 10px rgba(255,255,255,0.3);transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'"></div>
+              <div onclick="switchTheme('ocean')" style="width:32px;height:32px;background:linear-gradient(135deg,#0f2027,#2c5364);border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'"></div>
+              <div onclick="switchTheme('sunset')" style="width:32px;height:32px;background:linear-gradient(135deg,#ee9ca7,#ffdde1);border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'"></div>
+              <div onclick="switchTheme('emerald')" style="width:32px;height:32px;background:linear-gradient(135deg,#11998e,#38ef7d);border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'"></div>
+              <div onclick="switchTheme('night')" style="width:32px;height:32px;background:linear-gradient(135deg,#0f0c29,#302b63);border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'"></div>
+              <div onclick="switchTheme('peach')" style="width:32px;height:32px;background:linear-gradient(135deg,#f6d365,#fda085);border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1)'"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const themes = {
+  purple: 'linear-gradient(135deg,#667eea 0%,#764ba2 100%)',
+  ocean: 'linear-gradient(135deg,#0f2027 0%,#203a43 50%,#2c5364 100%)',
+  sunset: 'linear-gradient(135deg,#ee9ca7 0%,#ffdde1 100%)',
+  emerald: 'linear-gradient(135deg,#11998e 0%,#38ef7d 100%)',
+  night: 'linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%)',
+  peach: 'linear-gradient(135deg,#f6d365 0%,#fda085 100%)'
+};
+
+function switchTheme(name) {
+  document.getElementById('bg').style.background = themes[name];
+  document.querySelectorAll('[onclick^="switchTheme"]').forEach(el => {
+    el.style.border = '2px solid transparent';
+  });
+  event.target.style.border = '2px solid #fff';
+  event.target.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
+}
+</script>
+
+<div style="margin-top:20px;padding:14px 18px;background:rgba(255,255,255,0.06);border-radius:10px;border:1px solid rgba(255,255,255,0.1);">
+  <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.7);">点击底部的<strong>彩色圆点</strong>实时切换背景渐变色。实际实现中，Ant Design 5 的 ConfigProvider + Design Token 可以一键切换整套主题色，包括组件配色、边框、阴影等。</p>
+</div>

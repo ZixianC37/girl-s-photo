@@ -1,0 +1,120 @@
+<h2>业务中台整体架构</h2>
+<p class="subtitle">方案 A：插件式任务处理器</p>
+
+<div class="mockup">
+  <div class="mockup-header">Architecture Overview</div>
+  <div class="mockup-body" style="padding: 24px; font-size: 14px; line-height: 1.8;">
+
+    <!-- Data Layer -->
+    <div style="background: rgba(102,126,234,0.1); border: 1px solid rgba(102,126,234,0.3); border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+      <div style="font-weight: 700; color: #a78bfa; margin-bottom: 8px;">数据层 — 飞书多维表</div>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <span class="label">品鉴会表</span>
+        <span class="label">研发任务表</span>
+        <span class="label">门店运营表</span>
+        <span class="label">...可扩展</span>
+      </div>
+      <div style="color: rgba(255,255,255,0.5); font-size: 12px; margin-top: 8px;">↓ webhook 事件</div>
+    </div>
+
+    <!-- Event Gateway -->
+    <div style="text-align: center; color: rgba(255,255,255,0.4); font-size: 24px;">▼</div>
+    <div style="background: rgba(79,172,254,0.1); border: 1px solid rgba(79,172,254,0.3); border-radius: 12px; padding: 16px; margin: 12px 0;">
+      <div style="font-weight: 700; color: #67e8f9; margin-bottom: 8px;">事件网关 — Event Gateway</div>
+      <div style="color: rgba(255,255,255,0.6); font-size: 13px;">
+        验签 → 去重 → 路由到对应 TaskHandler
+      </div>
+      <div style="margin-top: 10px; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
+        <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 6px;">路由表（前端可配置）：</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,0.7);">
+          飞书表 tbl_A → TastingHandler<br>
+          飞书表 tbl_B → RDTaskHandler<br>
+          飞书表 tbl_C → StoreOpsHandler
+        </div>
+      </div>
+    </div>
+
+    <!-- Core Engine -->
+    <div style="text-align: center; color: rgba(255,255,255,0.4); font-size: 24px;">▼</div>
+    <div style="background: rgba(67,233,123,0.1); border: 1px solid rgba(67,233,123,0.3); border-radius: 12px; padding: 16px; margin: 12px 0;">
+      <div style="font-weight: 700; color: #6ee7b7; margin-bottom: 12px;">中台引擎 — Plugin-based Task Engine</div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+        <div style="background: rgba(255,255,255,0.06); border-radius: 8px; padding: 10px; text-align: center;">
+          <div style="font-size: 12px; color: #f9a8d4; font-weight: 600;">品鉴会</div>
+          <div style="font-size: 11px; color: rgba(255,255,255,0.4);">TastingHandler</div>
+        </div>
+        <div style="background: rgba(255,255,255,0.06); border-radius: 8px; padding: 10px; text-align: center;">
+          <div style="font-size: 12px; color: #a78bfa; font-weight: 600;">产品研发</div>
+          <div style="font-size: 11px; color: rgba(255,255,255,0.4);">RDTaskHandler</div>
+        </div>
+        <div style="background: rgba(255,255,255,0.06); border-radius: 8px; padding: 10px; text-align: center; border: 1px dashed rgba(255,255,255,0.2);">
+          <div style="font-size: 12px; color: rgba(255,255,255,0.5);">新业务...</div>
+          <div style="font-size: 11px; color: rgba(255,255,255,0.3);">CustomHandler</div>
+        </div>
+      </div>
+      <div style="margin-top: 12px; font-size: 12px; color: rgba(255,255,255,0.5);">
+        每个 Handler 实现统一接口：parseEvent / buildCard / getFlow / getRoles / getReminderRules
+      </div>
+    </div>
+
+    <!-- Shared Services -->
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 12px 0;">
+      <div style="background: rgba(255,255,255,0.04); border-radius: 8px; padding: 10px; text-align: center;">
+        <div style="font-size: 12px; color: #fcd34d; font-weight: 600;">身份映射</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.04); border-radius: 8px; padding: 10px; text-align: center;">
+        <div style="font-size: 12px; color: #fcd34d; font-weight: 600;">文件管理</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.04); border-radius: 8px; padding: 10px; text-align: center;">
+        <div style="font-size: 12px; color: #fcd34d; font-weight: 600;">催办调度</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.04); border-radius: 8px; padding: 10px; text-align: center;">
+        <div style="font-size: 12px; color: #fcd34d; font-weight: 600;">消息队列</div>
+      </div>
+    </div>
+    <div style="text-align: center; font-size: 12px; color: rgba(255,255,255,0.4);">↑ 所有 Handler 共享的基础服务</div>
+
+    <!-- Frontend -->
+    <div style="text-align: center; color: rgba(255,255,255,0.4); font-size: 24px; margin-top: 16px;">▼ 管理</div>
+    <div style="background: rgba(240,147,251,0.1); border: 1px solid rgba(240,147,251,0.3); border-radius: 12px; padding: 16px; margin: 12px 0;">
+      <div style="font-weight: 700; color: #f9a8d4; margin-bottom: 8px;">前端管理后台</div>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <div style="background: rgba(255,255,255,0.06); border-radius: 8px; padding: 8px 14px; font-size: 12px; color: rgba(255,255,255,0.7);">路由配置：表 → Handler</div>
+        <div style="background: rgba(255,255,255,0.06); border-radius: 8px; padding: 8px 14px; font-size: 12px; color: rgba(255,255,255,0.7);">群映射：Handler → 钉钉群</div>
+        <div style="background: rgba(255,255,255,0.06); border-radius: 8px; padding: 8px 14px; font-size: 12px; color: rgba(255,255,255,0.7);">字段映射：飞书字段 → 任务参数</div>
+        <div style="background: rgba(255,255,255,0.06); border-radius: 8px; padding: 8px 14px; font-size: 12px; color: rgba(255,255,255,0.7);">任务监控 & 日志</div>
+      </div>
+    </div>
+
+    <!-- Reach Layer -->
+    <div style="text-align: center; color: rgba(255,255,255,0.4); font-size: 24px; margin-top: 16px;">▼</div>
+    <div style="background: rgba(52,199,89,0.1); border: 1px solid rgba(52,199,89,0.3); border-radius: 12px; padding: 16px; margin: 12px 0;">
+      <div style="font-weight: 700; color: #34c759; margin-bottom: 8px;">触达层 — 钉钉</div>
+      <div style="display: flex; gap: 20px;">
+        <div style="font-size: 13px; color: rgba(255,255,255,0.6);">群聊：互动卡片 / 进度看板 / @提醒</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,0.6);">单聊：文件收集 / 引导</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<h3 style="margin-top: 24px;">关键设计点</h3>
+<div class="pros-cons">
+  <div class="pros">
+    <h4>架构分层</h4>
+    <ul>
+      <li><strong>引擎层</strong>：通用的事件路由、身份映射、消息队列 — 所有业务共享</li>
+      <li><strong>插件层</strong>：每个 Handler 独立实现业务逻辑 — 互不干扰</li>
+      <li><strong>配置层</strong>：前端管理映射和参数 — 不需要改代码</li>
+    </ul>
+  </div>
+  <div class="cons">
+    <h4>扩展方式</h4>
+    <ul>
+      <li><strong>新业务</strong>：写一个新 Handler 类 + 前端配一条路由</li>
+      <li><strong>改参数</strong>：直接在前端改映射/群/字段配置</li>
+      <li><strong>改流程</strong>：修改对应 Handler 的代码</li>
+    </ul>
+  </div>
+</div>

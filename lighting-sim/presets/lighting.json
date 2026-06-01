@@ -1,0 +1,241 @@
+{
+  "presets": [
+    {
+      "id": "three_point",
+      "name": "经典三点布光",
+      "description": "Key + Fill + Rim，最常用的商业人像布光",
+      "lights": [
+        {
+          "name": "主光 Key",
+          "type": "AREA",
+          "enabled": true,
+          "energy": 500,
+          "color_temp": 5500,
+          "h_angle": 45,
+          "v_angle": 45,
+          "distance": 2.5,
+          "size_x": 1.2,
+          "size_y": 0.8,
+          "spread": 180
+        },
+        {
+          "name": "辅光 Fill",
+          "type": "AREA",
+          "enabled": true,
+          "energy": 150,
+          "color_temp": 5500,
+          "h_angle": 315,
+          "v_angle": 30,
+          "distance": 3.0,
+          "size_x": 1.5,
+          "size_y": 1.0,
+          "spread": 180
+        },
+        {
+          "name": "轮廓光 Rim",
+          "type": "SPOT",
+          "enabled": true,
+          "energy": 300,
+          "color_temp": 5500,
+          "h_angle": 180,
+          "v_angle": 45,
+          "distance": 3.0,
+          "spot_size": 30,
+          "spot_blend": 0.5
+        }
+      ]
+    },
+    {
+      "id": "butterfly",
+      "name": "蝴蝶光/派拉蒙光",
+      "description": "正上方柔光箱，鼻下蝴蝶形阴影，经典美人光",
+      "lights": [
+        {
+          "name": "主光 Butterfly",
+          "type": "AREA",
+          "enabled": true,
+          "energy": 600,
+          "color_temp": 5500,
+          "h_angle": 0,
+          "v_angle": 80,
+          "distance": 2.0,
+          "size_x": 1.5,
+          "size_y": 1.0,
+          "spread": 180
+        },
+        {
+          "name": "辅光 Fill",
+          "type": "AREA",
+          "enabled": true,
+          "energy": 100,
+          "color_temp": 5500,
+          "h_angle": 0,
+          "v_angle": 15,
+          "distance": 4.0,
+          "size_x": 2.0,
+          "size_y": 1.5,
+          "spread": 180
+        },
+        {
+          "name": "轮廓光 Rim",
+          "type": "SPOT",
+          "enabled": true,
+          "energy": 250,
+          "color_temp": 5500,
+          "h_angle": 180,
+          "v_angle": 40,
+          "distance": 3.0,
+          "spot_size": 30,
+          "spot_blend": 0.5
+        }
+      ]
+    },
+    {
+      "id": "rembrandt",
+      "name": "伦勃朗光",
+      "description": "45度侧上方，面颊三角光斑，戏剧感强",
+      "lights": [
+        {
+          "name": "主光 Rembrandt",
+          "type": "AREA",
+          "enabled": true,
+          "energy": 700,
+          "color_temp": 5000,
+          "h_angle": 60,
+          "v_angle": 50,
+          "distance": 2.0,
+          "size_x": 0.8,
+          "size_y": 0.6,
+          "spread": 160
+        },
+        {
+          "name": "辅光 Fill",
+          "type": "AREA",
+          "enabled": true,
+          "energy": 80,
+          "color_temp": 5500,
+          "h_angle": 300,
+          "v_angle": 20,
+          "distance": 4.0,
+          "size_x": 2.0,
+          "size_y": 1.5,
+          "spread": 180
+        },
+        {
+          "name": "背景光 BG",
+          "type": "AREA",
+          "enabled": true,
+          "energy": 200,
+          "color_temp": 5500,
+          "h_angle": 180,
+          "v_angle": 60,
+          "distance": 4.5,
+          "size_x": 2.0,
+          "size_y": 1.5,
+          "spread": 180
+        }
+      ]
+    },
+    {
+      "id": "split",
+      "name": "分割光/侧光",
+      "description": "90度侧面单灯，明暗对比强烈",
+      "lights": [
+        {
+          "name": "主光 Side",
+          "type": "AREA",
+          "enabled": true,
+          "energy": 800,
+          "color_temp": 5500,
+          "h_angle": 90,
+          "v_angle": 30,
+          "distance": 2.0,
+          "size_x": 1.0,
+          "size_y": 1.5,
+          "spread": 170
+        },
+        {
+          "name": "轮廓光 Rim",
+          "type": "SPOT",
+          "enabled": true,
+          "energy": 200,
+          "color_temp": 5500,
+          "h_angle": 200,
+          "v_angle": 35,
+          "distance": 3.0,
+          "spot_size": 25,
+          "spot_blend": 0.4
+        },
+        {
+          "name": "辅光 Fill",
+          "type": "AREA",
+          "enabled": false,
+          "energy": 50,
+          "color_temp": 5500,
+          "h_angle": 270,
+          "v_angle": 20,
+          "distance": 4.0,
+          "size_x": 2.0,
+          "size_y": 1.5,
+          "spread": 180
+        }
+      ]
+    },
+    {
+      "id": "silhouette",
+      "name": "逆光剪影",
+      "description": "背光勾勒轮廓，正面无补光，神秘戏剧效果",
+      "lights": [
+        {
+          "name": "主逆光 Back",
+          "type": "AREA",
+          "enabled": true,
+          "energy": 1200,
+          "color_temp": 5500,
+          "h_angle": 180,
+          "v_angle": 20,
+          "distance": 2.0,
+          "size_x": 2.0,
+          "size_y": 2.0,
+          "spread": 180
+        },
+        {
+          "name": "侧轮廓光 Side",
+          "type": "SPOT",
+          "enabled": true,
+          "energy": 400,
+          "color_temp": 3200,
+          "h_angle": 210,
+          "v_angle": 30,
+          "distance": 3.0,
+          "spot_size": 35,
+          "spot_blend": 0.3
+        },
+        {
+          "name": "辅光 Fill",
+          "type": "AREA",
+          "enabled": false,
+          "energy": 30,
+          "color_temp": 5500,
+          "h_angle": 0,
+          "v_angle": 30,
+          "distance": 4.0,
+          "size_x": 2.0,
+          "size_y": 1.5,
+          "spread": 180
+        }
+      ]
+    }
+  ],
+  "camera_defaults": {
+    "focal_length": 85,
+    "f_stop": 2.8,
+    "iso": 400
+  },
+  "scene_defaults": {
+    "room_width": 8,
+    "room_depth": 10,
+    "room_height": 3.5,
+    "backdrop_color": "white"
+  }
+}

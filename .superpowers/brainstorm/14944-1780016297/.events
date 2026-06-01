@@ -1,0 +1,6 @@
+{"type":"click","text":"1\n    \n      任务路由配置\n      Handler ↔ 飞书表映射、触达平台选择、目标群配置、字段映射","choice":"nav","id":null,"timestamp":1780019522302}
+{"type":"click","text":"2\n    \n      群映射管理\n      钉钉群/企微群的 ID 管理，群名称与群 ID 的对应关系","choice":"group","id":null,"timestamp":1780019523367}
+{"type":"click","text":"1\n    \n      任务路由配置\n      Handler ↔ 飞书表映射、触达平台选择、目标群配置、字段映射","choice":"nav","id":null,"timestamp":1780019528216}
+{"type":"click","text":"2\n    \n      群映射管理\n      钉钉群/企微群的 ID 管理，群名称与群 ID 的对应关系","choice":"group","id":null,"timestamp":1780019528866}
+{"type":"click","text":"3\n    \n      用户映射管理\n      飞书 ↔ 钉钉/企微用户 ID 映射，同步状态，手动补充","choice":"user","id":null,"timestamp":1780019529667}
+{"type":"click","text":"4\n    \n      任务监控 & 日志\n      任务执行状态看板、消息发送记录、错误日志、催办记录","choice":"monitor","id":null,"timestamp":1780019530400}

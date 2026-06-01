@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>写真行业 AI 融合战略看板</title>
+<style>
+:root {
+  --primary: #4F46E5; --primary-light: #EEF2FF; --primary-dark: #3730A3;
+  --accent: #7C3AED; --accent-light: #F5F3FF;
+  --green: #10B981; --green-light: #ECFDF5; --green-dark: #065F46;
+  --orange: #F59E0B; --orange-light: #FFFBEB; --orange-dark: #92400E;
+  --blue: #3B82F6; --blue-light: #EFF6FF; --blue-dark: #1E40AF;
+  --red: #EF4444; --red-light: #FEF2F2;
+  --text: #1F2937; --text2: #6B7280; --text3: #9CA3AF;
+  --border: #E5E7EB; --bg: #F3F4F6; --white: #FFF;
+  --radius: 10px; --shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+
+/* Header */
+.top-header{background:linear-gradient(135deg,#1E1B4B 0%,var(--primary) 50%,var(--accent) 100%);color:#fff;padding:28px 24px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(79,70,229,.3)}
+.top-header h1{font-size:20px;font-weight:700;letter-spacing:.5px}
+.top-header p{font-size:13px;opacity:.8;margin-top:4px}
+.header-stats{display:flex;gap:24px;margin-top:16px}
+.stat-item{text-align:center}
+.stat-num{font-size:24px;font-weight:800}
+.stat-label{font-size:11px;opacity:.7}
+
+/* Nav Tabs */
+.nav-tabs{display:flex;background:var(--white);border-bottom:2px solid var(--border);padding:0 16px;position:sticky;top:86px;z-index:99;overflow-x:auto}
+.nav-tab{padding:12px 20px;font-size:14px;font-weight:500;cursor:pointer;border-bottom:3px solid transparent;color:var(--text2);transition:all .2s;white-space:nowrap}
+.nav-tab:hover{color:var(--primary)}
+.nav-tab.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:600}
+
+/* Container */
+.container{max-width:1100px;margin:0 auto;padding:20px 16px 80px}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* Cards */
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden}
+.card-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-header h3{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px}
+.card-body{padding:20px}
+
+/* Tags */
+.tag{display:inline-flex;align-items:center;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600}
+.tag-purple{background:var(--primary-light);color:var(--primary)}
+.tag-green{background:var(--green-light);color:var(--green-dark)}
+.tag-orange{background:var(--orange-light);color:var(--orange-dark)}
+.tag-blue{background:var(--blue-light);color:var(--blue-dark)}
+.tag-red{background:var(--red-light);color:var(--red)}
+
+/* Decision Card */
+.decision-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.decision-card{border:1px solid var(--border);border-radius:8px;padding:14px;transition:all .2s}
+.decision-card:hover{border-color:var(--primary);box-shadow:0 2px 8px rgba(79,70,229,.1)}
+.decision-label{font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;margin-bottom:4px}
+.decision-value{font-size:14px;font-weight:600;color:var(--text)}
+.decision-note{font-size:12px;color:var(--text2);margin-top:6px;line-height:1.5}
+
+/* Roadmap */
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:12px;top:0;bottom:0;width:3px;background:var(--border);border-radius:2px}
+.tl-item{position:relative;margin-bottom:24px}
+.tl-item:last-child{margin-bottom:0}
+.tl-dot{position:absolute;left:-26px;top:4px;width:16px;height:16px;border-radius:50%;border:3px solid var(--white);z-index:1}
+.tl-dot.done{background:var(--green)}
+.tl-dot.active{background:var(--primary);box-shadow:0 0 0 4px var(--primary-light)}
+.tl-dot.pending{background:var(--text3)}
+.tl-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.tl-desc{font-size:13px;color:var(--text2);line-height:1.6}
+.tl-status{font-size:11px;font-weight:600;margin-top:6px}
+
+/* Phase Blocks */
+.phase-block{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:20px;overflow:hidden}
+.phase-head{padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background .15s}
+.phase-head:hover{background:var(--bg)}
+.phase-num{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.phase-info{flex:1}
+.phase-info h4{font-size:14px;font-weight:600}
+.phase-info p{font-size:12px;color:var(--text2);margin-top:2px}
+.phase-arrow{font-size:12px;color:var(--text3);transition:transform .2s}
+.phase-arrow.open{transform:rotate(180deg)}
+.phase-detail{padding:0 18px 18px;display:none}
+.phase-detail.open{display:block}
+
+/* AI Points */
+.ai-point{display:flex;gap:12px;padding:12px;background:var(--primary-light);border-radius:8px;margin-bottom:8px;align-items:flex-start}
+.ai-icon{width:24px;height:24px;border-radius:6px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:1px}
+.ai-text h5{font-size:13px;font-weight:600;color:var(--primary-dark)}
+.ai-text p{font-size:12px;color:var(--text2);margin-top:2px}
+
+/* Data Output */
+.data-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;background:var(--green-light);color:var(--green-dark);border-radius:4px;font-size:11px;font-weight:500;margin:2px 4px 2px 0}
+
+/* Architecture Diagram */
+.arch-layer{border:2px solid var(--border);border-radius:var(--radius);margin-bottom:12px;overflow:hidden}
+.arch-layer-head{padding:10px 16px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
+.arch-layer-body{padding:10px 16px;display:flex;flex-wrap:wrap;gap:8px}
+.arch-block{padding:8px 14px;border-radius:6px;font-size:12px;font-weight:500;border:1px solid var(--border);background:var(--white);text-align:center}
+
+/* B Phase Research Grid */
+.research-grid{display:grid;grid-template-columns:1fr;gap:16px}
+.research-card{border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.research-card h4{font-size:14px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.research-card p{font-size:13px;color:var(--text2);line-height:1.6}
+.research-items{margin-top:10px}
+.research-item{display:flex;align-items:flex-start;gap:8px;padding:6px 0;font-size:13px;color:var(--text2)}
+.research-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--primary);flex-shrink:0;margin-top:7px}
+
+/* Connection Diagram */
+.conn-box{display:flex;align-items:stretch;gap:12px;margin:20px 0}
+.conn-side{flex:1;border:2px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.conn-side h4{font-size:15px;font-weight:700;margin-bottom:4px}
+.conn-side p{font-size:12px;color:var(--text2)}
+.conn-arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-width:80px;font-size:12px;color:var(--primary);font-weight:600}
+.conn-arrow-line{font-size:24px}
+
+/* Kanban */
+.kanban{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.kanban-col{background:var(--bg);border-radius:var(--radius);padding:12px}
+.kanban-col-title{font-size:13px;font-weight:700;padding:6px 0 12px;display:flex;align-items:center;gap:6px}
+.kanban-item{background:var(--white);border-radius:8px;padding:12px;margin-bottom:8px;border-left:4px solid var(--primary);box-shadow:var(--shadow)}
+.kanban-item h5{font-size:13px;font-weight:600;margin-bottom:4px}
+.kanban-item p{font-size:12px;color:var(--text2);line-height:1.5}
+.kanban-item .tag{margin-top:6px}
+
+/* Milestone */
+.milestone-bar{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:8px 0}
+.milestone-seg{transition:width .3s}
+
+/* Priority Matrix */
+.prio-matrix{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
+.prio-cell{padding:16px;background:var(--white)}
+.prio-cell h5{font-size:13px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.prio-item{font-size:12px;color:var(--text2);padding:4px 0;display:flex;align-items:flex-start;gap:6px}
+.prio-item::before{content:'•';color:var(--primary);font-weight:700}
+
+/* Status indicator */
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.status-dot.green{background:var(--green)}
+.status-dot.blue{background:var(--blue)}
+.status-dot.orange{background:var(--orange)}
+.status-dot.gray{background:var(--text3)}
+
+/* Footer */
+.bottom-actions{position:fixed;bottom:0;left:0;right:0;background:var(--white);padding:10px 20px;box-shadow:0 -2px 10px rgba(0,0,0,.06);display:flex;justify-content:center;gap:12px;z-index:100}
+.btn{padding:8px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-outline{background:var(--white);color:var(--primary);border:2px solid var(--primary)}
+
+/* Print */
+@media print{
+  .top-header,.nav-tabs,.bottom-actions{position:static}
+  .tab-content{display:block!important}
+  .phase-detail{display:block!important}
+}
+
+@media(max-width:768px){
+  .header-stats{flex-wrap:wrap;gap:12px}
+  .decision-grid{grid-template-columns:1fr}
+  .kanban{grid-template-columns:1fr}
+  .conn-box{flex-direction:column}
+  .conn-arrow{flex-direction:row;min-width:auto;padding:8px 0}
+  .prio-matrix{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="top-header">
+  <h1>写真行业 AI 融合战略看板</h1>
+  <p>连锁写真品牌 · AI部门 · 内部优先 → SaaS外化</p>
+  <div class="header-stats">
+    <div class="stat-item"><div class="stat-num">6+</div><div class="stat-label">待覆盖部门</div></div>
+    <div class="stat-item"><div class="stat-num">分批</div><div class="stat-label">扩展策略</div></div>
+    <div class="stat-item"><div class="stat-num">A→B</div><div class="stat-label">整体路线</div></div>
+    <div class="stat-item"><div class="stat-num">4层</div><div class="stat-label">系统架构</div></div>
+  </div>
+</div>
+
+<!-- Nav -->
+<div class="nav-tabs">
+  <div class="nav-tab active" onclick="switchTab('overview')">讨论看板</div>
+  <div class="nav-tab" onclick="switchTab('roadmap')">分批扩展路线图</div>
+  <div class="nav-tab" onclick="switchTab('phaseA')">批次1 · 产品研发</div>
+  <div class="nav-tab" onclick="switchTab('phaseB')">B阶段 · 行业研究</div>
+</div>
+
+<div class="container">
+
+<!-- ==================== TAB 1: 讨论看板 ==================== -->
+<div class="tab-content active" id="tab-overview">
+
+  <!-- 战略定位 -->
+  <div class="card">
+    <div class="card-header">
+      <h3><span style="color:var(--primary)">●</span> 战略定位与关键决策</h3>
+      <span class="tag tag-green">已确认</span>
+    </div>
+    <div class="card-body">
+      <div class="decision-grid">
+        <div class="decision-card">
+          <div class="decision-label">公司定位</div>
+          <div class="decision-value">连锁写真品牌</div>
+          <div class="decision-note">有完善SOP，多门店标准化运营</div>
+        </div>
+        <div class="decision-card" style="border-color:#EC4899;background:linear-gradient(135deg,#FDF2F8 0%,#FFF 100%)">
+          <div class="decision-label" style="color:#DB2777">品牌定位</div>
+          <div class="decision-value" style="color:#BE185D">少女写真</div>
+          <div class="decision-note">目标客群年轻女性，审美变化快，社交分享动机强，情绪价值以成长/自我认知/社交认同为核心。年龄带待确认。</div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-label">AI部门角色</div>
+          <div class="decision-value">资深产品总监 + 跨部门调研</div>
+          <div class="decision-note">向各部门调研需求 → 形成方案 → 评审 → 系统</div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-label">实施策略</div>
+          <div class="decision-value">A分批扩展 → B跟进</div>
+          <div class="decision-note">批次1产品研发 → 批次2待定 → 逐步覆盖全业务链，做A时前置考虑B的数据需求</div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-label">SaaS节奏</div>
+          <div class="decision-value">内部优先</div>
+          <div class="decision-note">先内部打磨验证，再外化输出提升行业地位</div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-label">舆情监测</div>
+          <div class="decision-value">接入第三方平台</div>
+          <div class="decision-note">新浪舆情/百度舆情/清博等现有能力，自己做价值加工</div>
+        </div>
+        <div class="decision-card">
+          <div class="decision-label">客户需求</div>
+          <div class="decision-value">混合型，需分类研究</div>
+          <div class="decision-note">人生纪念、自我表达、社交价值均有，需按目的分类针对性研究</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 关键讨论结论 -->
+  <div class="card">
+    <div class="card-header">
+      <h3><span style="color:var(--orange)">●</span> 关键讨论结论</h3>
+    </div>
+    <div class="card-body">
+      <div class="kanban">
+        <div class="kanban-col">
+          <div class="kanban-col-title"><span class="status-dot green"></span> 已确认</div>
+          <div class="kanban-item" style="border-left-color:var(--green)">
+            <h5>系统架构四层设计</h5>
+            <p>应用层 → AI能力层 → 数据层 → 基础层，数据层为B阶段预留</p>
+            <span class="tag tag-green">架构确定</span>
+          </div>
+          <div class="kanban-item" style="border-left-color:var(--green)">
+            <h5>SOP 7阶段划分</h5>
+            <p>风格定义 → 主题策划 → 视觉设计 → 拍摄执行 → 后期制作 → 上市反馈 → 复盘沉淀</p>
+            <span class="tag tag-green">阶段确认</span>
+          </div>
+          <div class="kanban-item" style="border-left-color:var(--green)">
+            <h5>舆情作为外部数据源</h5>
+            <p>不自己建采集，接入第三方舆情平台API，自己做业务化价值加工</p>
+            <span class="tag tag-green">技术路线确认</span>
+          </div>
+          <div class="kanban-item" style="border-left-color:var(--green)">
+            <h5>数据"进进出"原则</h5>
+            <p>每个SOP环节都产生结构化数据，为B阶段研究积累素材</p>
+            <span class="tag tag-green">设计原则</span>
+          </div>
+          <div class="kanban-item" style="border-left-color:var(--green)">
+            <h5>A阶段分批扩展模式</h5>
+            <p>先聚焦产品研发SOP，完成后根据经验逐步扩展到其他部门（门店、摄影、妆造、修图、新媒体、客户经理等）</p>
+            <span class="tag tag-green">策略确认</span>
+          </div>
+          <div class="kanban-item" style="border-left-color:#EC4899">
+            <h5>品牌定位：少女写真</h5>
+            <p>嵌入现有框架：趋势聚焦少女审美、情绪价值聚焦青春期心理、复盘增加"少女共鸣度"维度、精修偏向自然风格</p>
+            <span style="background:#FDF2F8;color:#BE185D;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600">品牌定位</span>
+          </div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-title"><span class="status-dot orange"></span> 待调研</div>
+          <div class="kanban-item" style="border-left-color:var(--orange)">
+            <h5>各环节具体工作拆解</h5>
+            <p>需与产品研发团队逐阶段对齐实际工作流程，找到AI精准切入点</p>
+            <span class="tag tag-orange">调研问卷已生成</span>
+          </div>
+          <div class="kanban-item" style="border-left-color:var(--orange)">
+            <h5>情绪价值分类体系</h5>
+            <p>客户拍摄目的（纪念/表达/社交）需建立分类标签和强化策略</p>
+            <span class="tag tag-orange">B阶段研究</span>
+          </div>
+          <div class="kanban-item" style="border-left-color:var(--orange)">
+            <h5>标签体系维度</h5>
+            <p>风格、色调、情绪、场景、人群、季节、难度、市场表现等维度的优先级需确认</p>
+            <span class="tag tag-orange">待确认</span>
+          </div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-col-title"><span class="status-dot blue"></span> 待决策</div>
+          <div class="kanban-item" style="border-left-color:var(--blue)">
+            <h5>系统范围</h5>
+            <p>B端+C端双视角，具体覆盖范围待调研后确定</p>
+            <span class="tag tag-blue">调研后确定</span>
+          </div>
+          <div class="kanban-item" style="border-left-color:var(--blue)">
+            <h5>技术团队配置</h5>
+            <p>AI能力自研 vs 外采、团队组建方式待定</p>
+            <span class="tag tag-blue">待规划</span>
+          </div>
+          <div class="kanban-item" style="border-left-color:var(--blue)">
+            <h5>SaaS产品形态</h5>
+            <p>内部打磨后的外化方式和商业模式待定</p>
+            <span class="tag tag-blue">远期规划</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AB关系图 -->
+  <div class="card">
+    <div class="card-header">
+      <h3><span style="color:var(--accent)">●</span> A/B 阶段关系</h3>
+    </div>
+    <div class="card-body">
+      <div class="conn-box">
+        <div class="conn-side" style="border-color:var(--primary);background:var(--primary-light)">
+          <h4 style="color:var(--primary)">A · 产品研发智能平台</h4>
+          <p>在SOP链路中嵌入AI<br>提升效率、效果、可量化</p>
+          <div style="margin-top:8px"><span class="tag tag-purple">先行</span></div>
+        </div>
+        <div class="conn-arrow">
+          <div>产品产出数据</div>
+          <div class="conn-arrow-line">→→→</div>
+          <div>数据喂养研究</div>
+        </div>
+        <div class="conn-side" style="border-color:var(--accent);background:var(--accent-light)">
+          <h4 style="color:var(--accent)">B · 行业底层逻辑研究</h4>
+          <p>情绪价值、风格基因<br>行业趋势、产品评价体系</p>
+          <div style="margin-top:8px"><span class="tag tag-purple">跟进</span></div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:8px;font-size:12px;color:var(--text2)">
+        A阶段为B阶段提供：产品-客户-反馈三方关联数据 · 情绪价值标签样本 · 行业趋势时间序列 · 标签体系基础设施
+      </div>
+    </div>
+  </div>
+
+  <!-- 核心痛点 -->
+  <div class="card">
+    <div class="card-header">
+      <h3><span style="color:var(--red)">●</span> 已识别痛点（待调研量化）</h3>
+    </div>
+    <div class="card-body">
+      <div class="prio-matrix">
+        <div class="prio-cell">
+          <h5><span class="status-dot orange"></span> 高影响（已识别）</h5>
+          <div class="prio-item">风格策划效率 — 趋势获取和分析依赖经验</div>
+          <div class="prio-item">视觉设计 — 造型/服装/场景搭配缺少结构化标准</div>
+          <div class="prio-item">产品复盘闭环 — 市场反应→归因→改进缺乏数据链路</div>
+          <div class="prio-item">知识沉淀 — 历史产品难检索、经验难复用</div>
+        </div>
+        <div class="prio-cell">
+          <h5><span class="status-dot blue"></span> 待调研验证</h5>
+          <div class="prio-item">趋势判断的成功率和归因方式</div>
+          <div class="prio-item">方案评审的主观性程度</div>
+          <div class="prio-item">精修一致性和返工率</div>
+          <div class="prio-item">客户反馈的收集和传达效率</div>
+          <div class="prio-item">拍摄参数记录和复用情况</div>
+          <div style="margin-top:10px;padding-top:10px;border-top:1px dashed #F9A8D4">
+            <div style="font-size:12px;font-weight:600;color:#BE185D;margin-bottom:6px">少女写真专项</div>
+            <div class="prio-item">目标客户年龄带分布（12-18 / 16-25 / 更广？）</div>
+            <div class="prio-item">少女客户的核心拍摄目的排序（纪念/社交/自我表达）</div>
+            <div class="prio-item">少女群体对精修风格的偏好（自然 vs 精修 vs 滤镜感）</div>
+            <div class="prio-item">少女审美变化的节奏和驱动因素</div>
+            <div class="prio-item">复购场景和触发条件（毕业/生日/季节/社交热点）</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 业务系统设计哲学 -->
+  <div class="card">
+    <div class="card-header">
+      <h3><span style="color:var(--green)">●</span> 业务系统设计哲学</h3>
+      <span class="tag tag-green">核心原则</span>
+    </div>
+    <div class="card-body">
+
+      <div style="background:linear-gradient(135deg,var(--green-light),#E0F2FE);border-radius:10px;padding:20px;margin-bottom:16px;border-left:4px solid var(--green)">
+        <div style="font-size:16px;font-weight:700;color:var(--green-dark);margin-bottom:8px">服务员工为主，管理可视化为辅</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">
+          系统的核心价值是让员工的工作更高效、更省心。管理数据是员工高效工作的自然副产品，而不是系统的设计目标。<br>
+          员工用得爽才会真正用起来，管理数据自然就有了。
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+        <div style="border:1px solid var(--green);border-radius:8px;padding:16px">
+          <div style="font-size:13px;font-weight:700;color:var(--green-dark);margin-bottom:8px">要做（服务视角）</div>
+          <div style="font-size:12px;color:var(--text2);line-height:2">
+            <div>· 帮摄影师记住上次拍的参数，不用每次重调</div>
+            <div>· 帮修图师自动排优先级，不用人工催单</div>
+            <div>· 帮策划师自动推荐参考方案，省去找素材的时间</div>
+            <div>· 帮门店自动提醒待跟进客户，不遗漏</div>
+            <div>· 到了某个节点主动推送给下一步的人，不用人催人</div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--red);border-radius:8px;padding:16px">
+          <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:8px">不做（管控视角）</div>
+          <div style="font-size:12px;color:var(--text2);line-height:2">
+            <div>· 不做打卡式的任务完成率考核</div>
+            <div>· 不做层层审批的流程管控</div>
+            <div>· 不做员工行为监控和计时</div>
+            <div>· 不做强制性的工作方式标准化</div>
+            <div>· 不做管理者视角的"看谁没做完"大屏</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size:14px;font-weight:600;margin-bottom:12px">工作流节奏设计的关键考量</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px">
+        <div style="border:1px solid var(--border);border-radius:8px;padding:14px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--primary)">节奏驱动而非人驱动</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">系统自动推进流程节点，到点提醒下一步负责人。不靠人催人，靠系统推人。</div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:8px;padding:14px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--primary)">灵活性 > 刚性流程</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">写真行业创意性强，流程不能太死。系统提供框架和提醒，但允许跳步、并行、回退。</div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:8px;padding:14px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--primary)">主动服务而非被动填报</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">系统主动推送"你现在可能需要这个"，而不是让员工填表单。越少手动录入越好。</div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:8px;padding:14px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--primary)">交接自动化</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">上一步完成时自动把产出物和上下文传给下一步，减少信息在交接中丢失。</div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:8px;padding:14px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--primary)">异常可感知</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">某个节点卡住了，系统自动感知并提醒相关负责人，而不是等问题扩大了才发现。</div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:8px;padding:14px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px;color:var(--primary)">好用 = 自然产生管理数据</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">员工在使用过程中自然产生项目进度、效率数据、质量数据，不需要额外填报。</div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;padding:14px;background:var(--orange-light);border-radius:8px;font-size:13px;color:var(--orange-dark);line-height:1.8">
+        <b>设计验证标准：</b>每设计一个功能时问自己——"如果我是使用者，我会觉得这个功能在帮我还是在监控我？"如果答案不是"在帮我"，就重新设计。
+        <div style="margin-top:20px;padding:18px;background:linear-gradient(135deg,#FDF4FF,#EDE9FE,#DBEAFE);border-radius:12px;border:1px solid #E9D5FF">
+          <div style="font-size:15px;font-weight:700;color:#7C3AED;margin-bottom:4px">好玩的设计 = 想用的系统</div>
+          <div style="font-size:12px;color:#6D28D9;margin-bottom:14px">工具不应该是冰冷的，尤其在创意行业。好的工具让人想打开，而不是被迫打开。</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="background:rgba(255,255,255,.8);border-radius:8px;padding:14px">
+              <div style="font-size:13px;font-weight:700;color:#7C3AED;margin-bottom:8px">Agent 团队可视化 &mdash; 成员即角色</div>
+              <div style="font-size:12px;color:#6B7280;line-height:1.8">
+                每个研发任务是可视化流程图，每个成员是流程中的Agent角色：<br>
+                &bull; 每个团队成员 = 一个可视化角色（头像+角色名+当前状态）<br>
+                &bull; 每个任务节点清晰展示负责人、进度、产出物<br>
+                &bull; 实时看到谁在执行、谁在等待、哪里卡住了<br>
+                &bull; 类似 LangGraph/CrewAI 的 Agent 流程可视化，但映射到真人团队
+              </div>
+            </div>
+            <div style="background:rgba(255,255,255,.8);border-radius:8px;padding:14px">
+              <div style="font-size:13px;font-weight:700;color:#7C3AED;margin-bottom:8px">项目空间 = 可交互的流程地图</div>
+              <div style="font-size:12px;color:#6B7280;line-height:1.8">
+                整个项目是一张可交互的流程地图，而非静态看板：<br>
+                &bull; 点击任意节点看到详情、负责人、历史记录<br>
+                &bull; 流程推进时角色自动&ldquo;移动&rdquo;到下一步节点<br>
+                &bull; 异常节点高亮预警（卡住、超时、等待中）<br>
+                &bull; 支持流程分支、并行、回退的真实项目节奏
+              </div>
+            </div>
+            <div style="background:rgba(255,255,255,.8);border-radius:8px;padding:14px">
+              <div style="font-size:13px;font-weight:700;color:#7C3AED;margin-bottom:8px">游戏化元素 &mdash; 参与感</div>
+              <div style="font-size:12px;color:#6B7280;line-height:1.8">
+                让日常操作有成就感和期待感：<br>
+                &bull; 产品上线后实时展示市场反馈的&ldquo;能量条&rdquo;<br>
+                &bull; 团队成员的角色用头像和技能标签展示<br>
+                &bull; 里程碑达成时视觉庆祝（烟花、成就徽章）<br>
+                &bull; 历史产品做成可探索的&ldquo;博物馆&rdquo;
+              </div>
+            </div>
+            <div style="background:rgba(255,255,255,.8);border-radius:8px;padding:14px">
+              <div style="font-size:13px;font-weight:700;color:#7C3AED;margin-bottom:8px">灵感墙 &mdash; 视觉化创意</div>
+              <div style="font-size:12px;color:#6B7280;line-height:1.8">
+                风格灵感不再是文件夹里的图片，而是可交互的灵感空间：<br>
+                &bull; 瀑布流/拼图式灵感墙，滑动浏览<br>
+                &bull; AI推荐&ldquo;你可能喜欢的风格&rdquo;像刷短视频<br>
+                &bull; 点赞/收藏灵感素材，系统学习偏好<br>
+                &bull; 团队成员可以在灵感上&ldquo;贴便签&rdquo;讨论
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:12px;font-size:12px;color:#7C3AED;line-height:1.8">
+            <b>设计灵感来源：</b>LangGraph / CrewAI（Agent流程可视化）&middot; Figma（协作空间）&middot; Gather.town（虚拟办公室）&middot; Notion（灵活模块）&middot; 小红书（瀑布流浏览）
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- Agent可视化演进效果图 -->
+  <div class="card">
+    <div class="card-header" style="background:linear-gradient(90deg,#EDE9FE,#DBEAFE)">
+      <h3><span style="color:#7C3AED">●</span> Agent 团队可视化 · 演进效果图</h3>
+      <span style="background:#EDE9FE;color:#6D28D9;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600">概念设计</span>
+    </div>
+    <div class="card-body" style="padding:0">
+
+      <!-- 版本切换 -->
+      <div style="display:flex;background:#1E1B4B;border-bottom:1px solid #312E81">
+        <button onclick="showViz(1)" id="vizBtn1" style="flex:1;padding:12px;background:#4338CA;color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer;border-bottom:3px solid #A78BFA">V1 &middot; 大富翁风格</button>
+        <button onclick="showViz(2)" id="vizBtn2" style="flex:1;padding:12px;background:#1E1B4B;color:#818CF8;border:none;font-size:13px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent">V2 &middot; Agent 流程图</button>
+        <button onclick="showViz(3)" id="vizBtn3" style="flex:1;padding:12px;background:#1E1B4B;color:#818CF8;border:none;font-size:13px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent">V3 &middot; 空间协作</button>
+      </div>
+
+      <style>
+        @keyframes v1-pulse{0%,100%{filter:drop-shadow(0 0 4px #FBBF24)}50%{filter:drop-shadow(0 0 12px #FBBF24)}}
+        @keyframes v1-move{0%{transform:translateX(0)}100%{transform:translateX(8px)}}
+        @keyframes v2-flow{0%{stroke-dashoffset:20}100%{stroke-dashoffset:0}}
+        @keyframes v2-active{0%,100%{r:22}50%{r:25}}
+        @keyframes v3-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+        @keyframes v3-blink{0%,100%{opacity:1}50%{opacity:.4}}
+        .viz-svg text{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+      </style>
+
+      <!-- V1 大富翁 -->
+      <div id="vizPanel1" style="background:linear-gradient(180deg,#1E1B4B,#312E81);padding:28px 16px;min-height:340px">
+        <svg viewBox="0 0 720 280" class="viz-svg" style="width:100%;max-width:720px;margin:0 auto;display:block">
+          <defs>
+            <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <linearGradient id="v1-done" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#34D399"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+            <linearGradient id="v1-active" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FBBF24"/><stop offset="100%" stop-color="#F59E0B"/></linearGradient>
+            <linearGradient id="v1-wait" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4B5563"/><stop offset="100%" stop-color="#374151"/></linearGradient>
+          </defs>
+          <!-- 路径连线 -->
+          <line x1="103" y1="100" x2="117" y2="100" stroke="#4B5563" stroke-width="2" stroke-dasharray="4 3"/>
+          <line x1="203" y1="100" x2="217" y2="100" stroke="#4B5563" stroke-width="2" stroke-dasharray="4 3"/>
+          <line x1="303" y1="100" x2="317" y2="100" stroke="#4B5563" stroke-width="2" stroke-dasharray="4 3"/>
+          <line x1="403" y1="100" x2="417" y2="100" stroke="#4B5563" stroke-width="2" stroke-dasharray="4 3"/>
+          <line x1="503" y1="100" x2="517" y2="100" stroke="#374151" stroke-width="2" stroke-dasharray="4 3"/>
+          <line x1="603" y1="100" x2="617" y2="100" stroke="#374151" stroke-width="2" stroke-dasharray="4 3"/>
+          <!-- 节点 1: 已完成 -->
+          <rect x="10" y="40" width="90" height="120" rx="12" fill="url(#v1-done)" opacity=".9"/>
+          <text x="55" y="70" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">风格定义</text>
+          <text x="55" y="86" text-anchor="middle" fill="#D1FAE5" font-size="9">策划</text>
+          <circle cx="55" cy="115" r="16" fill="#065F46" stroke="#A7F3D0" stroke-width="1.5"/>
+          <text x="55" y="120" text-anchor="middle" font-size="14">&#x1F469;&#x200D;&#x1F4BC;</text>
+          <rect x="25" y="140" width="60" height="16" rx="8" fill="#065F46"/>
+          <text x="55" y="152" text-anchor="middle" fill="#A7F3D0" font-size="9" font-weight="600">&#x2714; 已完成</text>
+          <!-- 节点 2: 已完成 -->
+          <rect x="110" y="40" width="90" height="120" rx="12" fill="url(#v1-done)" opacity=".85"/>
+          <text x="155" y="70" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">主题策划</text>
+          <text x="155" y="86" text-anchor="middle" fill="#D1FAE5" font-size="9">策划</text>
+          <circle cx="155" cy="115" r="16" fill="#065F46" stroke="#A7F3D0" stroke-width="1.5"/>
+          <text x="155" y="120" text-anchor="middle" font-size="14">&#x1F469;&#x200D;&#x1F4BC;</text>
+          <rect x="125" y="140" width="60" height="16" rx="8" fill="#065F46"/>
+          <text x="155" y="152" text-anchor="middle" fill="#A7F3D0" font-size="9" font-weight="600">&#x2714; 已完成</text>
+          <!-- 节点 3: 已完成 -->
+          <rect x="210" y="40" width="90" height="120" rx="12" fill="url(#v1-done)" opacity=".8"/>
+          <text x="255" y="70" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">视觉设计</text>
+          <text x="255" y="86" text-anchor="middle" fill="#D1FAE5" font-size="9">造型+设计</text>
+          <circle cx="255" cy="115" r="16" fill="#065F46" stroke="#A7F3D0" stroke-width="1.5"/>
+          <text x="255" y="120" text-anchor="middle" font-size="14">&#x1F478;</text>
+          <rect x="225" y="140" width="60" height="16" rx="8" fill="#065F46"/>
+          <text x="255" y="152" text-anchor="middle" fill="#A7F3D0" font-size="9" font-weight="600">&#x2714; 已完成</text>
+          <!-- 节点 4: 进行中(高亮) -->
+          <rect x="310" y="36" width="90" height="128" rx="12" fill="url(#v1-active)" filter="url(#glow)" style="animation:v1-pulse 2s infinite">
+            <animate attributeName="opacity" values="1;.85;1" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <text x="355" y="67" text-anchor="middle" fill="#78350F" font-size="11" font-weight="700">拍摄执行</text>
+          <text x="355" y="83" text-anchor="middle" fill="#92400E" font-size="9">摄影师</text>
+          <circle cx="355" cy="112" r="17" fill="#D97706" stroke="#FDE68A" stroke-width="2"/>
+          <text x="355" y="117" text-anchor="middle" font-size="15">&#x1F4F7;</text>
+          <rect x="322" y="138" width="66" height="18" rx="9" fill="#D97706" stroke="#FDE68A" stroke-width="1"/>
+          <text x="355" y="151" text-anchor="middle" fill="#78350F" font-size="9" font-weight="700">&#x25B6; 进行中</text>
+          <!-- 走棋箭头 -->
+          <polygon points="345,175 365,175 355,188" fill="#FBBF24" style="animation:v1-move 1s infinite alternate"/>
+          <!-- 节点 5: 等待 -->
+          <rect x="410" y="40" width="90" height="120" rx="12" fill="url(#v1-wait)" opacity=".5"/>
+          <text x="455" y="70" text-anchor="middle" fill="#9CA3AF" font-size="11" font-weight="700">后期制作</text>
+          <text x="455" y="86" text-anchor="middle" fill="#6B7280" font-size="9">修图师</text>
+          <circle cx="455" cy="115" r="16" fill="#374151" stroke="#6B7280" stroke-width="1" stroke-dasharray="3 2"/>
+          <text x="455" y="120" text-anchor="middle" font-size="14">&#x1F469;&#x200D;&#x1F3A8;</text>
+          <rect x="425" y="140" width="60" height="16" rx="8" fill="#374151"/>
+          <text x="455" y="152" text-anchor="middle" fill="#6B7280" font-size="9">&#x23F3; 等待中</text>
+          <!-- 节点 6: 未开始 -->
+          <rect x="510" y="40" width="90" height="120" rx="12" fill="#1F2937" opacity=".35"/>
+          <text x="555" y="70" text-anchor="middle" fill="#6B7280" font-size="11" font-weight="700">上市反馈</text>
+          <text x="555" y="86" text-anchor="middle" fill="#4B5563" font-size="9">市场</text>
+          <circle cx="555" cy="115" r="16" fill="#1F2937"/>
+          <text x="555" y="120" text-anchor="middle" font-size="14" opacity=".4">&#x1F4E2;</text>
+          <text x="555" y="152" text-anchor="middle" fill="#4B5563" font-size="9">未开始</text>
+          <!-- 节点 7: 未开始 -->
+          <rect x="610" y="40" width="90" height="120" rx="12" fill="#111827" opacity=".25"/>
+          <text x="655" y="70" text-anchor="middle" fill="#4B5563" font-size="11" font-weight="700">复盘沉淀</text>
+          <text x="655" y="86" text-anchor="middle" fill="#374151" font-size="9">全员</text>
+          <circle cx="655" cy="115" r="16" fill="#111827"/>
+          <text x="655" y="120" text-anchor="middle" font-size="14" opacity=".3">&#x1F4CA;</text>
+          <text x="655" y="152" text-anchor="middle" fill="#374151" font-size="9">未开始</text>
+          <!-- 底部说明 -->
+          <rect x="150" y="200" width="420" height="56" rx="10" fill="#312E81" opacity=".8"/>
+          <text x="360" y="222" text-anchor="middle" fill="#C4B5FD" font-size="12" font-weight="600">&#x1F3B2; 项目成员在棋盘上推进，像大富翁一样直观</text>
+          <text x="360" y="242" text-anchor="middle" fill="#818CF8" font-size="10">当前在第4格「拍摄执行」&#x2192; 完成后自动推进到下一格</text>
+        </svg>
+      </div>
+
+      <!-- V2 Agent流程图 -->
+      <div id="vizPanel2" style="background:linear-gradient(180deg,#1E1B4B,#0F172A);padding:28px 16px;min-height:340px;display:none">
+        <svg viewBox="0 0 720 320" class="viz-svg" style="width:100%;max-width:720px;margin:0 auto;display:block">
+          <defs>
+            <filter id="v2-glow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <marker id="arrow-done" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#7C3AED"/></marker>
+            <marker id="arrow-active" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#3B82F6"/></marker>
+            <marker id="arrow-wait" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#374151"/></marker>
+          </defs>
+          <!-- 顶部Agent角色栏 -->
+          <rect x="0" y="0" width="720" height="72" rx="0" fill="#1E1B4B"/>
+          <!-- Agent 1: 策划 -->
+          <circle cx="80" cy="36" r="24" fill="#7C3AED" stroke="#A78BFA" stroke-width="2"/>
+          <text x="80" y="42" text-anchor="middle" font-size="18">&#x1F469;&#x200D;&#x1F4BC;</text>
+          <text x="80" y="66" text-anchor="middle" fill="#C4B5FD" font-size="10" font-weight="600">策划Agent</text>
+          <!-- Agent 2: 造型 -->
+          <circle cx="220" cy="36" r="24" fill="#EC4899" stroke="#F9A8D4" stroke-width="2"/>
+          <text x="220" y="42" text-anchor="middle" font-size="18">&#x1F478;</text>
+          <text x="220" y="66" text-anchor="middle" fill="#F9A8D4" font-size="10" font-weight="600">造型Agent</text>
+          <!-- Agent 3: 摄影(活跃) -->
+          <circle cx="360" cy="36" r="26" fill="#3B82F6" stroke="#93C5FD" stroke-width="2.5" filter="url(#v2-glow)">
+            <animate attributeName="r" values="26;28;26" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <text x="360" y="42" text-anchor="middle" font-size="18">&#x1F4F7;</text>
+          <text x="360" y="66" text-anchor="middle" fill="#93C5FD" font-size="10" font-weight="700">摄影Agent</text>
+          <!-- Agent 4: 修图 -->
+          <circle cx="500" cy="36" r="24" fill="#10B981" stroke="#6EE7B7" stroke-width="2" opacity=".5"/>
+          <text x="500" y="42" text-anchor="middle" font-size="18" opacity=".5">&#x1F469;&#x200D;&#x1F3A8;</text>
+          <text x="500" y="66" text-anchor="middle" fill="#6EE7B7" font-size="10" font-weight="600" opacity=".5">修图Agent</text>
+          <!-- Agent 5: 市场 -->
+          <circle cx="640" cy="36" r="24" fill="#F59E0B" stroke="#FCD34D" stroke-width="2" opacity=".35"/>
+          <text x="640" y="42" text-anchor="middle" font-size="18" opacity=".35">&#x1F4E2;</text>
+          <text x="640" y="66" text-anchor="middle" fill="#FCD34D" font-size="10" font-weight="600" opacity=".35">市场Agent</text>
+
+          <!-- 分割线 -->
+          <line x1="20" y1="80" x2="700" y2="80" stroke="#312E81" stroke-width="1"/>
+
+          <!-- 流程节点 -->
+          <!-- 节点1: 风格定义(完成) -->
+          <rect x="20" y="100" width="90" height="70" rx="10" fill="#7C3AED" opacity=".6"/>
+          <text x="65" y="126" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">风格定义</text>
+          <text x="65" y="144" text-anchor="middle" fill="#DDD6FE" font-size="9">&#x2191; 趋势报告</text>
+          <text x="65" y="160" text-anchor="middle" fill="#A78BFA" font-size="8">&#x2714;</text>
+          <!-- 箭头1→2 -->
+          <line x1="112" y1="135" x2="128" y2="135" stroke="#7C3AED" stroke-width="2" marker-end="url(#arrow-done)"/>
+          <!-- 节点2: 主题策划(完成) -->
+          <rect x="130" y="100" width="90" height="70" rx="10" fill="#7C3AED" opacity=".55"/>
+          <text x="175" y="126" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">主题策划</text>
+          <text x="175" y="144" text-anchor="middle" fill="#DDD6FE" font-size="9">&#x2191; 产品方案</text>
+          <text x="175" y="160" text-anchor="middle" fill="#A78BFA" font-size="8">&#x2714;</text>
+          <!-- 箭头2→3 -->
+          <line x1="222" y1="135" x2="238" y2="135" stroke="#7C3AED" stroke-width="2" marker-end="url(#arrow-done)"/>
+          <!-- 节点3: 视觉设计(完成) -->
+          <rect x="240" y="100" width="90" height="70" rx="10" fill="#EC4899" opacity=".55"/>
+          <text x="285" y="126" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">视觉设计</text>
+          <text x="285" y="144" text-anchor="middle" fill="#FCE7F3" font-size="9">&#x2191; 视觉方案包</text>
+          <text x="285" y="160" text-anchor="middle" fill="#F9A8D4" font-size="8">&#x2714;</text>
+          <!-- 箭头3→4 -->
+          <line x1="332" y1="135" x2="348" y2="135" stroke="#3B82F6" stroke-width="2" marker-end="url(#arrow-active)" stroke-dasharray="4 3" style="animation:v2-flow 1s linear infinite"/>
+          <!-- 节点4: 拍摄执行(活跃) -->
+          <rect x="350" y="96" width="94" height="78" rx="12" fill="#3B82F6" filter="url(#v2-glow)">
+            <animate attributeName="opacity" values="1;.85;1" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <text x="397" y="124" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">&#x1F4F7; 拍摄执行</text>
+          <text x="397" y="142" text-anchor="middle" fill="#BFDBFE" font-size="9">&#x2193; 原始照片</text>
+          <text x="397" y="162" text-anchor="middle" fill="#93C5FD" font-size="9" font-weight="700">&#x25B6; 执行中</text>
+          <!-- 箭头4→5 -->
+          <line x1="446" y1="135" x2="462" y2="135" stroke="#374151" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-wait)"/>
+          <!-- 节点5: 后期制作(等待) -->
+          <rect x="464" y="100" width="90" height="70" rx="10" fill="#1E293B" stroke="#475569" stroke-width="1" stroke-dasharray="4 3"/>
+          <text x="509" y="126" text-anchor="middle" fill="#9CA3AF" font-size="11" font-weight="700">后期制作</text>
+          <text x="509" y="144" text-anchor="middle" fill="#64748B" font-size="9">&#x23F3; 等待输入</text>
+          <!-- 箭头5→6 -->
+          <line x1="556" y1="135" x2="572" y2="135" stroke="#374151" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-wait)"/>
+          <!-- 节点6: 上市反馈 -->
+          <rect x="574" y="100" width="90" height="70" rx="10" fill="#111827" stroke="#374151" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+          <text x="619" y="126" text-anchor="middle" fill="#6B7280" font-size="11" font-weight="700">上市反馈</text>
+          <text x="619" y="144" text-anchor="middle" fill="#4B5563" font-size="9">未开始</text>
+
+          <!-- 并行分支: 修图Agent提前准备 -->
+          <path d="M 397 175 L 397 210 L 509 210" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4 3" fill="none" marker-end="url(#arrow-wait)"/>
+          <rect x="440" y="220" width="140" height="44" rx="8" fill="#064E3B" stroke="#10B981" stroke-width="1" stroke-dasharray="4 3"/>
+          <text x="510" y="240" text-anchor="middle" fill="#6EE7B7" font-size="10" font-weight="600">&#x1F504; 并行：修图Agent</text>
+          <text x="510" y="256" text-anchor="middle" fill="#34D399" font-size="9">提前准备调色预设</text>
+
+          <!-- 底部说明 -->
+          <rect x="100" y="278" width="520" height="32" rx="8" fill="#1E293B"/>
+          <text x="360" y="300" text-anchor="middle" fill="#818CF8" font-size="11">&#x1F517; 节点间自动传递产出物 &#x2192; 活跃节点发光 &#x2192; 并行分支实时可见</text>
+        </svg>
+      </div>
+
+      <!-- V3 空间协作 -->
+      <div id="vizPanel3" style="background:linear-gradient(180deg,#064E3B,#0F172A);padding:28px 16px;min-height:380px;display:none">
+        <svg viewBox="0 0 720 340" class="viz-svg" style="width:100%;max-width:720px;margin:0 auto;display:block">
+          <defs>
+            <filter id="v3-glow-g"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1E293B" stroke-width=".5"/></pattern>
+          </defs>
+          <!-- 网格背景 -->
+          <rect width="720" height="340" fill="url(#grid)" opacity=".5"/>
+          <!-- 顶部标签 -->
+          <rect x="0" y="0" width="720" height="32" fill="#064E3B"/>
+          <text x="16" y="21" fill="#6EE7B7" font-size="11" font-weight="600">&#x1F3D7;&#xFE0F; 项目空间：少女写真 &#xB7; 毕业季系列</text>
+          <text x="680" y="21" text-anchor="end" fill="#34D399" font-size="10">&#x1F7E2; 3人在线</text>
+
+          <!-- 房间1: 灵感工作室 -->
+          <rect x="30" y="50" width="180" height="110" rx="12" fill="#1E293B" stroke="#7C3AED" stroke-width="1.5"/>
+          <rect x="30" y="50" width="180" height="24" rx="12" fill="#7C3AED" opacity=".2"/>
+          <text x="120" y="67" text-anchor="middle" fill="#C4B5FD" font-size="10" font-weight="600">&#x2728; 灵感工作室</text>
+          <!-- 人物 -->
+          <g style="animation:v3-float 3s ease-in-out infinite">
+            <circle cx="85" cy="110" r="14" fill="#7C3AED" stroke="#A78BFA" stroke-width="1.5"/>
+            <text x="85" y="115" text-anchor="middle" font-size="12">&#x1F469;&#x200D;&#x1F4BC;</text>
+            <text x="85" y="140" text-anchor="middle" fill="#C4B5FD" font-size="8">策划 小美</text>
+          </g>
+          <!-- 产出物图标 -->
+          <rect x="140" y="90" width="50" height="40" rx="6" fill="#312E81"/>
+          <text x="165" y="108" text-anchor="middle" fill="#A78BFA" font-size="8">&#x1F4CB; 趋势</text>
+          <text x="165" y="122" text-anchor="middle" fill="#A78BFA" font-size="8">报告</text>
+
+          <!-- 房间2: 造型工坊 -->
+          <rect x="260" y="50" width="180" height="110" rx="12" fill="#1E293B" stroke="#EC4899" stroke-width="1.5"/>
+          <rect x="260" y="50" width="180" height="24" rx="12" fill="#EC4899" opacity=".2"/>
+          <text x="350" y="67" text-anchor="middle" fill="#F9A8D4" font-size="10" font-weight="600">&#x1F485; 造型工坊</text>
+          <g style="animation:v3-float 3s ease-in-out infinite;animation-delay:.5s">
+            <circle cx="310" cy="110" r="14" fill="#EC4899" stroke="#F9A8D4" stroke-width="1.5"/>
+            <text x="310" y="115" text-anchor="middle" font-size="12">&#x1F478;</text>
+            <text x="310" y="140" text-anchor="middle" fill="#F9A8D4" font-size="8">造型 小丽</text>
+          </g>
+          <rect x="370" y="90" width="50" height="40" rx="6" fill="#4A1D6A"/>
+          <text x="395" y="108" text-anchor="middle" fill="#F9A8D4" font-size="8">&#x1F3A8; 视觉</text>
+          <text x="395" y="122" text-anchor="middle" fill="#F9A8D4" font-size="8">方案</text>
+
+          <!-- 房间3: 拍摄影棚(活跃) -->
+          <rect x="490" y="46" width="200" height="118" rx="12" fill="#0F172A" stroke="#3B82F6" stroke-width="2" filter="url(#v3-glow-g)"/>
+          <rect x="490" y="46" width="200" height="24" rx="12" fill="#3B82F6" opacity=".25"/>
+          <text x="590" y="63" text-anchor="middle" fill="#93C5FD" font-size="10" font-weight="700">&#x1F4F7; 拍摄影棚 &#x25CF; 进行中</text>
+          <g style="animation:v3-float 2s ease-in-out infinite;animation-delay:1s">
+            <circle cx="545" cy="105" r="15" fill="#3B82F6" stroke="#93C5FD" stroke-width="2">
+              <animate attributeName="r" values="15;17;15" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <text x="545" y="110" text-anchor="middle" font-size="13">&#x1F468;&#x200D;&#x1F4BB;</text>
+            <text x="545" y="135" text-anchor="middle" fill="#93C5FD" font-size="8">摄影师 大伟</text>
+          </g>
+          <g style="animation:v3-float 2.5s ease-in-out infinite;animation-delay:1.5s">
+            <circle cx="640" cy="100" r="13" fill="#F472B6" stroke="#FBCFE8" stroke-width="1.5"/>
+            <text x="640" y="105" text-anchor="middle" font-size="11">&#x1F469;</text>
+            <text x="640" y="125" text-anchor="middle" fill="#FBCFE8" font-size="8">客户</text>
+          </g>
+          <!-- 状态指示 -->
+          <circle cx="680" cy="55" r="4" fill="#34D399" style="animation:v3-blink 1.5s infinite"/>
+          <text x="668" y="58" text-anchor="end" fill="#6EE7B7" font-size="7">LIVE</text>
+
+          <!-- 房间4: 修图工位 -->
+          <rect x="30" y="200" width="180" height="100" rx="12" fill="#1E293B" stroke="#10B981" stroke-width="1.5" opacity=".6"/>
+          <rect x="30" y="200" width="180" height="24" rx="12" fill="#10B981" opacity=".1"/>
+          <text x="120" y="217" text-anchor="middle" fill="#6EE7B7" font-size="10" font-weight="600">&#x1F3A8; 修图工位</text>
+          <g opacity=".6">
+            <circle cx="85" cy="255" r="13" fill="#10B981" stroke="#6EE7B7" stroke-width="1"/>
+            <text x="85" y="260" text-anchor="middle" font-size="11">&#x1F469;&#x200D;&#x1F3A8;</text>
+            <text x="85" y="280" text-anchor="middle" fill="#6EE7B7" font-size="8">修图师 小艺</text>
+          </g>
+          <rect x="140" y="245" width="50" height="30" rx="5" fill="#064E3B" stroke="#10B981" stroke-width="1" stroke-dasharray="3 2"/>
+          <text x="165" y="264" text-anchor="middle" fill="#34D399" font-size="7">准备预设中</text>
+
+          <!-- 房间5: 市场作战室 -->
+          <rect x="260" y="200" width="180" height="100" rx="12" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5" opacity=".4"/>
+          <rect x="260" y="200" width="180" height="24" rx="12" fill="#F59E0B" opacity=".08"/>
+          <text x="350" y="217" text-anchor="middle" fill="#FCD34D" font-size="10" font-weight="600" opacity=".5">&#x1F4E2; 市场作战室</text>
+          <g opacity=".35">
+            <circle cx="310" cy="255" r="13" fill="#78350F" stroke="#FCD34D" stroke-width="1"/>
+            <text x="310" y="260" text-anchor="middle" font-size="11">&#x1F4E2;</text>
+            <text x="310" y="280" text-anchor="middle" fill="#FCD34D" font-size="8">市场 小红</text>
+          </g>
+          <text x="370" y="262" text-anchor="middle" fill="#6B7280" font-size="8" opacity=".5">离线</text>
+
+          <!-- 房间6: 产品博物馆 -->
+          <rect x="490" y="200" width="200" height="100" rx="12" fill="#111827" stroke="#475569" stroke-width="1" stroke-dasharray="4 3" opacity=".4"/>
+          <rect x="490" y="200" width="200" height="24" rx="12" fill="#475569" opacity=".05"/>
+          <text x="590" y="217" text-anchor="middle" fill="#64748B" font-size="10" font-weight="600">&#x1F3DB;&#xFE0F; 产品博物馆</text>
+          <text x="590" y="260" text-anchor="middle" fill="#475569" font-size="9">历史产品画廊</text>
+          <text x="590" y="278" text-anchor="middle" fill="#374151" font-size="8">&#x1F50D; 点击进入浏览</text>
+
+          <!-- 连接走廊 -->
+          <path d="M 120 160 L 120 170 L 350 170 L 350 160" stroke="#312E81" stroke-width="1" fill="none" stroke-dasharray="3 3" opacity=".4"/>
+          <path d="M 350 160 L 590 160 L 590 170 L 590 200" stroke="#312E81" stroke-width="1" fill="none" stroke-dasharray="3 3" opacity=".3"/>
+
+          <!-- 底部状态栏 -->
+          <rect x="0" y="310" width="720" height="30" fill="#064E3B" opacity=".9"/>
+          <text x="16" y="330" fill="#6EE7B7" font-size="10">&#x1F7E2; 3人工作中 &#xB7; 1人准备中 &#xB7; 1人离线</text>
+          <text x="560" y="330" fill="#FBBF24" font-size="10">&#x26A1;&#xFE0F; 拍摄影棚 LIVE</text>
+        </svg>
+      </div>
+
+      <!-- 演进总结条 -->
+      <div style="background:#1E1B4B;padding:16px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid #312E81">
+        <span style="font-size:12px;color:#818CF8;font-weight:600">演进路径：</span>
+        <span style="background:#7C3AED;color:#fff;padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600">V1 棋盘式</span>
+        <span style="color:#7C3AED;font-size:14px">&#x27A1;&#xFE0F;</span>
+        <span style="background:#4338CA;color:#fff;padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600">V2 流程图</span>
+        <span style="color:#3B82F6;font-size:14px">&#x27A1;&#xFE0F;</span>
+        <span style="background:#059669;color:#fff;padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600">V3 空间协作</span>
+        <span style="font-size:11px;color:#6B7280;margin-left:auto">每一步自然延伸，不推翻重来</span>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== TAB 2: 分批扩展路线图 ==================== -->
+<div class="tab-content" id="tab-roadmap">
+
+  <!-- 总览 -->
+  <div class="card">
+    <div class="card-header">
+      <h3><span style="color:var(--primary)">●</span> A阶段分批扩展路线图</h3>
+      <span class="tag tag-green">已确认策略</span>
+    </div>
+    <div class="card-body">
+      <div style="background:var(--primary-light);border-radius:8px;padding:16px;margin-bottom:20px;font-size:13px;color:var(--primary-dark);line-height:1.8">
+        <b>核心策略：</b>先聚焦一个业务线做透 → 积累经验 → 逐步扩展到其他部门<br>
+        <b>设计原则：</b>数据层统一复用、AI能力模块化、问卷模板可复用、每批遵循相同流程
+      </div>
+
+      <!-- 批次全景 -->
+      <div style="display:grid;gap:16px">
+
+        <!-- 批次1 -->
+        <div style="border:2px solid var(--primary);border-radius:var(--radius);overflow:hidden">
+          <div style="padding:14px 18px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div style="font-size:16px;font-weight:700">批次1：产品研发 SOP</div>
+              <div style="font-size:12px;opacity:.8;margin-top:2px">7个阶段 · 从风格定义到复盘沉淀</div>
+            </div>
+            <span style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:12px;font-size:12px;font-weight:600">进行中</span>
+          </div>
+          <div style="padding:16px 18px">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-bottom:12px">
+              <div style="background:var(--bg);border-radius:6px;padding:8px 12px;text-align:center">
+                <div style="font-size:11px;color:var(--text3)">涉及岗位</div>
+                <div style="font-size:13px;font-weight:600">产品策划、摄影师、造型师、修图师、设计、市场、门店、管理层</div>
+              </div>
+              <div style="background:var(--bg);border-radius:6px;padding:8px 12px;text-align:center">
+                <div style="font-size:11px;color:var(--text3)">调研工具</div>
+                <div style="font-size:13px;font-weight:600;color:var(--green)">问卷已生成</div>
+              </div>
+              <div style="background:var(--bg);border-radius:6px;padding:8px 12px;text-align:center">
+                <div style="font-size:11px;color:var(--text3)">AI融合点</div>
+                <div style="font-size:13px;font-weight:600;color:var(--blue)">7阶段已设计</div>
+              </div>
+            </div>
+            <div style="font-size:12px;color:var(--text2)">
+              <b>覆盖范围：</b>风格定义与趋势洞察 → 主题策划与产品定义 → 视觉方案设计 → 样片拍摄执行 → 后期制作与交付 → 上市与市场反馈 → 复盘与知识沉淀
+            </div>
+          </div>
+        </div>
+
+        <!-- 批次2 候选 -->
+        <div style="border:2px dashed var(--orange);border-radius:var(--radius);overflow:hidden">
+          <div style="padding:14px 18px;background:var(--orange-light);display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div style="font-size:16px;font-weight:700;color:var(--orange-dark)">批次2：待定</div>
+              <div style="font-size:12px;color:var(--orange-dark);margin-top:2px">批次1完成后根据经验和优先级确定</div>
+            </div>
+            <span style="background:var(--orange);color:#fff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:600">待启动</span>
+          </div>
+          <div style="padding:16px 18px">
+            <div style="font-size:13px;font-weight:600;margin-bottom:12px">候选方向（三选一，或组合）：</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px">
+              <div style="border:1px solid var(--border);border-radius:8px;padding:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:6px">客户端</div>
+                <div style="font-size:12px;color:var(--text2);margin-bottom:8px">门店 + 客户经理</div>
+                <div style="font-size:11px;color:var(--text3)">客户接待、产品推荐、订单管理、客诉处理、客户跟进、复购转介绍、满意度管理</div>
+                <div style="margin-top:8px"><span class="tag tag-blue">直接接触C端</span> <span class="tag tag-green">数据价值高</span></div>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:8px;padding:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:6px">内容端</div>
+                <div style="font-size:12px;color:var(--text2);margin-bottom:8px">摄影 + 妆造 + 修图</div>
+                <div style="font-size:11px;color:var(--text3)">日常客片拍摄、拍摄排班、妆造执行、造型排班、精修排期、质量审核、交付时效</div>
+                <div style="margin-top:8px"><span class="tag tag-purple">标准化需求强</span> <span class="tag tag-orange">效率提升明显</span></div>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:8px;padding:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:6px">市场端</div>
+                <div style="font-size:12px;color:var(--text2);margin-bottom:8px">新媒体</div>
+                <div style="font-size:11px;color:var(--text3)">内容策划、社媒运营、推广投放、数据分析、达人合作、品牌声量管理</div>
+                <div style="margin-top:8px"><span class="tag tag-green">关涉营收增长</span> <span class="tag tag-blue">舆情数据关联</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 批次3+ -->
+        <div style="border:1px dashed var(--text3);border-radius:var(--radius);overflow:hidden">
+          <div style="padding:14px 18px;background:var(--bg);display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div style="font-size:16px;font-weight:700;color:var(--text2)">批次3+：全业务链覆盖</div>
+              <div style="font-size:12px;color:var(--text3);margin-top:2px">逐步扩展到所有部门，形成统一AI平台</div>
+            </div>
+            <span style="background:var(--text3);color:#fff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:600">远期</span>
+          </div>
+          <div style="padding:16px 18px">
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <span style="padding:6px 12px;background:var(--bg);border-radius:6px;font-size:12px;color:var(--text2)">门店运营</span>
+              <span style="padding:6px 12px;background:var(--bg);border-radius:6px;font-size:12px;color:var(--text2)">客户经理</span>
+              <span style="padding:6px 12px;background:var(--bg);border-radius:6px;font-size:12px;color:var(--text2)">摄影部门</span>
+              <span style="padding:6px 12px;background:var(--bg);border-radius:6px;font-size:12px;color:var(--text2)">妆造部门</span>
+              <span style="padding:6px 12px;background:var(--bg);border-radius:6px;font-size:12px;color:var(--text2)">修图师</span>
+              <span style="padding:6px 12px;background:var(--bg);border-radius:6px;font-size:12px;color:var(--text2)">新媒体</span>
+              <span style="padding:6px 12px;background:var(--bg);border-radius:6px;font-size:12px;color:var(--text2)">产品研发</span>
+              <span style="padding:6px 12px;background:var(--primary-light);border-radius:6px;font-size:12px;color:var(--primary);font-weight:600">+ 更多部门待发掘</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 统一流程 -->
+  <div class="card">
+    <div class="card-header">
+      <h3><span style="color:var(--green)">●</span> 每批次统一流程</h3>
+    </div>
+    <div class="card-body">
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0;text-align:center">
+        <div style="flex:1;min-width:120px;padding:14px 8px;background:var(--green-light);border-radius:8px 0 0 8px">
+          <div style="font-size:12px;font-weight:700;color:var(--green-dark)">Step 1</div>
+          <div style="font-size:13px;font-weight:600;margin-top:4px">跨部门调研</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:2px">问卷+访谈</div>
+        </div>
+        <div style="padding:0 4px;color:var(--text3);font-size:18px">→</div>
+        <div style="flex:1;min-width:120px;padding:14px 8px;background:var(--blue-light)">
+          <div style="font-size:12px;font-weight:700;color:var(--blue-dark)">Step 2</div>
+          <div style="font-size:13px;font-weight:600;margin-top:4px">痛点+数据整理</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:2px">优先级排序</div>
+        </div>
+        <div style="padding:0 4px;color:var(--text3);font-size:18px">→</div>
+        <div style="flex:1;min-width:120px;padding:14px 8px;background:var(--primary-light)">
+          <div style="font-size:12px;font-weight:700;color:var(--primary)">Step 3</div>
+          <div style="font-size:13px;font-weight:600;margin-top:4px">AI融合方案</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:2px">设计+评审</div>
+        </div>
+        <div style="padding:0 4px;color:var(--text3);font-size:18px">→</div>
+        <div style="flex:1;min-width:120px;padding:14px 8px;background:var(--orange-light)">
+          <div style="font-size:12px;font-weight:700;color:var(--orange-dark)">Step 4</div>
+          <div style="font-size:13px;font-weight:600;margin-top:4px">MVP开发</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:2px">验证+迭代</div>
+        </div>
+        <div style="padding:0 4px;color:var(--text3);font-size:18px">→</div>
+        <div style="flex:1;min-width:120px;padding:14px 8px;background:var(--accent-light);border-radius:0 8px 8px 0">
+          <div style="font-size:12px;font-weight:700;color:var(--accent)">Step 5</div>
+          <div style="font-size:13px;font-weight:600;margin-top:4px">数据沉淀</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:2px">为下批和B阶段</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 跨批次共享基础设施 -->
+  <div class="card">
+    <div class="card-header">
+      <h3><span style="color:var(--accent)">●</span> 跨批次共享基础设施</h3>
+    </div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px">
+        <div style="border:1px solid var(--border);border-radius:8px;padding:16px">
+          <div style="font-size:14px;font-weight:600;margin-bottom:8px">统一数据层</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">所有批次共享同一套标签体系、客户画像、产品数据库。新批次不重建数据架构，只扩展。</div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:8px;padding:16px">
+          <div style="font-size:14px;font-weight:600;margin-bottom:8px">模块化AI能力</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">每个AI能力（趋势分析、风格识别等）是独立服务。新批次增加新模块，不改造已有模块。</div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:8px;padding:16px">
+          <div style="font-size:14px;font-weight:600;margin-bottom:8px">可复用问卷模板</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">问卷结构（岗位关联、阶段筛选、痛点评分）已验证，新批次只需调整部门和岗位问题内容。</div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:8px;padding:16px">
+          <div style="font-size:14px;font-weight:600;margin-bottom:8px">统一工作台</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">应用层按角色分发视图。产品研发、摄影师、门店等看到各自相关的工作台，底层是同一个平台。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== TAB 3: A阶段（批次1） ==================== -->
+<div class="tab-content" id="tab-phaseA">
+
+  <!-- 系统架构 -->
+  <div class="card">
+    <div class="card-header">
+      <h3><span style="color:var(--primary)">●</span> 系统架构</h3>
+      <span class="tag tag-green">已确认</span>
+    </div>
+    <div class="card-body">
+      <div class="arch-layer">
+        <div class="arch-layer-head" style="background:var(--primary-light);color:var(--primary)">应用层 Application</div>
+        <div class="arch-layer-body">
+          <div class="arch-block">产品研发工作台</div>
+          <div class="arch-block">数据看板</div>
+          <div class="arch-block">知识库</div>
+          <div class="arch-block">研究台</div>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-head" style="background:var(--accent-light);color:var(--accent)">AI 能力层 Services</div>
+        <div class="arch-layer-body">
+          <div class="arch-block">趋势分析</div>
+          <div class="arch-block">风格识别</div>
+          <div class="arch-block">智能推荐</div>
+          <div class="arch-block">归因分析</div>
+          <div class="arch-block">生成式AI</div>
+          <div class="arch-block">情感分析</div>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-head" style="background:var(--green-light);color:var(--green-dark)">数据层 Data Platform <span class="tag tag-orange" style="margin-left:8px">为B阶段预留</span></div>
+        <div class="arch-layer-body">
+          <div class="arch-block">产品标签体系</div>
+          <div class="arch-block">客户画像</div>
+          <div class="arch-block">市场反馈</div>
+          <div class="arch-block">行业数据</div>
+          <div class="arch-block">舆情数据</div>
+        </div>
+      </div>
+      <div class="arch-layer">
+        <div class="arch-layer-head" style="background:var(--orange-light);color:var(--orange-dark)">基础层 Infrastructure</div>
+        <div class="arch-layer-body">
+          <div class="arch-block">多租户架构</div>
+          <div class="arch-block">权限体系</div>
+          <div class="arch-block">数据采集管道</div>
+          <div class="arch-block">API网关</div>
+          <div class="arch-block">第三方舆情接入</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOP 7阶段 AI融合 -->
+  <!-- 少女写真对SOP的影响 -->
+  <div class="card">
+    <div class="card-header" style="background:linear-gradient(90deg,#FDF2F8,#FFF)">
+      <h3><span style="color:#EC4899">●</span> 少女写真 · 品牌定位对各环节的特殊影响</h3>
+      <span style="background:#FDF2F8;color:#BE185D;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600">品牌定位</span>
+    </div>
+    <div class="card-body" style="padding:0">
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead>
+          <tr style="background:#FDF2F8">
+            <th style="padding:10px 14px;text-align:left;color:#BE185D;font-weight:600;border-bottom:2px solid #F9A8D4">SOP阶段</th>
+            <th style="padding:10px 14px;text-align:left;color:#BE185D;font-weight:600;border-bottom:2px solid #F9A8D4">少女写真的特殊性</th>
+            <th style="padding:10px 14px;text-align:left;color:#BE185D;font-weight:600;border-bottom:2px solid #F9A8D4">AI针对性优化</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #FCE7F3">
+            <td style="padding:10px 14px;font-weight:600">风格定义</td>
+            <td style="padding:10px 14px;color:var(--text2)">审美变化极快，跟随社媒潮流（日系、韩系、甜酷、国风轮换）</td>
+            <td style="padding:10px 14px">趋势监测聚焦少女审美，自动捕捉小红书/抖音少女风格爆款</td>
+          </tr>
+          <tr style="border-bottom:1px solid #FCE7F3">
+            <td style="padding:10px 14px;font-weight:600">主题策划</td>
+            <td style="padding:10px 14px;color:var(--text2)">强季节性（毕业/开学/生日/成人礼）+ 社交热点（明星同款/综艺联动）</td>
+            <td style="padding:10px 14px">AI关联少女群体日历+热点，自动推荐应季主题</td>
+          </tr>
+          <tr style="border-bottom:1px solid #FCE7F3">
+            <td style="padding:10px 14px;font-weight:600">视觉设计</td>
+            <td style="padding:10px 14px;color:var(--text2)">少女偏好有规律（光线柔和、色调偏暖/低饱和、构图偏特写）</td>
+            <td style="padding:10px 14px">基于历史高点击/高转化数据，推荐少女偏好的视觉参数组合</td>
+          </tr>
+          <tr style="border-bottom:1px solid #FCE7F3">
+            <td style="padding:10px 14px;font-weight:600">拍摄执行</td>
+            <td style="padding:10px 14px;color:var(--text2)">拍摄对象多为非专业模特（少女客户），引导和情绪调动是关键</td>
+            <td style="padding:10px 14px">拍摄引导针对"少女常见姿态/表情偏好"做优化</td>
+          </tr>
+          <tr style="border-bottom:1px solid #FCE7F3">
+            <td style="padding:10px 14px;font-weight:600">后期制作</td>
+            <td style="padding:10px 14px;color:var(--text2)">精修标准偏"自然美"，少女对"像不像自己"很敏感</td>
+            <td style="padding:10px 14px">AI精修辅助聚焦"自然精修"风格，避免过度磨皮液化</td>
+          </tr>
+          <tr style="border-bottom:1px solid #FCE7F3">
+            <td style="padding:10px 14px;font-weight:600">上市反馈</td>
+            <td style="padding:10px 14px;color:var(--text2)">反馈集中在社媒平台（小红书分享、抖音晒图），复购转介绍比高</td>
+            <td style="padding:10px 14px">舆情分析聚焦少女社媒平台，分析分享动机和传播路径</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 14px;font-weight:600">复盘沉淀</td>
+            <td style="padding:10px 14px;color:var(--text2)">成功产品往往有"少女共鸣点"——某种氛围感或情绪点打动了客户</td>
+            <td style="padding:10px 14px">复盘增加"少女情绪共鸣度"评估维度</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3><span style="color:var(--primary)">●</span> SOP 各阶段 AI 融合点</h3>
+      <span class="tag tag-orange">待调研细化</span>
+    </div>
+    <div class="card-body">
+
+      <!-- Phase 1 -->
+      <div class="phase-block">
+        <div class="phase-head" onclick="togglePhase(this)">
+          <div class="phase-num" style="background:var(--primary)">1</div>
+          <div class="phase-info">
+            <h4>风格定义与趋势洞察</h4>
+            <p>信息收集 → 趋势分析 → 灵感讨论 → 风格定义</p>
+          </div>
+          <span class="phase-arrow">▼</span>
+        </div>
+        <div class="phase-detail">
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>趋势信息聚合与推荐</h5>
+              <p>自动抓取社交媒体热门内容，AI提炼关键词和风格标签，减少人工搜索时间</p>
+            </div>
+          </div>
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>趋势生命周期判断</h5>
+              <p>基于历史数据和当前热度曲线，AI辅助判断趋势所处阶段（萌芽/上升/爆发/衰退）</p>
+            </div>
+          </div>
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>品牌匹配度评估</h5>
+              <p>结合品牌基因库和历史产品数据，AI评估趋势与品牌定位的匹配程度</p>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--text3)">数据产出：</div>
+          <div style="margin-top:4px">
+            <span class="data-tag">风格趋势报告</span>
+            <span class="data-tag">热门标签</span>
+            <span class="data-tag">灵感素材库</span>
+            <span class="data-tag">舆情趋势数据</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="phase-block">
+        <div class="phase-head" onclick="togglePhase(this)">
+          <div class="phase-num" style="background:var(--accent)">2</div>
+          <div class="phase-info">
+            <h4>主题策划与产品定义</h4>
+            <p>主题细化 → 拍摄方案 → 定价包装 → 文档输出</p>
+          </div>
+          <span class="phase-arrow">▼</span>
+        </div>
+        <div class="phase-detail">
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>智能主题推荐</h5>
+              <p>基于趋势数据+品牌基因+历史产品表现，AI推荐主题方向和目标人群匹配</p>
+            </div>
+          </div>
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>方案智能生成</h5>
+              <p>根据主题关键词，AI生成视觉方案参考（配色、氛围、场景方向）</p>
+            </div>
+          </div>
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>定价辅助决策</h5>
+              <p>基于历史产品定价与销量数据，AI辅助定价建议和销量预测</p>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--text3)">数据产出：</div>
+          <div style="margin-top:4px">
+            <span class="data-tag">产品定义文档(结构化)</span>
+            <span class="data-tag">风格标签</span>
+            <span class="data-tag">目标人群标签</span>
+            <span class="data-tag">情绪价值定位</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="phase-block">
+        <div class="phase-head" onclick="togglePhase(this)">
+          <div class="phase-num" style="background:var(--green)">3</div>
+          <div class="phase-info">
+            <h4>视觉方案设计</h4>
+            <p>妆面造型 → 服装搭配 → 场景设计 → 配色基调 → 方案评审</p>
+          </div>
+          <span class="phase-arrow">▼</span>
+        </div>
+        <div class="phase-detail">
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>造型/服装/场景智能搭配</h5>
+              <p>基于风格标签和历史成功案例，AI推荐造型方案、服装搭配和场景组合</p>
+            </div>
+          </div>
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>方案一致性校验</h5>
+              <p>AI检查妆面、服装、场景、配色的整体一致性，标注冲突点</p>
+            </div>
+          </div>
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>参考图生成</h5>
+              <p>基于方案描述，生成式AI产出参考效果图，加速方案评审</p>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--text3)">数据产出：</div>
+          <div style="margin-top:4px">
+            <span class="data-tag">视觉方案包(结构化标签)</span>
+            <span class="data-tag">配色方案</span>
+            <span class="data-tag">材质/场景标签</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 4 -->
+      <div class="phase-block">
+        <div class="phase-head" onclick="togglePhase(this)">
+          <div class="phase-num" style="background:var(--blue)">4</div>
+          <div class="phase-info">
+            <h4>样片拍摄执行</h4>
+            <p>拍摄准备 → 现场执行 → 质量把控</p>
+          </div>
+          <span class="phase-arrow">▼</span>
+        </div>
+        <div class="phase-detail">
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>拍摄引导参考</h5>
+              <p>基于方案生成姿态/光线/构图参考，辅助摄影师现场拍摄</p>
+            </div>
+          </div>
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>实时质量检测</h5>
+              <p>AI实时分析拍摄画面，提示构图、曝光、表情等问题</p>
+            </div>
+          </div>
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>拍摄参数自动记录</h5>
+              <p>自动记录相机参数、布光条件，形成可复用的拍摄参数库</p>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--text3)">数据产出：</div>
+          <div style="margin-top:4px">
+            <span class="data-tag">拍摄元数据(参数/场景/光线)</span>
+            <span class="data-tag">质量评分</span>
+            <span class="data-tag">引导参考库</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 5 -->
+      <div class="phase-block">
+        <div class="phase-head" onclick="togglePhase(this)">
+          <div class="phase-num" style="background:var(--orange)">5</div>
+          <div class="phase-info">
+            <h4>后期制作与交付</h4>
+            <p>粗选精选 → 精修 → 成品归档</p>
+          </div>
+          <span class="phase-arrow">▼</span>
+        </div>
+        <div class="phase-detail">
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>智能选片</h5>
+              <p>AI根据风格标准和构图质量自动评分排序，辅助选片决策</p>
+            </div>
+          </div>
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>调色一致性校验</h5>
+              <p>AI对比目标配色方案，检测精修成品的色调一致性</p>
+            </div>
+          </div>
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>批量精修辅助</h5>
+              <p>AI自动完成磨皮、基础调色等重复性工作，修图师聚焦创意精修</p>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--text3)">数据产出：</div>
+          <div style="margin-top:4px">
+            <span class="data-tag">成品标签(AI标注)</span>
+            <span class="data-tag">风格/色调/情绪标签</span>
+            <span class="data-tag">样片-客片关联</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 6 -->
+      <div class="phase-block">
+        <div class="phase-head" onclick="togglePhase(this)">
+          <div class="phase-num" style="background:var(--red)">6</div>
+          <div class="phase-info">
+            <h4>上市与市场反馈</h4>
+            <p>推广 → 销售监测 → 客户反馈 → 舆情监测</p>
+          </div>
+          <span class="phase-arrow">▼</span>
+        </div>
+        <div class="phase-detail">
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>销售数据关联分析</h5>
+              <p>自动关联产品标签与销售数据，生成产品市场表现报告</p>
+            </div>
+          </div>
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>舆情情感分析</h5>
+              <p>接入第三方舆情平台，AI分析情感倾向，关联到具体产品</p>
+            </div>
+          </div>
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>归因模型</h5>
+              <p>AI分析产品表现与风格/定价/人群/季节等因素的关联，输出归因结论</p>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--text3)">数据产出：</div>
+          <div style="margin-top:4px">
+            <span class="data-tag">产品市场表现报告</span>
+            <span class="data-tag">客户反馈标签</span>
+            <span class="data-tag">舆情情感数据</span>
+            <span class="data-tag">优化建议</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 7 -->
+      <div class="phase-block">
+        <div class="phase-head" onclick="togglePhase(this)">
+          <div class="phase-num" style="background:#1E1B4B">7</div>
+          <div class="phase-info">
+            <h4>复盘与知识沉淀</h4>
+            <p>产品复盘 → 经验沉淀 → 标签体系 → 数据资产</p>
+          </div>
+          <span class="phase-arrow">▼</span>
+        </div>
+        <div class="phase-detail">
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>自动复盘报告</h5>
+              <p>AI汇总全链路数据，自动生成复盘报告（含成功因素提取、改进建议）</p>
+            </div>
+          </div>
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>经验库智能匹配</h5>
+              <p>新项目策划时，AI自动匹配历史相似产品的经验教训和参考方案</p>
+            </div>
+          </div>
+          <div class="ai-point">
+            <div class="ai-icon">AI</div>
+            <div class="ai-text">
+              <h5>产品标签自动生成</h5>
+              <p>AI自动标注产品的风格、色调、情绪、场景等标签，构建可检索的数据资产</p>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--text3)">数据产出：</div>
+          <div style="margin-top:4px">
+            <span class="data-tag">可检索产品知识库</span>
+            <span class="data-tag">可复用方案资产</span>
+            <span class="data-tag">完整标签体系</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- A阶段实施路径 -->
+  <div class="card">
+    <div class="card-header">
+      <h3><span style="color:var(--green)">●</span> A阶段实施路径</h3>
+    </div>
+    <div class="card-body">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot done"></div>
+          <div class="tl-title">Step 1：跨部门调研</div>
+          <div class="tl-desc">发放岗位关联问卷，收集各环节实际工作流程、痛点、数据现状</div>
+          <div class="tl-status"><span class="tag tag-green">调研问卷已生成</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot done"></div>
+          <div class="tl-title">Step 2：调研结果整理</div>
+          <div class="tl-desc">整理实际SOP流程图、痛点清单、数据现状、AI切入机会点、优先级排序</div>
+          <div class="tl-status"><span class="tag tag-blue">问卷回收后执行</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot active"></div>
+          <div class="tl-title">Step 3：AI融合方案设计</div>
+          <div class="tl-desc">基于调研结果，细化每个环节的AI融合方案，确定技术路线和数据架构</div>
+          <div class="tl-status"><span class="tag tag-blue">依赖Step 2输出</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot pending"></div>
+          <div class="tl-title">Step 4：方案评审</div>
+          <div class="tl-desc">组织各部门评审AI融合方案，确认可行性、优先级和实施节奏</div>
+          <div class="tl-status"><span class="tag tag-orange">待启动</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot pending"></div>
+          <div class="tl-title">Step 5：MVP开发</div>
+          <div class="tl-desc">选择最高优先级环节先落地，快速验证AI工具的实际价值</div>
+          <div class="tl-status"><span class="tag tag-orange">待启动</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot pending"></div>
+          <div class="tl-title">Step 6：内部验证与迭代</div>
+          <div class="tl-desc">内部团队使用验证，收集反馈迭代，逐步扩展到更多环节</div>
+          <div class="tl-status"><span class="tag tag-orange">待启动</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot pending"></div>
+          <div class="tl-title">Step 7：SaaS外化评估</div>
+          <div class="tl-desc">评估内部工具的外化可行性，规划SaaS产品形态和商业模式</div>
+          <div class="tl-status"><span class="tag tag-orange">远期</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 为B阶段预留 -->
+  <div class="card">
+    <div class="card-header">
+      <h3><span style="color:var(--accent)">●</span> A阶段为B阶段预留的数据基础</h3>
+    </div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+        <div style="border:1px dashed var(--accent);border-radius:8px;padding:14px">
+          <div style="font-size:13px;font-weight:600;color:var(--accent);margin-bottom:6px">产品-客户-反馈三方关联模型</div>
+          <div style="font-size:12px;color:var(--text2)">每个产品关联到客户画像和市场反馈，支持B阶段的归因研究</div>
+        </div>
+        <div style="border:1px dashed var(--accent);border-radius:8px;padding:14px">
+          <div style="font-size:13px;font-weight:600;color:var(--accent);margin-bottom:6px">情绪价值标签采集</div>
+          <div style="font-size:12px;color:var(--text2)">从A阶段开始为产品标注情绪价值标签，积累B阶段研究样本</div>
+        </div>
+        <div style="border:1px dashed var(--accent);border-radius:8px;padding:14px">
+          <div style="font-size:13px;font-weight:600;color:var(--accent);margin-bottom:6px">行业趋势时间序列</div>
+          <div style="font-size:12px;color:var(--text2)">持续沉淀趋势数据和舆情数据，形成时间维度上的研究素材</div>
+        </div>
+        <div style="border:1px dashed var(--accent);border-radius:8px;padding:14px">
+          <div style="font-size:13px;font-weight:600;color:var(--accent);margin-bottom:6px">标签体系基础设施</div>
+          <div style="font-size:12px;color:var(--text2)">风格、色调、情绪、场景、人群等标签体系，直接复用于B阶段</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== TAB 3: B阶段 ==================== -->
+<div class="tab-content" id="tab-phaseB">
+
+  <!-- B阶段总览 -->
+  <div class="card">
+    <div class="card-header">
+      <h3><span style="color:var(--accent)">●</span> B阶段研究方向</h3>
+      <span class="tag tag-purple">A阶段数据积累后启动</span>
+    </div>
+    <div class="card-body">
+      <div class="research-grid">
+
+        <div class="research-card" style="border-left:4px solid var(--accent)">
+          <h4><span style="color:var(--accent)">01</span> 情绪价值研究体系</h4>
+          <p>研究客户拍摄写真的深层动机和情绪需求，建立情绪价值分类框架和强化策略。</p>
+          <div class="research-items">
+            <div class="research-item">客户拍摄目的分类模型：人生纪念 / 自我表达 / 社交价值 / 其他</div>
+            <div class="research-item">不同目的下的情绪曲线建模：期待→拍摄→交付→回顾各阶段情绪变化</div>
+            <div class="research-item">情绪价值强化策略：如何通过产品设计和体验强化"留住纪念"等核心需求</div>
+            <div class="research-item">情绪价值与产品表现的关联分析</div>
+          </div>
+          <div style="margin-top:10px;padding:10px 14px;background:#FDF2F8;border-radius:8px;border:1px solid #FCE7F3">
+            <div style="font-size:12px;font-weight:600;color:#BE185D;margin-bottom:6px">少女写真深入方向</div>
+            <div style="font-size:12px;color:#9D174D;line-height:1.8">
+              青春期自我认知与美的觉醒 · 成长仪式感（毕业/成人礼/生日）· 社交认同与被看见的需求 · 自我表达与身份探索 · 留住青春的情感驱动
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--text3)">数据来源：A阶段客户画像 + 反馈数据 + 情绪标签 + 舆情UGC</div>
+        </div>
+
+        <div class="research-card" style="border-left:4px solid var(--blue)">
+          <h4><span style="color:var(--blue)">02</span> 风格基因研究</h4>
+          <p>研究审美偏好的底层逻辑，探索人格特质与写真风格偏好的关系。</p>
+          <div class="research-items">
+            <div class="research-item">MBTI/人格特质与审美偏好的关联研究</div>
+            <div class="research-item">风格-人群匹配模型：什么类型的人偏好什么风格</div>
+            <div class="research-item">风格基因库：拆解每种风格的底层视觉元素（色温、对比度、线条、材质）</div>
+            <div class="research-item">风格演变趋势：基于时间序列数据的风格周期研究</div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--text3)">数据来源：A阶段产品标签体系 + 客户画像 + 销售数据 + 趋势数据</div>
+        </div>
+
+        <div class="research-card" style="border-left:4px solid var(--green)">
+          <h4><span style="color:var(--green)">03</span> 市场趋势与行业研究</h4>
+          <p>建立行业趋势分析框架，形成持续的行业洞察输出能力。</p>
+          <div class="research-items">
+            <div class="research-item">写真行业市场规模与增长趋势</div>
+            <div class="research-item">竞品分析框架：产品矩阵、定价策略、渠道策略</div>
+            <div class="research-item">AI驱动的趋势预测模型</div>
+            <div class="research-item">跨行业审美迁移研究（影视、时尚、美妆对写真行业的影响）</div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--text3)">数据来源：A阶段舆情数据 + 趋势时间序列 + 竞品监测</div>
+        </div>
+
+        <div class="research-card" style="border-left:4px solid var(--orange)">
+          <h4><span style="color:var(--orange)">04</span> 产品评价体系</h4>
+          <p>建立可量化的"产品力"评估框架，为产品研发提供数据化决策依据。</p>
+          <div class="research-items">
+            <div class="research-item">产品力指标定义：视觉吸引力、情绪共鸣度、差异化程度、可执行性</div>
+            <div class="research-item">行业基准值：基于市场数据的"好产品"量化标准</div>
+            <div class="research-item">产品生命周期分析：从上市到衰退的全周期追踪</div>
+            <div class="research-item">产品评分卡：新品上市前的AI预评估</div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--text3)">数据来源：A阶段全部数据（产品+销售+反馈+复盘）</div>
+        </div>
+
+        <div class="research-card" style="border-left:4px solid var(--red)">
+          <h4><span style="color:var(--red)">05</span> 写真行业底层逻辑研究</h4>
+          <p>探索写真行业的本质价值和发展规律，指导长期战略方向。</p>
+          <div class="research-items">
+            <div class="research-item">写真产品的本质：为什么人们需要拍写真？底层心理需求是什么？</div>
+            <div class="research-item">情绪化价值量化：如何测量和提升"留住纪念"的意义感</div>
+            <div class="research-item">写真消费的决策链路研究：从"想拍"到"下单"的心理过程</div>
+            <div class="research-item">写真与数字身份：社交媒体时代写真产品的新价值</div>
+          </div>
+          <div style="margin-top:10px;padding:10px 14px;background:#FDF2F8;border-radius:8px;border:1px solid #FCE7F3">
+            <div style="font-size:12px;font-weight:600;color:#BE185D;margin-bottom:6px">少女写真深入方向</div>
+            <div style="font-size:12px;color:#9D174D;line-height:1.8">
+              少女为什么需要拍写真——成长记录与时间锚点 · 美的觉醒与自我确认 · 社交货币与同龄人连接 · 从被拍到主动表达的身份转变
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--text3)">数据来源：B阶段1-4研究的综合输出 + 定性调研 + 行业文献</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- B阶段实施路径 -->
+  <div class="card">
+    <div class="card-header">
+      <h3><span style="color:var(--green)">●</span> B阶段实施路径</h3>
+    </div>
+    <div class="card-body">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--accent)"></div>
+          <div class="tl-title">Step 1：数据资产评估</div>
+          <div class="tl-desc">评估A阶段积累的数据资产质量和覆盖度，确认研究可行性</div>
+          <div class="tl-status"><span class="tag tag-purple">A阶段运行稳定后启动</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--accent)"></div>
+          <div class="tl-title">Step 2：情绪价值分类框架</div>
+          <div class="tl-desc">基于A阶段积累的客户数据和情绪标签，建立拍摄目的分类体系和情绪价值模型</div>
+          <div class="tl-status"><span class="tag tag-blue">研究01</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--accent)"></div>
+          <div class="tl-title">Step 3：风格基因拆解</div>
+          <div class="tl-desc">基于产品标签体系，拆解各风格的底层视觉基因，建立风格-人群匹配模型</div>
+          <div class="tl-status"><span class="tag tag-blue">研究02</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--accent)"></div>
+          <div class="tl-title">Step 4：行业趋势研究</div>
+          <div class="tl-desc">结合舆情数据和竞品分析，建立行业趋势分析框架和预测模型</div>
+          <div class="tl-status"><span class="tag tag-blue">研究03</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--accent)"></div>
+          <div class="tl-title">Step 5：产品评价体系</div>
+          <div class="tl-desc">综合产品力指标和市场数据，建立量化的产品评价框架和行业基准</div>
+          <div class="tl-status"><span class="tag tag-blue">研究04</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--accent)"></div>
+          <div class="tl-title">Step 6：底层逻辑整合研究</div>
+          <div class="tl-desc">整合1-4研究成果，结合定性调研，输出写真行业底层逻辑白皮书</div>
+          <div class="tl-status"><span class="tag tag-blue">研究05</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:var(--accent)"></div>
+          <div class="tl-title">Step 7：研究成果产品化</div>
+          <div class="tl-desc">将B阶段研究成果反哺A阶段产品（如智能推荐升级），评估行业咨询/报告类产品机会</div>
+          <div class="tl-status"><span class="tag tag-orange">成果输出</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B阶段反哺A -->
+  <div class="card">
+    <div class="card-header">
+      <h3><span style="color:var(--primary)">●</span> B阶段反哺A阶段</h3>
+    </div>
+    <div class="card-body">
+      <div class="conn-box">
+        <div class="conn-side" style="border-color:var(--primary);background:var(--primary-light)">
+          <h4 style="font-size:14px;color:var(--primary)">A阶段工具升级</h4>
+          <p style="font-size:12px">更精准的风格推荐<br>更智能的产品预评估<br>更深入的客户洞察</p>
+        </div>
+        <div class="conn-arrow">
+          <div>研究成果反哺</div>
+          <div class="conn-arrow-line">←←←</div>
+          <div>优化产品工具</div>
+        </div>
+        <div class="conn-side" style="border-color:var(--accent);background:var(--accent-light)">
+          <h4 style="font-size:14px;color:var(--accent)">B阶段研究产出</h4>
+          <p style="font-size:12px">情绪价值模型<br>风格-人群匹配<br>行业趋势预测<br>产品评价体系</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B阶段产出物 -->
+  <div class="card">
+    <div class="card-header">
+      <h3><span style="color:var(--orange)">●</span> B阶段预期产出物</h3>
+    </div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+        <div style="text-align:center;padding:16px;border:1px solid var(--border);border-radius:8px">
+          <div style="font-size:24px;margin-bottom:4px">📋</div>
+          <div style="font-size:13px;font-weight:600">行业白皮书</div>
+          <div style="font-size:11px;color:var(--text2)">写真行业底层逻辑研究</div>
+        </div>
+        <div style="text-align:center;padding:16px;border:1px solid var(--border);border-radius:8px">
+          <div style="font-size:24px;margin-bottom:4px">🏷️</div>
+          <div style="font-size:13px;font-weight:600">情绪价值分类框架</div>
+          <div style="font-size:11px;color:var(--text2)">拍摄目的-情绪-强化策略</div>
+        </div>
+        <div style="text-align:center;padding:16px;border:1px solid var(--border);border-radius:8px">
+          <div style="font-size:24px;margin-bottom:4px">🧬</div>
+          <div style="font-size:13px;font-weight:600">风格基因库</div>
+          <div style="font-size:11px;color:var(--text2)">风格拆解+人群匹配模型</div>
+        </div>
+        <div style="text-align:center;padding:16px;border:1px solid var(--border);border-radius:8px">
+          <div style="font-size:24px;margin-bottom:4px">📊</div>
+          <div style="font-size:13px;font-weight:600">产品评价体系</div>
+          <div style="font-size:11px;color:var(--text2)">可量化的产品力指标</div>
+        </div>
+        <div style="text-align:center;padding:16px;border:1px solid var(--border);border-radius:8px">
+          <div style="font-size:24px;margin-bottom:4px">🔮</div>
+          <div style="font-size:13px;font-weight:600">趋势预测模型</div>
+          <div style="font-size:11px;color:var(--text2)">AI驱动的行业趋势预判</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- Bottom Bar -->
+<div class="bottom-actions">
+  <button class="btn btn-outline" onclick="window.print()">打印 / 导出PDF</button>
+  <button class="btn btn-primary" onclick="exportData()">导出JSON</button>
+</div>
+
+<script>
+function showViz(v){
+  for(var i=1;i<=3;i++){
+    var p=document.getElementById('vizPanel'+i);
+    var b=document.getElementById('vizBtn'+i);
+    if(i===v){
+      p.style.display='block';
+      b.style.background='#4338CA';b.style.color='#fff';b.style.borderBottom='3px solid #A78BFA';
+    }else{
+      p.style.display='none';
+      b.style.background='#1E1B4B';b.style.color='#818CF8';b.style.borderBottom='3px solid transparent';
+    }
+  }
+}
+
+function switchTab(id){
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  var tab=document.querySelector('.nav-tab[onclick*="'+id+'"]');
+  if(tab)tab.classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+}
+
+function togglePhase(head){
+  const detail=head.nextElementSibling;
+  const arrow=head.querySelector('.phase-arrow');
+  detail.classList.toggle('open');
+  arrow.classList.toggle('open');
+}
+
+function exportData(){
+  const data={
+    meta:{title:'写真行业AI融合战略看板',exportTime:new Date().toISOString()},
+    strategy:{
+      company:'连锁写真品牌',
+      approach:'A先行B跟进',
+      saas:'内部优先',
+      monitoring:'接入第三方舆情平台'
+    },
+    phaseA:{
+      architecture:['应用层','AI能力层','数据层','基础层'],
+      sopPhases:[
+        '风格定义与趋势洞察','主题策划与产品定义','视觉方案设计',
+        '样片拍摄执行','后期制作与交付','上市与市场反馈','复盘与知识沉淀'
+      ],
+      steps:['跨部门调研','调研结果整理','AI融合方案设计','方案评审','MVP开发','内部验证迭代','SaaS外化评估']
+    },
+    phaseB:{
+      researchTopics:['情绪价值研究体系','风格基因研究','市场趋势与行业研究','产品评价体系','写真行业底层逻辑研究'],
+      steps:['数据资产评估','情绪价值分类框架','风格基因拆解','行业趋势研究','产品评价体系','底层逻辑整合研究','研究成果产品化']
+    }
+  };
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`写真行业AI融合战略_${new Date().toLocaleDateString('zh-CN').replace(/\//g,'-')}.json`;
+  a.click();URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>

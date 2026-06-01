@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>灯光模拟工作台 v1.0</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #1a1a2e; color: #e0e0e0; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+.header { background: #16213e; padding: 10px 24px; display: flex; align-items: center; border-bottom: 1px solid #2a2a4a; }
+.header h1 { font-size: 16px; font-weight: 600; color: #e94560; }
+.header .subtitle { font-size: 11px; color: #666; margin-left: 12px; }
+
+.main { display: flex; flex: 1; overflow: hidden; }
+
+/* Tab nav */
+.tab-nav { display: flex; background: #16213e; border-bottom: 1px solid #2a2a4a; }
+.tab-btn { flex: 1; padding: 10px; text-align: center; font-size: 13px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: #888; transition: 0.2s; }
+.tab-btn.active { color: #e94560; border-bottom: 2px solid #e94560; }
+.tab-btn:hover { color: #e0e0e0; }
+
+.left-panel { width: 400px; min-width: 400px; background: #16213e; border-right: 1px solid #2a2a4a; display: flex; flex-direction: column; }
+.tab-content { flex: 1; overflow-y: auto; padding: 16px; }
+.tab-content::-webkit-scrollbar { width: 6px; }
+.tab-content::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+.tab-page { display: none; }
+.tab-page.active { display: block; }
+
+.right-panel { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+
+.section { margin-bottom: 16px; }
+.section-title { font-size: 12px; font-weight: 600; color: #e94560; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* Preset grid */
+.preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.preset-btn { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 6px; padding: 8px; cursor: pointer; text-align: left; transition: 0.2s; color: #e0e0e0; }
+.preset-btn:hover { border-color: #e94560; }
+.preset-btn.active { border-color: #e94560; background: #2a1a2e; box-shadow: 0 0 10px rgba(233,69,96,0.15); }
+.preset-btn .preset-name { font-size: 12px; font-weight: 600; }
+.preset-btn .preset-desc { font-size: 10px; color: #888; margin-top: 2px; }
+
+/* Light card */
+.light-card { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 6px; margin-bottom: 6px; }
+.light-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; cursor: pointer; }
+.light-header:hover { background: #1f1f3e; }
+.light-name { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.light-toggle { position: relative; width: 32px; height: 18px; }
+.light-toggle input { opacity: 0; width: 0; height: 0; }
+.light-toggle .slider { position: absolute; inset: 0; background: #333; border-radius: 9px; cursor: pointer; transition: 0.3s; }
+.light-toggle .slider:before { content: ''; position: absolute; width: 14px; height: 14px; left: 2px; bottom: 2px; background: #888; border-radius: 50%; transition: 0.3s; }
+.light-toggle input:checked + .slider { background: #e94560; }
+.light-toggle input:checked + .slider:before { transform: translateX(14px); background: white; }
+.light-body { padding: 0 10px 10px; display: none; }
+.light-card.expanded .light-body { display: block; }
+
+/* Slider */
+.slider-group { margin-bottom: 8px; }
+.slider-label { display: flex; justify-content: space-between; font-size: 11px; color: #aaa; margin-bottom: 3px; }
+.slider-value { color: #e94560; font-weight: 600; font-variant-numeric: tabular-nums; }
+input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: #333; border-radius: 2px; outline: none; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; background: #e94560; border-radius: 50%; cursor: pointer; }
+
+.quick-btns { display: flex; gap: 3px; margin-top: 3px; }
+.quick-btn { background: #2a2a4a; border: none; color: #aaa; font-size: 10px; padding: 2px 6px; border-radius: 3px; cursor: pointer; }
+.quick-btn:hover { background: #e94560; color: white; }
+
+/* Color swatches */
+.color-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.color-swatch { width: 32px; height: 32px; border-radius: 6px; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+.color-swatch:hover { transform: scale(1.1); }
+.color-swatch.active { border-color: #e94560; box-shadow: 0 0 8px rgba(233,69,96,0.4); }
+
+/* Model zone */
+.model-zone { border: 2px dashed #2a2a4a; border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; }
+.model-zone:hover { border-color: #e94560; background: rgba(233,69,96,0.05); }
+.model-zone.dragover { border-color: #e94560; background: rgba(233,69,96,0.1); }
+.model-zone .icon { font-size: 32px; color: #444; }
+.model-zone p { font-size: 12px; color: #888; margin-top: 8px; }
+.model-zone .formats { font-size: 10px; color: #555; margin-top: 4px; }
+
+.model-list { margin-top: 12px; }
+.model-item { display: flex; align-items: center; justify-content: space-between; background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 6px; padding: 8px 10px; margin-bottom: 6px; cursor: pointer; }
+.model-item:hover { border-color: #e94560; }
+.model-item.active { border-color: #e94560; background: #2a1a2e; }
+.model-item .name { font-size: 12px; font-weight: 600; }
+.model-item .meta { font-size: 10px; color: #888; }
+.model-item .del-btn { background: none; border: none; color: #666; font-size: 16px; cursor: pointer; padding: 0 4px; }
+.model-item .del-btn:hover { color: #f44336; }
+
+/* Scene top view */
+.scene-topview { width: 100%; aspect-ratio: 1; background: #0f0f1a; border-radius: 8px; border: 1px solid #2a2a4a; position: relative; margin-bottom: 12px; }
+.scene-topview canvas { width: 100%; height: 100%; }
+
+/* Render section (bottom of left panel) */
+.render-section { background: #16213e; border-top: 1px solid #2a2a4a; padding: 12px 16px; }
+.quality-toggle { display: flex; gap: 6px; margin-bottom: 8px; }
+.quality-opt { flex: 1; padding: 6px; text-align: center; background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 4px; cursor: pointer; font-size: 11px; }
+.quality-opt.active { border-color: #e94560; background: #2a1a2e; color: #e94560; }
+.render-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #e94560, #c23152); border: none; border-radius: 6px; color: white; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.render-btn:hover { box-shadow: 0 4px 12px rgba(233,69,96,0.4); }
+.render-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Preview */
+.preview-container { background: #0f0f1a; border: 1px solid #2a2a4a; border-radius: 10px; width: 100%; max-width: 900px; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+.preview-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.preview-placeholder { text-align: center; color: #333; }
+.preview-placeholder .icon { font-size: 40px; }
+.preview-placeholder p { font-size: 13px; margin-top: 8px; }
+
+.render-overlay { position: absolute; inset: 0; background: rgba(15,15,26,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; }
+.render-overlay .spinner { width: 36px; height: 36px; border: 3px solid #ffc107; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; }
+.render-overlay p { margin-top: 12px; color: #ffc107; font-size: 13px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.download-btn { margin-top: 10px; padding: 6px 16px; background: #2a2a4a; border: 1px solid #3a3a5a; border-radius: 4px; color: #e0e0e0; cursor: pointer; font-size: 12px; }
+.download-btn:hover { background: #3a3a5a; }
+
+/* Slider compact for scene */
+.scene-slider { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.scene-slider label { font-size: 11px; color: #aaa; width: 70px; flex-shrink: 0; }
+.scene-slider input[type="range"] { flex: 1; }
+.scene-slider .val { font-size: 11px; color: #e94560; width: 40px; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* Model config */
+.model-config { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 6px; padding: 10px; margin-top: 10px; }
+.model-config .config-row { margin-bottom: 6px; }
+.model-config .config-row:last-child { margin-bottom: 0; }
+
+/* Checkbox */
+.check-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 12px; }
+.check-row input[type="checkbox"] { accent-color: #e94560; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>灯光模拟工作台</h1>
+  <span class="subtitle">v1.0 — Blender Cycles</span>
+</div>
+
+<div class="main">
+  <div class="left-panel">
+    <!-- Tabs -->
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('scene')">场景</button>
+      <button class="tab-btn" onclick="switchTab('model')">模特</button>
+      <button class="tab-btn" onclick="switchTab('lighting')">灯光</button>
+      <button class="tab-btn" onclick="switchTab('camera')">相机</button>
+    </div>
+
+    <div class="tab-content">
+      <!-- ═══ Scene Tab ═══ -->
+      <div class="tab-page active" id="tab-scene">
+        <div class="section">
+          <div class="section-title">场景俯视图</div>
+          <div class="scene-topview">
+            <canvas id="topViewCanvas" width="368" height="368"></canvas>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">影棚尺寸</div>
+          <div class="scene-slider">
+            <label>宽度</label>
+            <input type="range" min="4" max="16" step="1" value="8" id="roomWidth" oninput="updateScene()">
+            <span class="val" id="roomWidthVal">8m</span>
+          </div>
+          <div class="scene-slider">
+            <label>深度</label>
+            <input type="range" min="4" max="16" step="1" value="10" id="roomDepth" oninput="updateScene()">
+            <span class="val" id="roomDepthVal">10m</span>
+          </div>
+          <div class="scene-slider">
+            <label>高度</label>
+            <input type="range" min="25" max="50" step="5" value="35" id="roomHeight" oninput="updateScene()">
+            <span class="val" id="roomHeightVal">3.5m</span>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">背景纸/墙</div>
+          <div class="color-row" id="backdropColors"></div>
+          <div class="check-row" style="margin-top:8px;">
+            <input type="checkbox" id="useCyclorama" checked onchange="updateScene()">
+            <span>弧形无缝过渡（Cyclorama）</span>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">地面材质</div>
+          <div class="color-row" id="floorColors"></div>
+        </div>
+      </div>
+
+      <!-- ═══ Model Tab ═══ -->
+      <div class="tab-page" id="tab-model">
+        <div class="section">
+          <div class="section-title">导入模型</div>
+          <div class="model-zone" id="dropZone">
+            <div class="icon">&#128196;</div>
+            <p>点击或拖拽上传模型文件</p>
+            <div class="formats">支持 GLB / glTF / OBJ / FBX / STL</div>
+            <input type="file" id="modelFileInput" accept=".glb,.gltf,.obj,.fbx,.stl" style="display:none" onchange="uploadModel(this.files[0])">
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">已上传模型</div>
+          <div class="model-list" id="modelList">
+            <div style="text-align:center;color:#555;font-size:12px;padding:12px;">暂无模型，请上传</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">预设模型</div>
+          <div class="model-list" id="presetModelList">
+            <div class="model-item active" onclick="selectModelType('mannequin')">
+              <div><div class="name">默认人体代理</div><div class="meta">内置几何体 — 无需上传</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="model-config" id="modelConfig">
+          <div class="section-title">模型调整</div>
+          <div class="config-row">
+            <div class="scene-slider">
+              <label>缩放</label>
+              <input type="range" min="50" max="200" step="5" value="100" id="modelScale" oninput="document.getElementById('modelScaleVal').textContent=this.value+'%'">
+              <span class="val" id="modelScaleVal">100%</span>
+            </div>
+          </div>
+          <div class="config-row">
+            <div class="scene-slider">
+              <label>旋转</label>
+              <input type="range" min="0" max="360" step="5" value="0" id="modelRotation" oninput="document.getElementById('modelRotVal').textContent=this.value+'°'">
+              <span class="val" id="modelRotVal">0°</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Lighting Tab ═══ -->
+      <div class="tab-page" id="tab-lighting">
+        <div class="section">
+          <div class="section-title">灯光预设</div>
+          <div class="preset-grid" id="presetGrid"></div>
+        </div>
+        <div class="section">
+          <div class="section-title">灯光参数</div>
+          <div id="lightControls"></div>
+        </div>
+      </div>
+
+      <!-- ═══ Camera Tab ═══ -->
+      <div class="tab-page" id="tab-camera">
+        <div class="section">
+          <div class="section-title">镜头</div>
+          <div class="slider-group">
+            <div class="slider-label"><span>焦距</span><span class="slider-value" id="focalVal">85mm</span></div>
+            <input type="range" min="24" max="200" value="85" id="focalLength" oninput="document.getElementById('focalVal').textContent=this.value+'mm'">
+            <div class="quick-btns">
+              <button class="quick-btn" onclick="setVal('focalLength',35);document.getElementById('focalVal').textContent='35mm'">35mm</button>
+              <button class="quick-btn" onclick="setVal('focalLength',50);document.getElementById('focalVal').textContent='50mm'">50mm</button>
+              <button class="quick-btn" onclick="setVal('focalLength',85);document.getElementById('focalVal').textContent='85mm'">85mm</button>
+              <button class="quick-btn" onclick="setVal('focalLength',135);document.getElementById('focalVal').textContent='135mm'">135mm</button>
+            </div>
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>光圈</span><span class="slider-value" id="fstopVal">f/2.8</span></div>
+            <input type="range" min="14" max="160" value="28" id="fstop" oninput="document.getElementById('fstopVal').textContent='f/'+(this.value/10).toFixed(1)">
+            <div class="quick-btns">
+              <button class="quick-btn" onclick="setVal('fstop',14);document.getElementById('fstopVal').textContent='f/1.4'">f/1.4</button>
+              <button class="quick-btn" onclick="setVal('fstop',28);document.getElementById('fstopVal').textContent='f/2.8'">f/2.8</button>
+              <button class="quick-btn" onclick="setVal('fstop',56);document.getElementById('fstopVal').textContent='f/5.6'">f/5.6</button>
+              <button class="quick-btn" onclick="setVal('fstop',110);document.getElementById('fstopVal').textContent='f/11'">f/11</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Render bar (always visible at bottom) -->
+    <div class="render-section">
+      <div class="quality-toggle">
+        <div class="quality-opt active" data-q="preview" onclick="setQuality('preview')">预览 (~2s)</div>
+        <div class="quality-opt" data-q="high" onclick="setQuality('high')">高质量 (~15s)</div>
+      </div>
+      <button class="render-btn" id="renderBtn" onclick="startRender()">渲染预览</button>
+    </div>
+  </div>
+
+  <!-- Right: Preview -->
+  <div class="right-panel">
+    <div class="preview-container" id="previewContainer">
+      <div class="preview-placeholder" id="placeholder">
+        <div class="icon">&#9728;</div>
+        <p>配置场景 → 导入模特 → 调整灯光 → 渲染</p>
+      </div>
+      <img id="previewImg" style="display:none" alt="渲染预览">
+      <div class="render-overlay" id="renderOverlay" style="display:none">
+        <div class="spinner"></div>
+        <p id="renderStatus">正在渲染...</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;margin-top:10px;">
+      <button class="download-btn" id="downloadBtn" style="display:none" onclick="downloadImage()">下载图片</button>
+      <span id="renderTimeInfo" style="font-size:11px;color:#666;"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── State ──
+let presets = [], currentPreset = null;
+let lights = [];
+let quality = 'preview';
+let models = [];
+let selectedModelType = 'mannequin'; // 'mannequin' or model id
+let renderPollTimer = null;
+
+const BACKDROP_COLORS = [
+  { id: 'white', color: '#f0f0f0', label: '白' },
+  { id: 'warm_white', color: '#f5ede0', label: '暖白' },
+  { id: 'cool_white', color: '#e0eaf5', label: '冷白' },
+  { id: 'light_gray', color: '#c0c0c0', label: '浅灰' },
+  { id: 'gray', color: '#808080', label: '灰' },
+  { id: 'dark_gray', color: '#404040', label: '深灰' },
+  { id: 'black', color: '#0a0a0a', label: '黑' },
+  { id: 'seamless_blue', color: '#2659a6', label: '蓝' },
+  { id: 'seamless_red', color: '#b32626', label: '红' },
+];
+let backdropColor = 'white';
+
+const FLOOR_COLORS = [
+  { id: 'dark_gray', color: '#262626', label: '深灰' },
+  { id: 'light_gray', color: '#737373', label: '浅灰' },
+  { id: 'white', color: '#e5e5e5', label: '白' },
+  { id: 'wood', color: '#5c3a1e', label: '木色' },
+  { id: 'black', color: '#080808', label: '黑' },
+];
+let floorColor = 'dark_gray';
+
+// ── Init ──
+async function init() {
+  const resp = await fetch('/api/presets');
+  const data = await resp.json();
+  presets = data.presets;
+  renderPresetGrid();
+  selectPreset(presets[0].id);
+  renderBackdropColors();
+  renderFloorColors();
+  loadModels();
+  drawTopView();
+}
+
+// ── Tab ──
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', ['scene','model','lighting','camera'][i]===name));
+  document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if (name === 'scene') setTimeout(drawTopView, 50);
+}
+
+// ── Scene ──
+function renderBackdropColors() {
+  document.getElementById('backdropColors').innerHTML = BACKDROP_COLORS.map(c =>
+    `<div class="color-swatch ${backdropColor===c.id?'active':''}" style="background:${c.color}" title="${c.label}" onclick="setBackdrop('${c.id}')"></div>`
+  ).join('');
+}
+function renderFloorColors() {
+  document.getElementById('floorColors').innerHTML = FLOOR_COLORS.map(c =>
+    `<div class="color-swatch ${floorColor===c.id?'active':''}" style="background:${c.color}" title="${c.label}" onclick="setFloor('${c.id}')"></div>`
+  ).join('');
+}
+function setBackdrop(id) { backdropColor = id; renderBackdropColors(); }
+function setFloor(id) { floorColor = id; renderFloorColors(); }
+
+function updateScene() {
+  document.getElementById('roomWidthVal').textContent = document.getElementById('roomWidth').value + 'm';
+  document.getElementById('roomDepthVal').textContent = document.getElementById('roomDepth').value + 'm';
+  document.getElementById('roomHeightVal').textContent = (document.getElementById('roomHeight').value/10).toFixed(1) + 'm';
+  drawTopView();
+}
+
+function getSceneParams() {
+  return {
+    room_width: +document.getElementById('roomWidth').value,
+    room_depth: +document.getElementById('roomDepth').value,
+    room_height: +document.getElementById('roomHeight').value / 10,
+    backdrop_color: backdropColor,
+    floor_color: floorColor,
+    use_cyclorama: document.getElementById('useCyclorama').checked,
+    resolution_x: 1280,
+    resolution_y: 720,
+  };
+}
+
+// ── Top View ──
+function drawTopView() {
+  const canvas = document.getElementById('topViewCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const rw = +document.getElementById('roomWidth').value;
+  const rd = +document.getElementById('roomDepth').value;
+  const maxDim = Math.max(rw, rd);
+  const scale = (Math.min(W, H) - 40) / maxDim;
+  const cx = W / 2, cy = H / 2;
+
+  // Room outline
+  ctx.strokeStyle = '#3a3a5a';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(cx - rw*scale/2, cy - rd*scale/2, rw*scale, rd*scale);
+
+  // Grid
+  ctx.strokeStyle = '#222240';
+  ctx.lineWidth = 0.5;
+  for (let i = 1; i < Math.floor(maxDim); i++) {
+    const offset = i * scale;
+    ctx.beginPath(); ctx.moveTo(cx - rw*scale/2, cy - rd*scale/2 + offset); ctx.lineTo(cx + rw*scale/2, cy - rd*scale/2 + offset); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx - rw*scale/2 + offset, cy - rd*scale/2); ctx.lineTo(cx - rw*scale/2 + offset, cy + rd*scale/2); ctx.stroke();
+  }
+
+  // Model center
+  ctx.beginPath(); ctx.arc(cx, cy, 6, 0, Math.PI*2);
+  ctx.fillStyle = '#4caf50'; ctx.fill();
+  ctx.fillStyle = '#4caf50'; ctx.font = '10px sans-serif';
+  ctx.fillText('模特', cx + 10, cy + 4);
+
+  // Camera
+  ctx.beginPath(); ctx.arc(cx, cy + rd*scale/2 - 20, 5, 0, Math.PI*2);
+  ctx.fillStyle = '#2196f3'; ctx.fill();
+  ctx.fillStyle = '#2196f3'; ctx.font = '10px sans-serif';
+  ctx.fillText('相机', cx + 8, cy + rd*scale/2 - 16);
+
+  // Lights
+  const lightColors = ['#ffc107', '#ff9800', '#9c27b0', '#00bcd4'];
+  lights.forEach((l, i) => {
+    if (!l.enabled) return;
+    const h = l.h_angle * Math.PI / 180;
+    const d = l.distance * scale;
+    const lx = cx + d * Math.sin(h);
+    const ly = cy - d * Math.cos(h);
+    const c = lightColors[i % lightColors.length];
+
+    // Light beam
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(lx, ly);
+    ctx.strokeStyle = c + '44'; ctx.lineWidth = 1; ctx.stroke();
+
+    // Light dot
+    ctx.beginPath(); ctx.arc(lx, ly, 5, 0, Math.PI*2);
+    ctx.fillStyle = c; ctx.fill();
+
+    // Label
+    ctx.fillStyle = c; ctx.font = '9px sans-serif';
+    ctx.fillText(l.name.split(' ')[0], lx + 8, ly + 3);
+  });
+
+  // Direction labels
+  ctx.fillStyle = '#555'; ctx.font = '10px sans-serif';
+  ctx.fillText('前', cx - 4, cy - rd*scale/2 - 6);
+  ctx.fillText('后', cx - 4, cy + rd*scale/2 + 14);
+  ctx.fillText('左', cx - rw*scale/2 - 20, cy + 4);
+  ctx.fillText('右', cx + rw*scale/2 + 6, cy + 4);
+}
+
+// ── Model Upload ──
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('modelFileInput');
+dropZone.addEventListener('click', () => fileInput.click());
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault(); dropZone.classList.remove('dragover');
+  if (e.dataTransfer.files.length) uploadModel(e.dataTransfer.files[0]);
+});
+
+async function uploadModel(file) {
+  if (!file) return;
+  const ext = '.' + file.name.split('.').pop().toLowerCase();
+  if (!['.glb','.gltf','.obj','.fbx','.stl'].includes(ext)) { alert('不支持的格式'); return; }
+
+  const form = new FormData();
+  form.append('file', file);
+  try {
+    const resp = await fetch('/api/models/upload', { method: 'POST', body: form });
+    const data = await resp.json();
+    if (data.id) {
+      await loadModels();
+      selectModelType(data.id);
+    } else {
+      alert('上传失败: ' + (data.detail || JSON.stringify(data)));
+    }
+  } catch(e) { alert('上传失败: ' + e.message); }
+}
+
+async function loadModels() {
+  try {
+    const resp = await fetch('/api/models');
+    const data = await resp.json();
+    models = data.models;
+    renderModelList();
+  } catch(e) {}
+}
+
+function renderModelList() {
+  const el = document.getElementById('modelList');
+  if (!models.length) {
+    el.innerHTML = '<div style="text-align:center;color:#555;font-size:12px;padding:12px;">暂无模型，请上传</div>';
+    return;
+  }
+  el.innerHTML = models.map(m =>
+    `<div class="model-item ${selectedModelType===m.id?'active':''}" onclick="selectModelType('${m.id}')">
+      <div><div class="name">${m.name}</div><div class="meta">${(m.size/1024).toFixed(0)} KB · ${m.format}</div></div>
+      <button class="del-btn" onclick="event.stopPropagation();deleteModel('${m.id}')" title="删除">&times;</button>
+    </div>`
+  ).join('');
+}
+
+function selectModelType(type) {
+  selectedModelType = type;
+  // Update preset model highlight
+  document.querySelectorAll('#presetModelList .model-item').forEach(el => {
+    el.classList.toggle('active', type === 'mannequin');
+  });
+  renderModelList();
+}
+
+async function deleteModel(id) {
+  if (!confirm('确认删除此模型？')) return;
+  await fetch('/api/models/' + id, { method: 'DELETE' });
+  if (selectedModelType === id) selectModelType('mannequin');
+  await loadModels();
+}
+
+// ── Presets ──
+function renderPresetGrid() {
+  document.getElementById('presetGrid').innerHTML = presets.map(p =>
+    `<div class="preset-btn" data-id="${p.id}" onclick="selectPreset('${p.id}')">
+      <div class="preset-name">${p.name}</div>
+      <div class="preset-desc">${p.description}</div>
+    </div>`
+  ).join('');
+}
+
+function selectPreset(id) {
+  currentPreset = presets.find(p => p.id === id);
+  lights = JSON.parse(JSON.stringify(currentPreset.lights));
+  document.querySelectorAll('.preset-btn').forEach(el => el.classList.toggle('active', el.dataset.id === id));
+  renderLightControls();
+  drawTopView();
+}
+
+// ── Light Controls ──
+function renderLightControls() {
+  document.getElementById('lightControls').innerHTML = lights.map((l, i) =>
+    `<div class="light-card ${l.enabled?'expanded':''}" data-index="${i}">
+      <div class="light-header" onclick="toggleLightCard(${i})">
+        <span class="light-name"><span style="color:${l.enabled?'#4caf50':'#666'}">&#9679;</span> ${l.name}</span>
+        <label class="light-toggle" onclick="event.stopPropagation()">
+          <input type="checkbox" ${l.enabled?'checked':''} onchange="toggleLight(${i},this.checked)">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="light-body">${l.type==='AREA'?areaControls(l,i):spotControls(l,i)}</div>
+    </div>`
+  ).join('');
+}
+
+function areaControls(l,i) {
+  return slider(i,'energy','功率',0,2000,10,l.energy,'W') +
+    slider(i,'color_temp','色温',2800,10000,100,l.color_temp,'K',
+      `<div class="quick-btns">
+        <button class="quick-btn" onclick="setLight(${i},'color_temp',3200)">暖光</button>
+        <button class="quick-btn" onclick="setLight(${i},'color_temp',5500)">日光</button>
+        <button class="quick-btn" onclick="setLight(${i},'color_temp',7000)">冷光</button>
+      </div>`) +
+    slider(i,'h_angle','水平角度',0,360,5,l.h_angle,'°') +
+    slider(i,'v_angle','垂直角度',0,90,5,l.v_angle,'°') +
+    slider(i,'distance','距离',50,600,10,l.distance*100|0,'','/100') +
+    slider(i,'size_x','柔光箱宽',30,300,10,l.size_x*100|0,'cm','/100') +
+    slider(i,'spread','蜂巢角度',30,180,5,l.spread,'°');
+}
+
+function spotControls(l,i) {
+  return slider(i,'energy','功率',0,2000,10,l.energy,'W') +
+    slider(i,'color_temp','色温',2800,10000,100,l.color_temp,'K',
+      `<div class="quick-btns">
+        <button class="quick-btn" onclick="setLight(${i},'color_temp',3200)">暖光</button>
+        <button class="quick-btn" onclick="setLight(${i},'color_temp',5500)">日光</button>
+        <button class="quick-btn" onclick="setLight(${i},'color_temp',7000)">冷光</button>
+      </div>`) +
+    slider(i,'h_angle','水平角度',0,360,5,l.h_angle,'°') +
+    slider(i,'v_angle','垂直角度',0,90,5,l.v_angle,'°') +
+    slider(i,'distance','距离',50,600,10,l.distance*100|0,'','/100') +
+    slider(i,'spot_size','聚光角度',5,90,1,l.spot_size||30,'°') +
+    slider(i,'spot_blend','边缘柔化',0,100,5,(l.spot_blend||0.5)*100|0,'','/100b');
+}
+
+function slider(i,key,label,min,max,step,val,unit,extra,transform) {
+  const dispVal = transform ? val : val;
+  return `<div class="slider-group">
+    <div class="slider-label"><span>${label}</span><span class="slider-value" id="lv_${i}_${key}">${val}${unit}</span></div>
+    <input type="range" min="${min}" max="${max}" step="${step}" value="${val}" oninput="updateLightSlider(${i},'${key}',+this.value,'${unit}','${transform||''}')">
+    ${extra||''}
+  </div>`;
+}
+
+function updateLightSlider(i, key, val, unit, transform) {
+  let realVal = val;
+  if (transform === '/100') realVal = val / 100;
+  else if (transform === '/100b') realVal = val / 100;
+  lights[i][key] = realVal;
+  document.getElementById(`lv_${i}_${key}`).textContent = val + unit;
+  drawTopView();
+}
+
+function setLight(i, key, val) {
+  lights[i][key] = val;
+  renderLightControls();
+  drawTopView();
+}
+
+function toggleLight(i, enabled) { lights[i].enabled = enabled; renderLightControls(); drawTopView(); }
+function toggleLightCard(i) { document.querySelector(`.light-card[data-index="${i}"]`).classList.toggle('expanded'); }
+
+function setVal(id, v) { document.getElementById(id).value = v; }
+
+// ── Quality ──
+function setQuality(q) {
+  quality = q;
+  document.querySelectorAll('.quality-opt').forEach(el => el.classList.toggle('active', el.dataset.q === q));
+}
+
+// ── Render ──
+async function startRender() {
+  const btn = document.getElementById('renderBtn');
+  btn.disabled = true;
+  document.getElementById('renderOverlay').style.display = 'flex';
+  document.getElementById('renderStatus').textContent = '正在提交...';
+
+  const focalLength = +document.getElementById('focalLength').value;
+  const fstop = +document.getElementById('fstop').value / 10;
+  const modelScale = +document.getElementById('modelScale').value / 100;
+  const modelRotation = +document.getElementById('modelRotation').value;
+
+  const modelConfig = selectedModelType === 'mannequin'
+    ? { type: 'mannequin' }
+    : { type: 'import', id: selectedModelType, scale: modelScale, rotation: modelRotation };
+
+  const params = {
+    preset: currentPreset.id,
+    lights: lights,
+    camera: { focal_length: focalLength, f_stop: fstop },
+    scene: getSceneParams(),
+    model: modelConfig,
+    quality: quality,
+  };
+
+  try {
+    const resp = await fetch('/api/render', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(params) });
+    const data = await resp.json();
+    if (data.task_id) pollRenderStatus(data.task_id);
+    else renderError(data.error || 'Unknown error');
+  } catch(e) { renderError('网络错误: ' + e.message); }
+}
+
+function pollRenderStatus(taskId) {
+  document.getElementById('renderStatus').textContent = '渲染中...';
+  if (renderPollTimer) clearInterval(renderPollTimer);
+  renderPollTimer = setInterval(async () => {
+    try {
+      const resp = await fetch(`/api/render/${taskId}/status`);
+      const data = await resp.json();
+      if (data.status === 'done') { clearInterval(renderPollTimer); renderPollTimer = null; renderComplete(data.image_url, data.render_time); }
+      else if (data.status === 'error') { clearInterval(renderPollTimer); renderPollTimer = null; renderError(data.error || '渲染失败'); }
+      else { document.getElementById('renderStatus').textContent = '渲染中... 请耐心等待'; }
+    } catch(e) {}
+  }, 3000);
+}
+
+function renderComplete(imageUrl, renderTime) {
+  document.getElementById('renderOverlay').style.display = 'none';
+  const img = document.getElementById('previewImg');
+  img.src = imageUrl + '?t=' + Date.now();
+  img.style.display = 'block';
+  document.getElementById('placeholder').style.display = 'none';
+  document.getElementById('downloadBtn').style.display = 'inline-block';
+  document.getElementById('renderTimeInfo').textContent = `渲染耗时: ${renderTime}s`;
+  document.getElementById('renderBtn').disabled = false;
+}
+
+function renderError(msg) {
+  document.getElementById('renderOverlay').style.display = 'none';
+  document.getElementById('renderBtn').disabled = false;
+  alert('渲染失败: ' + msg);
+}
+
+function downloadImage() {
+  const img = document.getElementById('previewImg');
+  if (img.src) { const a = document.createElement('a'); a.href = img.src; a.download = 'lighting-render.png'; a.click(); }
+}
+
+// ── Boot ──
+init();
+</script>
+</body>
+</html>

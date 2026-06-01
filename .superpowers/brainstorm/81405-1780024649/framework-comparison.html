@@ -1,0 +1,216 @@
+<h2>前端框架对比预览</h2>
+<p class="subtitle">两种方案对应的管理后台典型视觉效果（以 Ant Design 和 Element Plus 为例）</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">React + Ant Design Pro</div>
+    <div class="mockup-body" style="padding:0;">
+      <div style="display:flex;min-height:380px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;">
+        <!-- Sidebar -->
+        <div style="width:200px;background:#001529;color:#fff;flex-shrink:0;">
+          <div style="padding:16px;font-size:16px;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.1);">
+            <span style="margin-right:6px;">🏢</span> 业务中台
+          </div>
+          <div style="padding:8px 0;">
+            <div style="padding:10px 16px;background:#1890ff;color:#fff;">📊 仪表盘</div>
+            <div style="padding:10px 16px;color:rgba(255,255,255,0.65);">🔀 任务路由</div>
+            <div style="padding:10px 16px;color:rgba(255,255,255,0.65);">💬 群映射</div>
+            <div style="padding:10px 16px;color:rgba(255,255,255,0.65);">👥 用户映射</div>
+            <div style="padding:10px 16px;color:rgba(255,255,255,0.65);">📋 任务监控</div>
+            <div style="padding:10px 16px;color:rgba(255,255,255,0.65);">⚙️ 系统设置</div>
+          </div>
+        </div>
+        <!-- Main -->
+        <div style="flex:1;background:#f0f2f5;">
+          <div style="background:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f0f0f0;">
+            <span style="font-size:18px;font-weight:500;">任务路由配置</span>
+            <div style="display:flex;gap:8px;">
+              <div style="padding:5px 16px;border:1px solid #d9d9d9;border-radius:6px;font-size:13px;">导出</div>
+              <div style="padding:5px 16px;background:#1890ff;color:#fff;border-radius:6px;font-size:13px;">+ 新建路由</div>
+            </div>
+          </div>
+          <div style="padding:24px;">
+            <!-- Stats -->
+            <div style="display:flex;gap:16px;margin-bottom:24px;">
+              <div style="background:#fff;border-radius:8px;padding:20px;flex:1;border:1px solid #f0f0f0;">
+                <div style="color:#8c8c8c;font-size:13px;">活跃路由</div>
+                <div style="font-size:28px;font-weight:600;color:#1890ff;margin-top:4px;">5</div>
+              </div>
+              <div style="background:#fff;border-radius:8px;padding:20px;flex:1;border:1px solid #f0f0f0;">
+                <div style="color:#8c8c8c;font-size:13px;">已注册 Handler</div>
+                <div style="font-size:28px;font-weight:600;color:#52c41a;margin-top:4px;">3</div>
+              </div>
+              <div style="background:#fff;border-radius:8px;padding:20px;flex:1;border:1px solid #f0f0f0;">
+                <div style="color:#8c8c8c;font-size:13px;">今日任务</div>
+                <div style="font-size:28px;font-weight:600;color:#faad14;margin-top:4px;">12</div>
+              </div>
+              <div style="background:#fff;border-radius:8px;padding:20px;flex:1;border:1px solid #f0f0f0;">
+                <div style="color:#8c8c8c;font-size:13px;">错误率</div>
+                <div style="font-size:28px;font-weight:600;color:#f5222d;margin-top:4px;">0.3%</div>
+              </div>
+            </div>
+            <!-- Table -->
+            <div style="background:#fff;border-radius:8px;border:1px solid #f0f0f0;overflow:hidden;">
+              <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                <thead>
+                  <tr style="background:#fafafa;border-bottom:1px solid #f0f0f0;">
+                    <th style="padding:12px 16px;text-align:left;font-weight:500;">Handler</th>
+                    <th style="padding:12px 16px;text-align:left;font-weight:500;">飞书表</th>
+                    <th style="padding:12px 16px;text-align:left;font-weight:500;">平台</th>
+                    <th style="padding:12px 16px;text-align:left;font-weight:500;">目标群</th>
+                    <th style="padding:12px 16px;text-align:left;font-weight:500;">状态</th>
+                    <th style="padding:12px 16px;text-align:left;font-weight:500;">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom:1px solid #f0f0f0;">
+                    <td style="padding:12px 16px;">TastingHandler</td>
+                    <td style="padding:12px 16px;color:#1890ff;">tbl_btr8kx...</td>
+                    <td style="padding:12px 16px;"><span style="background:#e6f7ff;color:#1890ff;padding:2px 8px;border-radius:4px;font-size:12px;">钉钉</span></td>
+                    <td style="padding:12px 16px;">品鉴会通知群</td>
+                    <td style="padding:12px 16px;"><span style="display:inline-block;width:6px;height:6px;background:#52c41a;border-radius:50%;margin-right:6px;"></span>已启用</td>
+                    <td style="padding:12px 16px;color:#1890ff;">编辑 删除</td>
+                  </tr>
+                  <tr style="border-bottom:1px solid #f0f0f0;">
+                    <td style="padding:12px 16px;">RDTaskHandler</td>
+                    <td style="padding:12px 16px;color:#1890ff;">tbl_m9q2pz...</td>
+                    <td style="padding:12px 16px;"><span style="background:#f6ffed;color:#52c41a;padding:2px 8px;border-radius:4px;font-size:12px;">双平台</span></td>
+                    <td style="padding:12px 16px;">研发协作群</td>
+                    <td style="padding:12px 16px;"><span style="display:inline-block;width:6px;height:6px;background:#52c41a;border-radius:50%;margin-right:6px;"></span>已启用</td>
+                    <td style="padding:12px 16px;color:#1890ff;">编辑 删除</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 16px;">StoreOpsHandler</td>
+                    <td style="padding:12px 16px;color:#1890ff;">tbl_k3n7xw...</td>
+                    <td style="padding:12px 16px;"><span style="background:#fff7e6;color:#faad14;padding:2px 8px;border-radius:4px;font-size:12px;">企微</span></td>
+                    <td style="padding:12px 16px;">门店运营群</td>
+                    <td style="padding:12px 16px;"><span style="display:inline-block;width:6px;height:6px;background:#d9d9d9;border-radius:50%;margin-right:6px;"></span><span style="color:#8c8c8c;">已禁用</span></td>
+                    <td style="padding:12px 16px;color:#1890ff;">编辑 删除</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">Vue 3 + Element Plus</div>
+    <div class="mockup-body" style="padding:0;">
+      <div style="display:flex;min-height:380px;font-family:'Helvetica Neue',Helvetica,'PingFang SC',sans-serif;font-size:13px;">
+        <!-- Sidebar -->
+        <div style="width:200px;background:#304156;color:#fff;flex-shrink:0;">
+          <div style="padding:16px;font-size:16px;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.1);">
+            <span style="margin-right:6px;">🏢</span> 业务中台
+          </div>
+          <div style="padding:8px 0;">
+            <div style="padding:10px 16px;background:#409eff;color:#fff;">📊 仪表盘</div>
+            <div style="padding:10px 16px;color:rgba(255,255,255,0.7);">🔀 任务路由</div>
+            <div style="padding:10px 16px;color:rgba(255,255,255,0.7);">💬 群映射</div>
+            <div style="padding:10px 16px;color:rgba(255,255,255,0.7);">👥 用户映射</div>
+            <div style="padding:10px 16px;color:rgba(255,255,255,0.7);">📋 任务监控</div>
+            <div style="padding:10px 16px;color:rgba(255,255,255,0.7);">⚙️ 系统设置</div>
+          </div>
+        </div>
+        <!-- Main -->
+        <div style="flex:1;background:#f5f7fa;">
+          <div style="background:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ebeef5;">
+            <span style="font-size:18px;font-weight:500;">任务路由配置</span>
+            <div style="display:flex;gap:8px;">
+              <div style="padding:5px 16px;border:1px solid #dcdfe6;border-radius:4px;font-size:13px;">导出</div>
+              <div style="padding:5px 16px;background:#409eff;color:#fff;border-radius:4px;font-size:13px;">+ 新建路由</div>
+            </div>
+          </div>
+          <div style="padding:24px;">
+            <!-- Stats -->
+            <div style="display:flex;gap:16px;margin-bottom:24px;">
+              <div style="background:#fff;border-radius:4px;padding:20px;flex:1;border:1px solid #ebeef5;box-shadow:0 2px 4px rgba(0,0,0,0.04);">
+                <div style="color:#909399;font-size:13px;">活跃路由</div>
+                <div style="font-size:28px;font-weight:600;color:#409eff;margin-top:4px;">5</div>
+              </div>
+              <div style="background:#fff;border-radius:4px;padding:20px;flex:1;border:1px solid #ebeef5;box-shadow:0 2px 4px rgba(0,0,0,0.04);">
+                <div style="color:#909399;font-size:13px;">已注册 Handler</div>
+                <div style="font-size:28px;font-weight:600;color:#67c23a;margin-top:4px;">3</div>
+              </div>
+              <div style="background:#fff;border-radius:4px;padding:20px;flex:1;border:1px solid #ebeef5;box-shadow:0 2px 4px rgba(0,0,0,0.04);">
+                <div style="color:#909399;font-size:13px;">今日任务</div>
+                <div style="font-size:28px;font-weight:600;color:#e6a23c;margin-top:4px;">12</div>
+              </div>
+              <div style="background:#fff;border-radius:4px;padding:20px;flex:1;border:1px solid #ebeef5;box-shadow:0 2px 4px rgba(0,0,0,0.04);">
+                <div style="color:#909399;font-size:13px;">错误率</div>
+                <div style="font-size:28px;font-weight:600;color:#f56c6c;margin-top:4px;">0.3%</div>
+              </div>
+            </div>
+            <!-- Table -->
+            <div style="background:#fff;border-radius:4px;border:1px solid #ebeef5;overflow:hidden;box-shadow:0 2px 4px rgba(0,0,0,0.04);">
+              <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                <thead>
+                  <tr style="background:#fafafa;border-bottom:1px solid #ebeef5;">
+                    <th style="padding:12px 16px;text-align:left;font-weight:500;">Handler</th>
+                    <th style="padding:12px 16px;text-align:left;font-weight:500;">飞书表</th>
+                    <th style="padding:12px 16px;text-align:left;font-weight:500;">平台</th>
+                    <th style="padding:12px 16px;text-align:left;font-weight:500;">目标群</th>
+                    <th style="padding:12px 16px;text-align:left;font-weight:500;">状态</th>
+                    <th style="padding:12px 16px;text-align:left;font-weight:500;">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom:1px solid #ebeef5;">
+                    <td style="padding:12px 16px;">TastingHandler</td>
+                    <td style="padding:12px 16px;color:#409eff;">tbl_btr8kx...</td>
+                    <td style="padding:12px 16px;"><span style="background:#ecf5ff;color:#409eff;padding:2px 8px;border-radius:4px;font-size:12px;">钉钉</span></td>
+                    <td style="padding:12px 16px;">品鉴会通知群</td>
+                    <td style="padding:12px 16px;"><span style="display:inline-block;width:6px;height:6px;background:#67c23a;border-radius:50%;margin-right:6px;"></span>已启用</td>
+                    <td style="padding:12px 16px;color:#409eff;">编辑 删除</td>
+                  </tr>
+                  <tr style="border-bottom:1px solid #ebeef5;">
+                    <td style="padding:12px 16px;">RDTaskHandler</td>
+                    <td style="padding:12px 16px;color:#409eff;">tbl_m9q2pz...</td>
+                    <td style="padding:12px 16px;"><span style="background:#f0f9eb;color:#67c23a;padding:2px 8px;border-radius:4px;font-size:12px;">双平台</span></td>
+                    <td style="padding:12px 16px;">研发协作群</td>
+                    <td style="padding:12px 16px;"><span style="display:inline-block;width:6px;height:6px;background:#67c23a;border-radius:50%;margin-right:6px;"></span>已启用</td>
+                    <td style="padding:12px 16px;color:#409eff;">编辑 删除</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 16px;">StoreOpsHandler</td>
+                    <td style="padding:12px 16px;color:#409eff;">tbl_k3n7xw...</td>
+                    <td style="padding:12px 16px;"><span style="background:#fdf6ec;color:#e6a23c;padding:2px 8px;border-radius:4px;font-size:12px;">企微</span></td>
+                    <td style="padding:12px 16px;">门店运营群</td>
+                    <td style="padding:12px 16px;"><span style="display:inline-block;width:6px;height:6px;background:#c0c4cc;border-radius:50%;margin-right:6px;"></span><span style="color:#909399;">已禁用</span></td>
+                    <td style="padding:12px 16px;color:#409eff;">编辑 删除</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:24px;padding:16px;background:#f8f9fa;border-radius:8px;">
+  <h3 style="margin:0 0 8px;font-size:14px;">快速对比</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px;">
+    <div>
+      <strong>React + Ant Design</strong>
+      <ul style="margin:4px 0;padding-left:20px;color:#666;">
+        <li>生态最大，社区资源最多</li>
+        <li>Ant Design Pro 提供完整后台模板</li>
+        <li>TypeScript 支持最成熟</li>
+        <li>学习曲线稍陡</li>
+      </ul>
+    </div>
+    <div>
+      <strong>Vue 3 + Element Plus</strong>
+      <ul style="margin:4px 0;padding-left:20px;color:#666;">
+        <li>上手快，模板语法直观</li>
+        <li>Element Plus 中文文档完善</li>
+        <li>国内企业后台首选</li>
+        <li>Composition API + TS 支持良好</li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+
+# Build output
+dist/
+build/
+
+# Database
+*.db
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+*.env.local
+
+# Logs
+*.log
+.superpowers/
+.claude/
+
+# Node modules (install with npm install)
+中台/node_modules/
+中台/web/node_modules/
+
+# Furniture sprites (generated, can be regenerated)
+中台/web/public/assets/furniture/
+
+# pytest cache
+.pytest_cache/

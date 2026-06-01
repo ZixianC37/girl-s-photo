@@ -1,0 +1,158 @@
+<h2>选择管理后台的主题风格</h2>
+<p class="subtitle">基于 Ant Design 5 Design Token，选择你喜欢的视觉方向</p>
+
+<div class="cards">
+  <div class="card" data-choice="classic" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;min-height:260px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;">
+        <div style="width:160px;background:#001529;color:#fff;flex-shrink:0;">
+          <div style="padding:12px;font-size:14px;font-weight:600;">🏢 中台</div>
+          <div style="padding:8px 12px;background:#1890ff;color:#fff;font-size:12px;">📊 仪表盘</div>
+          <div style="padding:8px 12px;color:rgba(255,255,255,0.65);">🔀 路由</div>
+          <div style="padding:8px 12px;color:rgba(255,255,255,0.65);">👥 用户</div>
+          <div style="padding:8px 12px;color:rgba(255,255,255,0.65);">📋 监控</div>
+        </div>
+        <div style="flex:1;background:#f0f2f5;padding:12px;">
+          <div style="background:#fff;border-radius:6px;padding:12px;margin-bottom:10px;">
+            <div style="font-size:14px;font-weight:500;margin-bottom:8px;">任务路由配置</div>
+            <div style="display:flex;gap:8px;">
+              <div style="background:#e6f7ff;color:#1890ff;padding:2px 8px;border-radius:4px;">钉钉</div>
+              <div style="background:#f6ffed;color:#52c41a;padding:2px 8px;border-radius:4px;">双平台</div>
+              <div style="background:#fff7e6;color:#faad14;padding:2px 8px;border-radius:4px;">企微</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <div style="background:#fff;border-radius:6px;padding:10px;flex:1;text-align:center;">
+              <div style="color:#8c8c8c;">路由</div>
+              <div style="font-size:20px;font-weight:600;color:#1890ff;">5</div>
+            </div>
+            <div style="background:#fff;border-radius:6px;padding:10px;flex:1;text-align:center;">
+              <div style="color:#8c8c8c;">Handler</div>
+              <div style="font-size:20px;font-weight:600;color:#52c41a;">3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. 经典企业蓝</h3>
+      <p>Ant Design 默认风格，深色侧边栏 + 蓝色强调色。专业稳重，适合企业内部系统</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="dark" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;min-height:260px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;">
+        <div style="width:160px;background:#141414;color:#fff;flex-shrink:0;">
+          <div style="padding:12px;font-size:14px;font-weight:600;">🏢 中台</div>
+          <div style="padding:8px 12px;background:#1668dc;color:#fff;font-size:12px;">📊 仪表盘</div>
+          <div style="padding:8px 12px;color:rgba(255,255,255,0.55);">🔀 路由</div>
+          <div style="padding:8px 12px;color:rgba(255,255,255,0.55);">👥 用户</div>
+          <div style="padding:8px 12px;color:rgba(255,255,255,0.55);">📋 监控</div>
+        </div>
+        <div style="flex:1;background:#1a1a1a;padding:12px;">
+          <div style="background:#242424;border-radius:6px;padding:12px;margin-bottom:10px;border:1px solid #303030;">
+            <div style="font-size:14px;font-weight:500;margin-bottom:8px;color:#fff;">任务路由配置</div>
+            <div style="display:flex;gap:8px;">
+              <div style="background:#111d2c;color:#1668dc;padding:2px 8px;border-radius:4px;">钉钉</div>
+              <div style="background:#162312;color:#49aa19;padding:2px 8px;border-radius:4px;">双平台</div>
+              <div style="background:#1e1a0e;color:#d89614;padding:2px 8px;border-radius:4px;">企微</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <div style="background:#242424;border-radius:6px;padding:10px;flex:1;text-align:center;border:1px solid #303030;">
+              <div style="color:#8b8b8b;">路由</div>
+              <div style="font-size:20px;font-weight:600;color:#1668dc;">5</div>
+            </div>
+            <div style="background:#242424;border-radius:6px;padding:10px;flex:1;text-align:center;border:1px solid #303030;">
+              <div style="color:#8b8b8b;">Handler</div>
+              <div style="font-size:20px;font-weight:600;color:#49aa19;">3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. 暗色主题</h3>
+      <p>深色背景，低对比度柔和配色。科技感强，适合长时间使用，护眼</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="warm" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;min-height:260px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;">
+        <div style="width:160px;background:#2b1a0e;color:#fff;flex-shrink:0;">
+          <div style="padding:12px;font-size:14px;font-weight:600;">🏢 中台</div>
+          <div style="padding:8px 12px;background:#d46b08;color:#fff;font-size:12px;">📊 仪表盘</div>
+          <div style="padding:8px 12px;color:rgba(255,255,255,0.65);">🔀 路由</div>
+          <div style="padding:8px 12px;color:rgba(255,255,255,0.65);">👥 用户</div>
+          <div style="padding:8px 12px;color:rgba(255,255,255,0.65);">📋 监控</div>
+        </div>
+        <div style="flex:1;background:#faf6f1;padding:12px;">
+          <div style="background:#fff;border-radius:8px;padding:12px;margin-bottom:10px;border:1px solid #efe0d0;">
+            <div style="font-size:14px;font-weight:500;margin-bottom:8px;color:#612f0a;">任务路由配置</div>
+            <div style="display:flex;gap:8px;">
+              <div style="background:#fff7e6;color:#d46b08;padding:2px 8px;border-radius:4px;">钉钉</div>
+              <div style="background:#f6ffed;color:#52c41a;padding:2px 8px;border-radius:4px;">双平台</div>
+              <div style="background:#e6f7ff;color:#1890ff;padding:2px 8px;border-radius:4px;">企微</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <div style="background:#fff;border-radius:8px;padding:10px;flex:1;text-align:center;border:1px solid #efe0d0;">
+              <div style="color:#a0785a;">路由</div>
+              <div style="font-size:20px;font-weight:600;color:#d46b08;">5</div>
+            </div>
+            <div style="background:#fff;border-radius:8px;padding:10px;flex:1;text-align:center;border:1px solid #efe0d0;">
+              <div style="color:#a0785a;">Handler</div>
+              <div style="font-size:20px;font-weight:600;color:#52c41a;">3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. 暖色调</h3>
+      <p>橙色/棕色暖色系，亲和力强。适合创意行业（写真），温暖不冷淡</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="compact" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;min-height:260px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;">
+        <div style="width:50px;background:#fff;color:#333;flex-shrink:0;border-right:1px solid #e8e8e8;display:flex;flex-direction:column;align-items:center;padding-top:12px;gap:14px;">
+          <div style="width:28px;height:28px;background:#722ed1;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;">📊</div>
+          <div style="width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px;">🔀</div>
+          <div style="width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px;">👥</div>
+          <div style="width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px;">📋</div>
+        </div>
+        <div style="flex:1;background:#f9f0ff;padding:10px;">
+          <div style="background:#fff;border-radius:8px;padding:10px;margin-bottom:8px;">
+            <div style="font-size:13px;font-weight:500;margin-bottom:6px;color:#22075e;">任务路由配置</div>
+            <div style="display:flex;gap:6px;">
+              <div style="background:#f9f0ff;color:#722ed1;padding:1px 6px;border-radius:4px;font-size:11px;">钉钉</div>
+              <div style="background:#f6ffed;color:#52c41a;padding:1px 6px;border-radius:4px;font-size:11px;">双平台</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <div style="background:linear-gradient(135deg,#722ed1,#b37feb);border-radius:8px;padding:8px;flex:1;text-align:center;color:#fff;">
+              <div style="opacity:0.8;font-size:11px;">路由</div>
+              <div style="font-size:18px;font-weight:600;">5</div>
+            </div>
+            <div style="background:linear-gradient(135deg,#13c2c2,#36cfc9);border-radius:8px;padding:8px;flex:1;text-align:center;color:#fff;">
+              <div style="opacity:0.8;font-size:11px;">Handler</div>
+              <div style="font-size:18px;font-weight:600;">3</div>
+            </div>
+            <div style="background:linear-gradient(135deg,#eb2f96,#f759ab);border-radius:8px;padding:8px;flex:1;text-align:center;color:#fff;">
+              <div style="opacity:0.8;font-size:11px;">任务</div>
+              <div style="font-size:18px;font-weight:600;">12</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>D. 紧凑紫</h3>
+      <p>图标侧边栏 + 紫色渐变。现代感强，空间利用率高，适合多页面切换</p>
+    </div>
+  </div>
+</div>

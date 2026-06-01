@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>写真产品研发子任务拆解清单</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #f5f5f7;
+    color: #1d1d1f;
+    padding: 40px 20px;
+  }
+  .container { max-width: 800px; margin: 0 auto; }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #86868b;
+    font-size: 14px;
+    margin-bottom: 32px;
+  }
+
+  .phase {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .phase-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .phase-header h2 { font-size: 17px; font-weight: 600; }
+  .phase-header .phase-desc { font-size: 13px; color: #86868b; margin-left: auto; }
+
+  .task {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .task:last-child { border-bottom: none; }
+
+  .task-check {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .check-btn {
+    width: 48px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1.5px solid #d2d2d7;
+    background: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: #86868b;
+  }
+  .check-btn:hover { border-color: #aaa; }
+  .check-btn.yes-active { background: #34c759; border-color: #34c759; color: #fff; }
+  .check-btn.no-active { background: #ff3b30; border-color: #ff3b30; color: #fff; }
+
+  .task-body h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .task-body p { font-size: 13px; color: #86868b; line-height: 1.5; }
+  .task-body .task-tags { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+  .task-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: #f5f5f7;
+    color: #86868b;
+  }
+
+  /* Phase colors */
+  .p1 .phase-num { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .p2 .phase-num { background: linear-gradient(135deg, #f093fb, #f5576c); }
+  .p3 .phase-num { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+  .p4 .phase-num { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #1a3a2a; }
+  .p5 .phase-num { background: linear-gradient(135deg, #f7971e, #ffd200); color: #3a2a1a; }
+  .p6 .phase-num { background: linear-gradient(135deg, #667eea, #764ba2); }
+
+  .footer {
+    text-align: center;
+    margin-top: 32px;
+    color: #86868b;
+    font-size: 13px;
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    .phase { box-shadow: none; border: 1px solid #e5e5e5; }
+    .check-btn { border: 1.5px solid #333; }
+    .check-btn.yes-active { background: #34c759 !important; }
+    .check-btn.no-active { background: #ff3b30 !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>写真产品研发 · 子任务拆解清单</h1>
+  <p class="subtitle">前提：选题已明确 ｜ 请逐项确认 Yes / No</p>
+
+  <!-- Phase 1 -->
+  <div class="phase p1">
+    <div class="phase-header">
+      <div class="phase-num">1</div>
+      <h2>灵感收集</h2>
+      <span class="phase-desc">围绕选题采集参考素材</span>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>风格趋势收集</h3>
+        <p>收集当前流行风格趋势（如小红书、Instagram、Pinterest 等平台的热门风格）</p>
+        <div class="task-tags"><span class="task-tag">平台趋势</span><span class="task-tag">风格风向</span></div>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>竞品产品分析</h3>
+        <p>分析同行业竞品近期上新的产品方案、风格、定价、反馈情况</p>
+        <div class="task-tags"><span class="task-tag">竞品对标</span><span class="task-tag">市场情报</span></div>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>参考图/情绪板素材收集</h3>
+        <p>围绕选题方向收集具体的参考图片、色彩搭配、氛围参考</p>
+        <div class="task-tags"><span class="task-tag">参考图</span><span class="task-tag">情绪板</span></div>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>用户偏好数据整理</h3>
+        <p>整理该选题方向历史产品的用户反馈、销售数据、复购数据</p>
+        <div class="task-tags"><span class="task-tag">用户反馈</span><span class="task-tag">数据归因</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 2 -->
+  <div class="phase p2">
+    <div class="phase-header">
+      <div class="phase-num">2</div>
+      <h2>灵感创作</h2>
+      <span class="phase-desc">将素材转化为设计方案</span>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>情绪板制作</h3>
+        <p>基于收集的素材，制作统一的情绪板，明确整体风格调性</p>
+        <div class="task-tags"><span class="task-tag">风格定调</span><span class="task-tag">视觉锚点</span></div>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>色彩方案确定</h3>
+        <p>确定主色调、辅助色、对比色方案</p>
+        <div class="task-tags"><span class="task-tag">色彩体系</span></div>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>构图与拍摄方案初稿</h3>
+        <p>确定主要拍摄构图方向、人物姿态参考、景别规划</p>
+        <div class="task-tags"><span class="task-tag">构图</span><span class="task-tag">拍摄方案</span></div>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>整体方案评审</h3>
+        <p>情绪板 + 色彩 + 构图方案汇总，内部评审通过后进入下一阶段</p>
+        <div class="task-tags"><span class="task-tag">评审</span><span class="task-tag">方案定稿</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 3 -->
+  <div class="phase p3">
+    <div class="phase-header">
+      <div class="phase-num">3</div>
+      <h2>服装风格选择</h2>
+      <span class="phase-desc">确定服装搭配方案</span>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>服装款式筛选</h3>
+        <p>根据风格方案筛选合适的服装款式（自有库 / 外采 / 定制）</p>
+        <div class="task-tags"><span class="task-tag">款式</span><span class="task-tag">服装来源</span></div>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>服装色彩搭配</h3>
+        <p>确保服装色彩与整体色彩方案、场景风格协调</p>
+        <div class="task-tags"><span class="task-tag">色彩协调</span></div>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>配饰搭配方案</h3>
+        <p>帽子、首饰、包包等配饰的选择与搭配</p>
+        <div class="task-tags"><span class="task-tag">配饰</span><span class="task-tag">细节</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 4 -->
+  <div class="phase p4">
+    <div class="phase-header">
+      <div class="phase-num">4</div>
+      <h2>场景布置风格</h2>
+      <span class="phase-desc">确定拍摄场景与氛围</span>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>场景风格确定</h3>
+        <p>确定场景类型（实景/棚拍/户外）、风格基调（温馨/冷调/复古等）</p>
+        <div class="task-tags"><span class="task-tag">场景类型</span><span class="task-tag">风格基调</span></div>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>背景与道具选择</h3>
+        <p>背景布/背景纸选择、装饰道具、花草等元素搭配</p>
+        <div class="task-tags"><span class="task-tag">背景</span><span class="task-tag">道具</span></div>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>灯光方案设计</h3>
+        <p>确定灯光布局、色温、光比，配合场景氛围营造</p>
+        <div class="task-tags"><span class="task-tag">灯光</span><span class="task-tag">光效</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 5 -->
+  <div class="phase p5">
+    <div class="phase-header">
+      <div class="phase-num">5</div>
+      <h2>妆造方案</h2>
+      <span class="phase-desc">确定妆容与发型</span>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>妆容风格确定</h3>
+        <p>根据整体风格方案确定妆容方向（甜美/清冷/复古/韩系等）</p>
+        <div class="task-tags"><span class="task-tag">妆容风格</span></div>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>发型方案确定</h3>
+        <p>确定发型、发饰搭配，与服装及场景风格统一</p>
+        <div class="task-tags"><span class="task-tag">发型</span><span class="task-tag">整体协调</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 6 -->
+  <div class="phase p6">
+    <div class="phase-header">
+      <div class="phase-num">6</div>
+      <h2>后期风格定义</h2>
+      <span class="phase-desc">确定后期调色与修图方向</span>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>调色风格预设</h3>
+        <p>确定后期调色方向，输出色彩预设/LUT参考</p>
+        <div class="task-tags"><span class="task-tag">调色</span><span class="task-tag">LUT</span></div>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-check">
+        <button class="check-btn" onclick="toggle(this,'yes')">Yes</button>
+        <button class="check-btn" onclick="toggle(this,'no')">No</button>
+      </div>
+      <div class="task-body">
+        <h3>修图标准确定</h3>
+        <p>确定磨皮程度、液化标准、肤色处理等修图规范</p>
+        <div class="task-tags"><span class="task-tag">修图规范</span><span class="task-tag">质量标准</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">写真产品研发流程 · 子任务拆解 · Yes/No 确认清单</div>
+</div>
+
+<script>
+function toggle(btn, type) {
+  const row = btn.parentElement;
+  const buttons = row.querySelectorAll('.check-btn');
+  buttons.forEach(b => b.classList.remove('yes-active', 'no-active'));
+  btn.classList.add(type === 'yes' ? 'yes-active' : 'no-active');
+}
+</script>
+</body>
+</html>

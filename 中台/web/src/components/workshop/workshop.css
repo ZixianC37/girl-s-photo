@@ -1,0 +1,52 @@
+/* Workshop scene layout */
+.ws-scene {
+  display: flex;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+}
+
+.ws-scene canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Member panel */
+.ws-member-panel {
+  width: 220px;
+  overflow-y: auto;
+  max-height: 520px;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(8px);
+  border-left: 1px solid rgba(255,255,255,0.08);
+}
+
+.ws-member-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.2s, opacity 0.2s;
+}
+.ws-member-item:hover { background: rgba(255,255,255,0.06); }
+.ws-member-item.selected {
+  background: rgba(24,144,255,0.12);
+  border-left: 2px solid #1890ff;
+}
+.ws-member-item.dimmed { opacity: 0.25; }
+
+.ws-member-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  flex-shrink: 0;
+}

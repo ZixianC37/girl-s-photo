@@ -1,0 +1,9 @@
+# 飞书原始数据（可能含敏感信息）
+data/*.csv
+data/*.xlsx
+data/*.xls
+data/*.json
+# Python
+__pycache__/
+*.pyc
+.venv/

@@ -1,0 +1,135 @@
+<h2>前端管理后台原型</h2>
+<p class="subtitle">配置任务路由 · 监控任务状态</p>
+
+<!-- Nav -->
+<div class="mockup">
+  <div class="mockup-header">管理后台 — 业务中台</div>
+  <div class="mockup-body" style="padding: 0;">
+
+    <div style="display: flex;">
+      <!-- Sidebar -->
+      <div style="width: 180px; background: rgba(0,0,0,0.2); padding: 16px 12px; flex-shrink: 0;">
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">配置</div>
+        <div style="padding: 8px 10px; border-radius: 6px; background: rgba(102,126,234,0.2); color: #a78bfa; font-size: 13px; margin-bottom: 4px;">任务路由</div>
+        <div style="padding: 8px 10px; border-radius: 6px; color: rgba(255,255,255,0.5); font-size: 13px; margin-bottom: 4px;">群映射</div>
+        <div style="padding: 8px 10px; border-radius: 6px; color: rgba(255,255,255,0.5); font-size: 13px; margin-bottom: 4px;">用户映射</div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 12px;">监控</div>
+        <div style="padding: 8px 10px; border-radius: 6px; color: rgba(255,255,255,0.5); font-size: 13px; margin-bottom: 4px;">任务列表</div>
+        <div style="padding: 8px 10px; border-radius: 6px; color: rgba(255,255,255,0.5); font-size: 13px; margin-bottom: 4px;">执行日志</div>
+      </div>
+
+      <!-- Main Content -->
+      <div style="flex: 1; padding: 20px;">
+
+        <h3 style="margin-bottom: 16px;">任务路由配置</h3>
+
+        <!-- Route Table -->
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+            <thead>
+              <tr style="background: rgba(255,255,255,0.05);">
+                <th style="padding: 10px 14px; text-align: left; color: rgba(255,255,255,0.5); font-weight: 500;">Handler</th>
+                <th style="padding: 10px 14px; text-align: left; color: rgba(255,255,255,0.5); font-weight: 500;">飞书表</th>
+                <th style="padding: 10px 14px; text-align: left; color: rgba(255,255,255,0.5); font-weight: 500;">触达平台</th>
+                <th style="padding: 10px 14px; text-align: left; color: rgba(255,255,255,0.5); font-weight: 500;">目标群</th>
+                <th style="padding: 10px 14px; text-align: left; color: rgba(255,255,255,0.5); font-weight: 500;">状态</th>
+                <th style="padding: 10px 14px; text-align: right; color: rgba(255,255,255,0.5); font-weight: 500;">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 10px 14px; color: #f9a8d4; font-weight: 500;">品鉴会 Handler</td>
+                <td style="padding: 10px 14px; color: rgba(255,255,255,0.7);">tbl_tasting_2024</td>
+                <td style="padding: 10px 14px;"><span style="background: rgba(79,172,254,0.15); color: #67e8f9; padding: 2px 8px; border-radius: 4px; font-size: 11px;">钉钉</span> <span style="background: rgba(52,199,89,0.15); color: #34c759; padding: 2px 8px; border-radius: 4px; font-size: 11px;">企微</span></td>
+                <td style="padding: 10px 14px; color: rgba(255,255,255,0.7);">品鉴会通知群</td>
+                <td style="padding: 10px 14px;"><span style="color: #34c759;">● 已启用</span></td>
+                <td style="padding: 10px 14px; text-align: right; color: #a78bfa; cursor: pointer;">配置</td>
+              </tr>
+              <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 10px 14px; color: #a78bfa; font-weight: 500;">产品研发 Handler</td>
+                <td style="padding: 10px 14px; color: rgba(255,255,255,0.7);">tbl_rd_tasks</td>
+                <td style="padding: 10px 14px;"><span style="background: rgba(79,172,254,0.15); color: #67e8f9; padding: 2px 8px; border-radius: 4px; font-size: 11px;">钉钉</span></td>
+                <td style="padding: 10px 14px; color: rgba(255,255,255,0.7);">研发协作群</td>
+                <td style="padding: 10px 14px;"><span style="color: #34c759;">● 已启用</span></td>
+                <td style="padding: 10px 14px; text-align: right; color: #a78bfa; cursor: pointer;">配置</td>
+              </tr>
+              <tr style="border-top: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 10px 14px; color: rgba(255,255,255,0.5); font-weight: 500;">门店巡检 Handler</td>
+                <td style="padding: 10px 14px; color: rgba(255,255,255,0.4);">—</td>
+                <td style="padding: 10px 14px;"><span style="background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.3); padding: 2px 8px; border-radius: 4px; font-size: 11px;">未配置</span></td>
+                <td style="padding: 10px 14px; color: rgba(255,255,255,0.4);">—</td>
+                <td style="padding: 10px 14px;"><span style="color: rgba(255,255,255,0.3);">○ 未启用</span></td>
+                <td style="padding: 10px 14px; text-align: right; color: #a78bfa; cursor: pointer;">配置</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="margin-top: 16px; display: flex; gap: 10px;">
+          <div class="mock-button" style="background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-size: 13px; cursor: pointer;">+ 添加路由</div>
+        </div>
+
+        <!-- Config Detail Panel -->
+        <div style="margin-top: 24px; background: rgba(102,126,234,0.06); border: 1px solid rgba(102,126,234,0.15); border-radius: 10px; padding: 18px;">
+          <div style="font-size: 14px; font-weight: 600; color: #f9a8d4; margin-bottom: 14px;">品鉴会 Handler — 字段映射配置</div>
+          <div style="display: grid; grid-template-columns: 1fr 40px 1fr; gap: 10px; align-items: center; font-size: 13px;">
+            <div style="color: rgba(255,255,255,0.5); text-align: right;">飞书字段</div>
+            <div></div>
+            <div style="color: rgba(255,255,255,0.5);">任务参数</div>
+
+            <div style="background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 6px; color: rgba(255,255,255,0.8);">任务标题</div>
+            <div style="text-align: center; color: rgba(255,255,255,0.3);">→</div>
+            <div style="background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 6px; color: rgba(255,255,255,0.8);">task_title</div>
+
+            <div style="background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 6px; color: rgba(255,255,255,0.8);">参会人列表</div>
+            <div style="text-align: center; color: rgba(255,255,255,0.3);">→</div>
+            <div style="background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 6px; color: rgba(255,255,255,0.8);">participants</div>
+
+            <div style="background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 6px; color: rgba(255,255,255,0.8);">截止时间</div>
+            <div style="text-align: center; color: rgba(255,255,255,0.3);">→</div>
+            <div style="background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 6px; color: rgba(255,255,255,0.8);">deadline</div>
+
+            <div style="background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 6px; color: rgba(255,255,255,0.8);">材料要求</div>
+            <div style="text-align: center; color: rgba(255,255,255,0.3);">→</div>
+            <div style="background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 6px; color: rgba(255,255,255,0.8);">requirements</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<h3 style="margin-top: 24px;">前端后台包含 4 个核心页面</h3>
+
+<div class="options">
+  <div class="option" data-choice="nav" onclick="toggleSelect(this)">
+    <div class="letter">1</div>
+    <div class="content">
+      <h3>任务路由配置</h3>
+      <p>Handler ↔ 飞书表映射、触达平台选择、目标群配置、字段映射</p>
+    </div>
+  </div>
+  <div class="option" data-choice="group" onclick="toggleSelect(this)">
+    <div class="letter">2</div>
+    <div class="content">
+      <h3>群映射管理</h3>
+      <p>钉钉群/企微群的 ID 管理，群名称与群 ID 的对应关系</p>
+    </div>
+  </div>
+  <div class="option" data-choice="user" onclick="toggleSelect(this)">
+    <div class="letter">3</div>
+    <div class="content">
+      <h3>用户映射管理</h3>
+      <p>飞书 ↔ 钉钉/企微用户 ID 映射，同步状态，手动补充</p>
+    </div>
+  </div>
+  <div class="option" data-choice="monitor" onclick="toggleSelect(this)">
+    <div class="letter">4</div>
+    <div class="content">
+      <h3>任务监控 & 日志</h3>
+      <p>任务执行状态看板、消息发送记录、错误日志、催办记录</p>
+    </div>
+  </div>
+</div>
