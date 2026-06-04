@@ -44,7 +44,7 @@ const BRAND_COLORS = {
   '甜熊': '#f59e0b',
 };
 
-const NEW_PRODUCT_DAYS = 90;
+export const NEW_PRODUCT_DAYS = 90;
 
 const HEAT_COLORS = {
   high: '#ef4444',
