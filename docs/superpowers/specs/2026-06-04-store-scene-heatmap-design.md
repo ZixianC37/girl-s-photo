@@ -29,8 +29,9 @@
 |--------|------|------|
 | 视角 | 门店视角（MVP） | 先解决最核心的"门店看到自己场景状态"的需求 |
 | 热力逻辑 | 直接展示业务数据 | 先不定义堵景算法，让数据说话 |
-| 平台 | 飞书多维表（数据）+ 独立网页（展示） | 先做出来看效果，嵌入方式后定 |
-| 技术方案 | ECharts + 飞书 Bitable API | 最轻量，3-5天可完成 |
+| 平台 | 飞书企业自建应用（热力图）+ 多维表仪表盘按钮跳转 | 用户从仪表盘点击按钮跳转到热力图应用 |
+| 技术方案 | ECharts + 飞书 Bitable API（前端直接调用） | 不需要中台代理，飞书应用内置认证 |
+| 入口 | 多维表仪表盘加一个"查看场景热力图"按钮 | 点击跳转到飞书应用内的热力图页面 |
 | 场景范围 | 5家已细分场景的门店 | 麦芽岛滨江和甜熊余杭只有1个选项，第一版跳过 |
 
 ## 数据源
@@ -148,107 +149,113 @@
 ### 架构图
 
 ```
-┌─────────────────────────────┐
-│  前端 HTML 页面               │
-│  ┌─────────────────────────┐│
-│  │ ECharts 热力图组件       ││
-│  │ + 场景卡片网格           ││
-│  │ + 筛选器 + 详情弹窗      ││
-│  └─────────────────────────┘│
-└──────────────┬──────────────┘
-               │ HTTPS
-┌──────────────▼──────────────┐
-│  中台 API 代理               │
-│  （现有中台项目 FastAPI）     │
-│  - 存储 tenant_access_token  │
-│  - 代理 Bitable API 请求     │
-│  - 数据聚合计算              │
-└──────────────┬──────────────┘
-               │ HTTPS
-┌──────────────▼──────────────┐
-│  飞书 Bitable REST API       │
-│  执行output 表 (2133条)      │
-│  影棚汇总表 (3张)            │
-└─────────────────────────────┘
+┌─────────────────────────────────────────┐
+│  用户入口                                │
+│  ┌────────────────┐   ┌──────────────┐  │
+│  │ 飞书多维表       │   │ 飞书工作台    │  │
+│  │ 仪表盘视图       │   │ 企业应用入口  │  │
+│  │ [热力图按钮] ────┼──→│ 场景热力图   │  │
+│  └────────────────┘   └──────┬───────┘  │
+└───────────────────────────────┼─────────┘
+                                │
+┌───────────────────────────────▼─────────┐
+│  飞书企业自建应用（H5 网页应用）           │
+│  ┌─────────────────────────────────────┐│
+│  │ 前端页面 (HTML/JS/CSS + ECharts)     ││
+│  │ - 门店选择 + 筛选器                   ││
+│  │ - 场景热力图卡片网格                   ││
+│  │ - 场景详情弹窗                        ││
+│  │ - 飞书 JS-SDK 自动获取认证             ││
+│  └─────────────────────────────────────┘│
+└───────────────────────────────┬─────────┘
+                                │ 飞书 JS-SDK 内置认证
+┌───────────────────────────────▼─────────┐
+│  飞书 Bitable REST API                   │
+│  执行output 表 (2133条记录)              │
+│  影棚汇总表 (3张)                        │
+└─────────────────────────────────────────┘
 ```
+
+### 关键变化：不需要中台代理
+飞书企业自建应用通过 JS-SDK 自动获取认证（tenant_access_token），前端可以直接调用 Bitable API，不需要额外的后端服务。
 
 ### 技术栈
 
-- 前端：HTML + JavaScript + ECharts（CDN）
-- 后端：Python FastAPI（现有中台项目）
-- 数据源：飞书 Bitable REST API
-- 部署：先本地运行，后续嵌入飞书
+- 前端：HTML + JavaScript + ECharts（CDN）+ 飞书 JS-SDK
+- 后端：**不需要**（飞书应用内置认证）
+- 数据源：飞书 Bitable REST API（前端直接调用）
+- 部署：飞书云开发平台托管 或 静态托管
+- 入口：多维表仪表盘按钮 + 飞书工作台应用图标
 
 ### API 数据流
 
-1. 前端请求中台 API `/api/heatmap/{store_id}`
-2. 中台从飞书 Bitable API 拉取执行output表数据（分页5次）
-3. 中台做聚合计算：按门店→场景分组，统计使用次数、产品数、上新数
-4. 返回聚合后的 JSON 给前端
-5. 前端用 ECharts 渲染热力图
+1. 用户从仪表盘点击"查看场景热力图"按钮（或从工作台打开应用）
+2. 飞书 JS-SDK 自动获取认证凭证
+3. 前端直接调用 Bitable API 拉取执行output表数据（分页5次）
+4. 前端做聚合计算：按门店→场景分组，统计使用次数、产品数、上新数
+5. ECharts 渲染热力图
 
 ### 关键代码逻辑
 
-```python
-# 伪代码：中台聚合逻辑
-def aggregate_scene_data(records, store_field_name):
-    scenes = {}
-    for record in records:
-        # 处理单选/多选差异
-        scene_values = record.fields.get(store_field_name)
-        if isinstance(scene_values, str):
-            scene_values = [scene_values]
-        
-        for scene in scene_values:
-            if scene not in scenes:
-                scenes[scene] = {
-                    "product_count": 0,
-                    "new_products": 0,
-                    "status_dist": {"已上架": 0, "待上架": 0, "已下架": 0},
-                }
-            scenes[scene]["product_count"] += 1
-            # 判断是否上新品（3个月内）
-            if is_new_product(record):
-                scenes[scene]["new_products"] += 1
-            # 统计状态
-            status = record.fields.get("小程序端", "")
-            if "已上架" in status:
-                scenes[scene]["status_dist"]["已上架"] += 1
-            elif "待上架" in status:
-                scenes[scene]["status_dist"]["待上架"] += 1
-            elif "已下架" in status:
-                scenes[scene]["status_dist"]["已下架"] += 1
-    
-    # 合并影棚汇总表的使用次数
-    # ...
-    return scenes
+```javascript
+// 伪代码：前端聚合逻辑（飞书 JS-SDK 获取认证后直接调用）
+async function fetchAndAggregate(storeFieldName) {
+  // 1. 分页拉取执行output表全部记录
+  const allRecords = await fetchAllRecords(APP_TOKEN, TABLE_ID);
+
+  // 2. 按场景聚合
+  const scenes = {};
+  for (const record of allRecords) {
+    let sceneValues = record.fields[storeFieldName];
+    // 处理单选/多选差异
+    if (typeof sceneValues === 'string') sceneValues = [sceneValues];
+    if (!Array.isArray(sceneValues)) continue;
+
+    for (const scene of sceneValues) {
+      if (!scenes[scene]) {
+        scenes[scene] = { productCount: 0, newProducts: 0,
+          statusDist: { '已上架': 0, '待上架': 0, '已下架': 0 } };
+      }
+      scenes[scene].productCount++;
+      if (isNewProduct(record)) scenes[scene].newProducts++;
+      const status = record.fields['小程序端'] || '';
+      if (status.includes('已上架')) scenes[scene].statusDist['已上架']++;
+      else if (status.includes('待上架')) scenes[scene].statusDist['待上架']++;
+      else if (status.includes('已下架')) scenes[scene].statusDist['已下架']++;
+    }
+  }
+  return scenes;
+}
 ```
 
 ## 实施步骤
 
-### 第一步：搭建飞书应用 + API 验证（1天）
+### 第一步：搭建飞书企业自建应用（0.5天）
 1. 飞书开放平台创建企业自建应用
-2. 申请 bitable:app 权限
-3. 获取 app_token 和 table_id
-4. 验证 API 可通
+2. 申请 bitable:app 读写权限
+3. 配置 H5 网页应用（首页 URL 指向热力图页面）
+4. 获取 app_id、app_secret
+5. 发布应用到工作台（内部企业应用免审核）
 
-### 第二步：中台 API 开发（1-2天）
-1. 中台项目新增热力图 API 路由
-2. 实现 Bitable API 代理（认证 + 分页拉取）
-3. 实现场景数据聚合逻辑
-4. 返回结构化 JSON
+### 第二步：前端热力图开发（2-3天）
+1. 创建 HTML 页面，引入飞书 JS-SDK + ECharts CDN
+2. 实现 JS-SDK 认证 + Bitable API 分页拉取
+3. 实现场景数据聚合逻辑（处理单选/多选）
+4. 实现场景卡片网格布局 + 热力颜色
+5. 实现门店切换和品牌筛选
+6. 实现场景详情弹窗（产品列表）
+7. 本地测试验证
 
-### 第三步：前端热力图开发（1-2天）
-1. 创建 HTML 页面，引入 ECharts CDN
-2. 实现场景卡片网格布局
-3. 实现门店切换和筛选
-4. 实现场景详情弹窗
-5. 本地测试验证
+### 第三步：多维表仪表盘入口（0.5天）
+1. 在多维表仪表盘新增一个"查看场景热力图"按钮/链接
+2. 按钮跳转到飞书应用的热力图页面
+3. 可选：传递门店参数，直接打开对应门店视图
 
-### 第四步：联调测试（0.5天）
-1. 前端连接中台 API
-2. 用真实数据验证
+### 第四步：联调测试 + 上线（0.5天）
+1. 用真实数据验证各门店场景数据正确性
+2. 验证单选/多选字段处理逻辑
 3. 修复 bug
+4. 发布应用
 
 ### 总预估：3-5天
 
