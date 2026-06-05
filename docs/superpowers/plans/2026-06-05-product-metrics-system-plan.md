@@ -153,6 +153,27 @@ def validate_mapping():
             print(f"   ⚠️ {store_name} 拉取失败: {e}")
             all_styles[store_name] = set()
 
+    # 2.5 校验日拍摄清单中的金额字段
+    print("\n" + "="*60)
+    print("💰 金额字段校验（本次拍摄金额）")
+    print("="*60)
+    amount_fields = ['本次拍摄金额', '应收全额', '前期定金', '尾款-微信', '尾款-支付宝']
+    for store_name, table_id in store_tables.items():
+        try:
+            records = fetch_all_records(table_id, token)
+            total = len(records)
+            has_amount = 0
+            amount_sum = 0
+            for r in records:
+                amount = r.get('fields', {}).get('本次拍摄金额')
+                if amount and isinstance(amount, (int, float)):
+                    has_amount += 1
+                    amount_sum += amount
+            rate = has_amount / total * 100 if total else 0
+            print(f"  {store_name}: {has_amount}/{total} 条有金额 ({rate:.1f}%), 总金额={amount_sum:,.0f}")
+        except Exception as e:
+            print(f"  {store_name}: 校验失败 {e}")
+
     # 3. 交叉比对
     print("\n" + "="*60)
     print("📊 映射校验结果")
@@ -259,6 +280,19 @@ git commit -m "feat: add Phase 0 data mapping validation script"
 
 > 以下操作全部在飞书多维表 Web UI 中完成。每一步都标注了具体的操作路径。
 
+### ⚠️ 飞书多维表公式语法说明
+
+飞书多维表公式的语法类似 Excel，但有差异。以下关键点需要注意：
+
+1. **字段引用**：直接写中文字段名，如 `上新时间`，不需要方括号或引号
+2. **日期函数**：`TODAY()` 返回今天日期；`DATETODATE(开始日期, 结束日期)` 返回天数差
+3. **条件函数**：`IF(条件, 真值, 假值)`；多层嵌套用 `IFS(条件1, 值1, 条件2, 值2, ..., 默认值)`
+4. **空值处理**：用 `ISNULL()` 或 `=""` 判断空值；日期字段为空时 `> 0` 可能不生效，建议用 `NOT(ISNULL(上新时间))`
+5. **多选字段**：一级分类是多选字段，在公式中不能直接用于分组。仪表盘图表遇到多选字段时会自动展开（每个选项各计一次）
+6. **公式调试**：在公式编辑器中可以看到实时预览。如果公式报错，检查字段名是否完全匹配（区分大小写和空格）
+
+**回滚指引**：如果新增公式字段导致问题，可以直接删除该字段（右键列头 → 删除字段），不影响其他数据。公式字段是虚拟的，不存储实际数据，删除是安全的。
+
 - [ ] **Step 1: 在执行output表中确认现有公式字段**
 
 操作路径：飞书多维表 → 也许文化工作进度表 → 执行output 表 → 切换到「表格视图」
@@ -283,10 +317,14 @@ git commit -m "feat: add Phase 0 data mapping validation script"
 - **公式内容**：
 
 ```
-IF(上新时间 > 0, DATETODATE(TODAY(), 上新时间), "")
+IF(NOT(ISNULL(上新时间)), DATETODATE(上新时间, TODAY()), "")
 ```
 
-> 飞书多维表公式说明：`DATETODATE(start, end)` 返回两个日期之间的天数差。`TODAY()` 返回今天。如果上新时间为空则返回空字符串。
+> **飞书公式说明**：
+> - `NOT(ISNULL(上新时间))` 判断上新时间是否非空（比 `> 0` 更可靠）
+> - `DATETODATE(上新时间, TODAY())` 返回从上新时间到今天的天数差
+> - 如果公式编辑器报错，尝试用 `IFERROR(DATETODATE(上新时间, TODAY()), "")` 包裹
+> - 验证方法：保存后，已知上架日期的产品应显示天数（如「120」），未填上新时间的显示空白
 
 验证：保存后，已有上新时间的产品应该显示一个数字（如「120」表示上架120天）。
 
@@ -344,12 +382,13 @@ IF(AND(上新时间 > 0, 生命周期天数 <= 30), "是", "否")
 - 排序：降序，取前20
 - 筛选：小程序端 = 已上架
 
-**卡片 2：30日新品点拍占比（按门店）**
+**卡片 2：30日新品点拍占比（全局）**
 - 图表类型：饼图
 - 数据源：执行output 表
 - 分组：是否30日新品
-- 值：近三十天拍摄量（求和）
+- 值：滨江店近三十天拍摄量（求和）+ 下沙店近三十天拍摄量（求和）
 - 筛选：小程序端 = 已上架
+- 注意：此处只展示有拍摄量公式字段的门店（滨江、下沙、甜熊下沙），其他门店数据暂缺
 
 **卡片 3：各生命周期阶段产品数量**
 - 图表类型：柱状图
@@ -362,8 +401,8 @@ IF(AND(上新时间 > 0, 生命周期天数 <= 30), "是", "否")
 - 图表类型：表格
 - 数据源：执行output 表
 - 显示字段：方案名称、一级分类、上新时间、生命周期天数、小程序端
-- 筛选：小程序端 = 已上架 AND 滨江店近三十天拍摄量 = 0 AND 下沙店近三十天拍摄量 = 0
-- 排序：生命周期天数 降序
+- 筛选：小程序端 包含 "已上架"
+- 额外说明：由于各门店拍摄量字段是独立的公式字段，飞书仪表盘的筛选条件只能按单字段筛选。建议先筛选「滨江店近三十天拍摄量 = 0」查看滨江的僵尸产品，再换字段查其他门店。如果需要跨门店 AND 逻辑，需要创建一个「总拍摄量」公式字段。
 
 **卡片 5：各一级分类的点拍量对比**
 - 图表类型：柱状图（堆叠）
@@ -371,6 +410,7 @@ IF(AND(上新时间 > 0, 生命周期天数 <= 30), "是", "否")
 - X轴：一级分类
 - Y轴：近三十天拍摄量（求和）
 - 颜色分组：是否30日新品
+- ⚠️ **多选字段注意**：一级分类是多选字段（一个产品可属于多个分类）。飞书仪表盘会自动将多选值展开（如产品同时属于「日韩少女」和「甜辣少女」，两个分类各计一次）。这意味着分类点拍量之和 > 全局总点拍量是正常的，不是数据错误。
 
 - [ ] **Step 7: 验证仪表盘数据**
 
@@ -391,54 +431,53 @@ IF(AND(上新时间 > 0, 生命周期天数 <= 30), "是", "否")
 
 - [ ] **Step 1: 更新 mock-data.js 增加金额字段**
 
-在 `generateMockRecords()` 函数中，为每条记录增加金额和上新时间字段：
-
-在 `record.fields` 中增加：
+在 `generateMockRecords()` 函数中，找到 `record.fields` 的构建部分，在 `'一级分类'` 之后增加金额字段：
 
 ```javascript
-record.fields['本次拍摄金额'] = Math.floor(Math.random() * 3000) + 500; // 500-3500元
-record.fields['上新时间_时间戳'] = now - daysAgo * 86400000;
+// 在 record.fields 对象中增加（紧跟在 '一级分类' 字段之后）：
+record.fields['本次拍摄金额'] = Math.floor(Math.random() * 3000) + 500; // 500-3500元随机金额
 ```
 
-同时在每条记录中增加门店字段（用于门店级聚合）：
-
-```javascript
-record.fields['门店'] = fieldName.replace('影棚', ''); // 如「滨江影棚」→「滨江」
-```
+同时确保 `上新时间` 字段在 mock 数据中已正确生成（当前代码中已有 `now - daysAgo * 86400000`）。
 
 - [ ] **Step 2: 更新 aggregator.js 增加门店级聚合函数**
 
-在文件末尾（`if (typeof window !== 'undefined')` 之前）增加：
+在文件末尾（`if (typeof window !== 'undefined')` 之前）增加门店级聚合函数：
 
 ```javascript
 /**
- * 门店级汇总指标
+ * 门店级 L1 经营指标汇总
+ * @param {Array} records - 执行output的全部记录
+ * @param {string} fieldName - 影棚字段名（如「滨江影棚」）
+ * @param {string} fieldType - 字段类型（'single' 或 'multi'）
+ * @returns {Object} 门店级汇总指标
  */
-function aggregateStoreMetrics(records, storeFieldName, storeFieldType) {
+function aggregateStoreMetrics(records, fieldName, fieldType) {
   var totalPointShoot = 0;
   var totalRevenue = 0;
-  var newProductPointShoot = 0;
   var newProductRevenue = 0;
+  var newProductPointShoot = 0;
   var activeProducts = {};
   var now = Date.now();
   var cutoff = now - 30 * 86400000;
 
   for (var i = 0; i < records.length; i++) {
     var r = records[i];
-    var scenes = parseSceneValues(r.fields, storeFieldName, storeFieldType);
+    var scenes = parseSceneValues(r.fields, fieldName, fieldType);
     if (scenes.length === 0) continue;
 
     var status = parseStatus(r.fields['小程序端']);
     if (status !== '已上架') continue;
 
-    var launchTime = r.fields['上新时间'] || r.fields['上新时间_时间戳'] || 0;
+    var launchTime = r.fields['上新时间'] || 0;
     var isNew = launchTime > cutoff;
-    var amount = r.fields['本次拍摄金额'] || 0;
+    var amount = Number(r.fields['本次拍摄金额']) || 0;
+    var productName = r.fields['方案名称'] || '';
 
     for (var j = 0; j < scenes.length; j++) {
       totalPointShoot++;
       totalRevenue += amount;
-      activeProducts[r.fields['方案名称'] || ''] = true;
+      activeProducts[productName] = true;
       if (isNew) {
         newProductPointShoot++;
         newProductRevenue += amount;
@@ -461,18 +500,18 @@ function aggregateStoreMetrics(records, storeFieldName, storeFieldType) {
 }
 ```
 
-同时在全局导出中增加：
+在全局导出中增加（在 `window.getHeatLevel = getHeatLevel;` 之后）：
 
 ```javascript
 window.aggregateStoreMetrics = aggregateStoreMetrics;
 ```
 
-- [ ] **Step 3: 更新 renderer.js 增加门店指标面板**
+- [ ] **Step 3: 更新 renderer.js 的 renderSummary，展示门店级 L1 指标**
 
-在 `renderSummary` 函数中，修改为同时展示门店级 L1 指标：
+修改 `renderSummary` 函数签名，增加 `storeMetrics` 参数：
 
 ```javascript
-function renderSummary(scenes, storeName) {
+function renderSummary(scenes, storeName, storeMetrics) {
   var bar = document.getElementById('summaryBar');
   if (!bar) return;
 
@@ -491,7 +530,8 @@ function renderSummary(scenes, storeName) {
 
   var avgPerScene = sceneCount > 0 ? (totalProducts / sceneCount).toFixed(1) : '0';
 
-  bar.innerHTML =
+  // 构建 HTML：场景级指标 + 门店级 L1 指标
+  var html =
     '<div class="summary-item">' +
       '<span class="summary-value">' + sceneCount + '</span>' +
       '<span class="summary-label">场景</span>' +
@@ -512,23 +552,97 @@ function renderSummary(scenes, storeName) {
       '<span class="summary-value">' + hotCount + '</span>' +
       '<span class="summary-label">热门场景</span>' +
     '</div>';
+
+  // 门店级 L1 指标（如果 storeMetrics 有数据）
+  if (storeMetrics) {
+    html +=
+      '<div class="summary-divider"></div>' +
+      '<div class="summary-item">' +
+        '<span class="summary-value">¥' + (storeMetrics.totalRevenue / 10000).toFixed(1) + '万</span>' +
+        '<span class="summary-label">总成交</span>' +
+      '</div>' +
+      '<div class="summary-item">' +
+        '<span class="summary-value">¥' + storeMetrics.avgPrice + '</span>' +
+        '<span class="summary-label">客单价</span>' +
+      '</div>' +
+      '<div class="summary-item">' +
+        '<span class="summary-value accent">' + storeMetrics.newProductRevenueRatio + '%</span>' +
+        '<span class="summary-label">30日新品占比</span>' +
+      '</div>' +
+      '<div class="summary-item">' +
+        '<span class="summary-value">' + storeMetrics.activeProductCount + '</span>' +
+        '<span class="summary-label">活跃产品</span>' +
+      '</div>';
+  }
+
+  bar.innerHTML = html;
 }
 ```
 
-- [ ] **Step 4: 运行并验证**
+- [ ] **Step 4: 更新 app.js 调用门店级聚合**
+
+修改 `renderCurrentStore` 函数，在调用 `renderSceneGrid` 的位置增加门店级指标计算：
+
+在 `app.js` 的 `renderCurrentStore` 函数中，找到：
+
+```javascript
+renderSceneGrid(sceneGrid, scenes, currentStore);
+```
+
+在其之前增加：
+
+```javascript
+// 计算门店级 L1 指标
+var storeMetrics = aggregateStoreMetrics(
+  allOutputRecords,
+  config.fieldName,
+  config.fieldType
+);
+```
+
+然后将 `renderSceneGrid` 调用改为：
+
+```javascript
+renderSceneGrid(sceneGrid, scenes, currentStore, storeMetrics);
+```
+
+同时更新 `renderer.js` 中的 `renderSceneGrid` 函数签名，把 `storeMetrics` 传给 `renderSummary`：
+
+```javascript
+function renderSceneGrid(container, scenes, storeName, storeMetrics) {
+  // ... 现有代码不变 ...
+  // 在最后调用 renderSummary 时传入 storeMetrics
+  renderSummary(scenes, storeName, storeMetrics);
+}
+```
+
+- [ ] **Step 5: 更新 style.css 增加分隔符样式**
+
+在 `heatmap/css/style.css` 的 `.summary-label` 规则之后增加：
+
+```css
+.summary-divider {
+  width: 1px;
+  background: var(--border-subtle);
+  align-self: stretch;
+  margin: 0 0.5rem;
+}
+```
+
+- [ ] **Step 6: 运行并验证**
 
 Run: `cd /Users/chenzixian/Downloads/写真行业/heatmap && python3 server.py 9090`
 
 打开 http://localhost:9090，检查：
-- 摘要统计栏正常显示
-- 卡片数据不为空
+- 摘要统计栏显示「场景 | 关联产品 | 上新产品 | 场均产品 | 热门场景 | ─ | 总成交 | 客单价 | 30日新品占比 | 活跃产品」
+- 金额数据不为 0
 - 浏览器控制台无报错
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 7: Commit**
 
 ```bash
-git add heatmap/js/mock-data.js heatmap/js/aggregator.js heatmap/js/renderer.js heatmap/js/app.js
-git commit -m "feat: integrate L1 metrics into heatmap dashboard"
+git add heatmap/js/mock-data.js heatmap/js/aggregator.js heatmap/js/renderer.js heatmap/js/app.js heatmap/css/style.css
+git commit -m "feat: integrate L1 store-level metrics into heatmap dashboard"
 ```
 
 ---
