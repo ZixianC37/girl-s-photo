@@ -9,6 +9,7 @@ Phase 0: 数据映射校验脚本
 import json
 import urllib.request
 import urllib.error
+import urllib.parse
 import os
 import sys
 import re
