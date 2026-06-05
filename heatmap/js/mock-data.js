@@ -62,6 +62,7 @@ function generateMockRecords() {
             '上新时间': now - daysAgo * 86400000,
             '一级分类': ['生日系列','日韩少女','甜辣少女','国风少女','梦幻少女','暗黑少女','轻熟少女'][Math.floor(Math.random()*7)],
             '本次拍摄金额': Math.floor(Math.random() * 3000) + 500,
+            '业绩': Math.floor(Math.random() * 3000) + 500,
           },
         };
 

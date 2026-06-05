@@ -102,7 +102,7 @@ function aggregateStoreMetrics(records, fieldName, fieldType) {
 
     var launchTime = r.fields['上新时间'] || 0;
     var isNew = launchTime > cutoff;
-    var amount = Number(r.fields['本次拍摄金额']) || 0;
+    var amount = Number(r.fields['业绩']) || Number(r.fields['本次拍摄金额']) || 0;
     var productName = r.fields['方案名称'] || '';
 
     for (var j = 0; j < scenes.length; j++) {
