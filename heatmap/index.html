@@ -4,19 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>门店场景热力图</title>
-  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div id="app">
     <header class="header">
-      <h1>🗺️ 门店场景热力图</h1>
-      <div class="filters">
+      <div class="header-top">
+        <div class="brand-mark">
+          <span class="brand-icon">◎</span>
+          <div>
+            <h1>场景热力图</h1>
+            <p class="subtitle" id="dateSubtitle"></p>
+          </div>
+        </div>
         <div class="store-tabs" id="storeTabs"></div>
       </div>
+      <div class="summary-bar" id="summaryBar"></div>
     </header>
     <main class="main">
-      <div class="loading" id="loading">加载中...</div>
+      <div class="loading" id="loading">
+        <div class="loader"></div>
+        <span>正在加载数据...</span>
+      </div>
       <div class="error" id="error" style="display:none;"></div>
       <div class="scene-grid" id="sceneGrid"></div>
     </main>
@@ -25,6 +37,8 @@
     </div>
   </div>
   <script src="js/config.js"></script>
+  <script src="js/config-local.js"></script>
+  <script src="js/mock-data.js"></script>
   <script src="js/api.js"></script>
   <script src="js/aggregator.js"></script>
   <script src="js/renderer.js"></script>

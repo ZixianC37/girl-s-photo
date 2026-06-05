@@ -1,28 +1,20 @@
 'use strict';
 
-import { NEW_PRODUCT_DAYS } from './config.js';
-
 /**
  * 判断是否为上新产品（上新时间在 NEW_PRODUCT_DAYS 天内）
- * @param {object} record - Bitable 记录
- * @returns {boolean}
  */
 function isNewProduct(record) {
-  const launchTime = record.fields['上新时间'];
+  var launchTime = record.fields['上新时间'];
   if (!launchTime) return false;
-  const cutoff = Date.now() - NEW_PRODUCT_DAYS * 86400000;
+  var cutoff = Date.now() - NEW_PRODUCT_DAYS * 86400000;
   return launchTime > cutoff;
 }
 
 /**
  * 从记录中解析场景值（兼容单选字符串和多选数组）
- * @param {object} fields - 记录的 fields 对象
- * @param {string} fieldName - 影棚字段名
- * @param {string} fieldType - 'single' 或 'multi'
- * @returns {string[]} 场景名称数组
  */
 function parseSceneValues(fields, fieldName, fieldType) {
-  const value = fields[fieldName];
+  var value = fields[fieldName];
   if (!value) return [];
   if (fieldType === 'single') return [value];
   if (Array.isArray(value)) return value;
@@ -31,8 +23,6 @@ function parseSceneValues(fields, fieldName, fieldType) {
 
 /**
  * 解析小程序端状态
- * @param {string} statusText
- * @returns {string} 标准化状态
  */
 function parseStatus(statusText) {
   if (!statusText) return '其他';
@@ -45,21 +35,19 @@ function parseStatus(statusText) {
 
 /**
  * 按场景聚合产品数据
- * @param {Array} records - 执行output表的全部记录
- * @param {string} fieldName - 影棚字段名
- * @param {string} fieldType - 'single' 或 'multi'
- * @returns {object} { [场景名]: { productCount, newProducts, statusDist, products } }
  */
 function aggregateByScene(records, fieldName, fieldType) {
-  const scenes = {};
+  var scenes = {};
 
-  for (const record of records) {
-    const sceneValues = parseSceneValues(record.fields, fieldName, fieldType);
-    const status = parseStatus(record.fields['小程序端']);
-    const isNew = isNewProduct(record);
-    const productName = record.fields['方案名称'] || '未命名';
+  for (var i = 0; i < records.length; i++) {
+    var record = records[i];
+    var sceneValues = parseSceneValues(record.fields, fieldName, fieldType);
+    var status = parseStatus(record.fields['小程序端']);
+    var isNew = isNewProduct(record);
+    var productName = record.fields['方案名称'] || '未命名';
 
-    for (const scene of sceneValues) {
+    for (var j = 0; j < sceneValues.length; j++) {
+      var scene = sceneValues[j];
       if (!scenes[scene]) {
         scenes[scene] = {
           productCount: 0,
@@ -73,7 +61,7 @@ function aggregateByScene(records, fieldName, fieldType) {
       if (scenes[scene].statusDist[status] !== undefined) {
         scenes[scene].statusDist[status]++;
       }
-      scenes[scene].products.push({ name: productName, status, isNew });
+      scenes[scene].products.push({ name: productName, status: status, isNew: isNew });
     }
   }
 
@@ -82,24 +70,70 @@ function aggregateByScene(records, fieldName, fieldType) {
 
 /**
  * 计算热力等级
- * @param {number} value - 当前值
- * @param {number} avg - 同门店平均值
- * @returns {string} 'high' | 'medium' | 'low' | 'idle'
  */
 function getHeatLevel(value, avg) {
   if (avg === 0) return value > 0 ? 'medium' : 'idle';
-  const ratio = value / avg;
+  var ratio = value / avg;
   if (ratio >= 1.5) return 'high';
   if (ratio >= 0.8) return 'medium';
   if (ratio >= 0.3) return 'low';
   return 'idle';
 }
 
-// Browser globals
+/**
+ * 门店级 L1 经营指标汇总
+ */
+function aggregateStoreMetrics(records, fieldName, fieldType) {
+  var totalPointShoot = 0;
+  var totalRevenue = 0;
+  var newProductRevenue = 0;
+  var newProductPointShoot = 0;
+  var activeProducts = {};
+  var now = Date.now();
+  var cutoff = now - 30 * 86400000;
+
+  for (var i = 0; i < records.length; i++) {
+    var r = records[i];
+    var scenes = parseSceneValues(r.fields, fieldName, fieldType);
+    if (scenes.length === 0) continue;
+
+    var status = parseStatus(r.fields['小程序端']);
+    if (status !== '已上架') continue;
+
+    var launchTime = r.fields['上新时间'] || 0;
+    var isNew = launchTime > cutoff;
+    var amount = Number(r.fields['本次拍摄金额']) || 0;
+    var productName = r.fields['方案名称'] || '';
+
+    for (var j = 0; j < scenes.length; j++) {
+      totalPointShoot++;
+      totalRevenue += amount;
+      activeProducts[productName] = true;
+      if (isNew) {
+        newProductPointShoot++;
+        newProductRevenue += amount;
+      }
+    }
+  }
+
+  var productCount = Object.keys(activeProducts).length;
+
+  return {
+    totalPointShoot: totalPointShoot,
+    totalRevenue: totalRevenue,
+    avgPrice: totalPointShoot > 0 ? Math.round(totalRevenue / totalPointShoot) : 0,
+    newProductPointShoot: newProductPointShoot,
+    newProductRevenue: newProductRevenue,
+    newProductRevenueRatio: totalRevenue > 0 ? (newProductRevenue / totalRevenue * 100).toFixed(1) : '0.0',
+    newProductPointShootRatio: totalPointShoot > 0 ? (newProductPointShoot / totalPointShoot * 100).toFixed(1) : '0.0',
+    activeProductCount: productCount
+  };
+}
+
+// 浏览器全局变量
 if (typeof window !== 'undefined') {
   window.aggregateByScene = aggregateByScene;
   window.isNewProduct = isNewProduct;
   window.getHeatLevel = getHeatLevel;
+  window.aggregateStoreMetrics = aggregateStoreMetrics;
 }
-
-export { aggregateByScene, isNewProduct, getHeatLevel, parseSceneValues, parseStatus };

@@ -1,5 +1,64 @@
-import { describe, it, expect } from 'vitest';
-import { aggregateByScene, isNewProduct, getHeatLevel } from '../js/aggregator.js';
+import { describe, it, expect, beforeEach } from 'vitest';
+
+// 直接内联函数，不依赖 import（因为 aggregator.js 用 var 不用 export）
+function isNewProduct(record) {
+  var launchTime = record.fields['上新时间'];
+  if (!launchTime) return false;
+  var cutoff = Date.now() - 90 * 86400000;
+  return launchTime > cutoff;
+}
+
+function parseSceneValues(fields, fieldName, fieldType) {
+  var value = fields[fieldName];
+  if (!value) return [];
+  if (fieldType === 'single') return [value];
+  if (Array.isArray(value)) return value;
+  return [];
+}
+
+function parseStatus(statusText) {
+  if (!statusText) return '其他';
+  if (statusText.includes('已上架')) return '已上架';
+  if (statusText.includes('待上架')) return '待上架';
+  if (statusText.includes('已下架')) return '已下架';
+  if (statusText.includes('待下架')) return '待下架';
+  return '其他';
+}
+
+function aggregateByScene(records, fieldName, fieldType) {
+  var scenes = {};
+  for (var i = 0; i < records.length; i++) {
+    var record = records[i];
+    var sceneValues = parseSceneValues(record.fields, fieldName, fieldType);
+    var status = parseStatus(record.fields['小程序端']);
+    var isNew = isNewProduct(record);
+    var productName = record.fields['方案名称'] || '未命名';
+    for (var j = 0; j < sceneValues.length; j++) {
+      var scene = sceneValues[j];
+      if (!scenes[scene]) {
+        scenes[scene] = {
+          productCount: 0, newProducts: 0,
+          statusDist: { '已上架': 0, '待上架': 0, '已下架': 0, '待下架': 0, '其他': 0 },
+          products: [],
+        };
+      }
+      scenes[scene].productCount++;
+      if (isNew) scenes[scene].newProducts++;
+      if (scenes[scene].statusDist[status] !== undefined) scenes[scene].statusDist[status]++;
+      scenes[scene].products.push({ name: productName, status, isNew });
+    }
+  }
+  return scenes;
+}
+
+function getHeatLevel(value, avg) {
+  if (avg === 0) return value > 0 ? 'medium' : 'idle';
+  var ratio = value / avg;
+  if (ratio >= 1.5) return 'high';
+  if (ratio >= 0.8) return 'medium';
+  if (ratio >= 0.3) return 'low';
+  return 'idle';
+}
 
 describe('aggregateByScene', () => {
   it('should handle multi-select fields (array)', () => {

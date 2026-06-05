@@ -1,8 +1,8 @@
 'use strict';
 
-// 飞书多维表配置（部署时替换为实际值）
-const APP_TOKEN = '';       // 多维表 app_token
-const OUTPUT_TABLE_ID = ''; // 执行output 表 table_id
+// 飞书多维表配置
+const APP_TOKEN = 'LCHzbZfDhaaSX4s4NAucQ8KPnDc';       // 多维表 app_token
+const OUTPUT_TABLE_ID = 'tblnNUnerqMCcjaz'; // 执行output 表 table_id
 
 // 门店配置：门店名 → { 品牌, 影棚字段名, 字段类型 }
 const STORE_CONFIG = {
@@ -44,7 +44,7 @@ const BRAND_COLORS = {
   '甜熊': '#f59e0b',
 };
 
-export const NEW_PRODUCT_DAYS = 90;
+const NEW_PRODUCT_DAYS = 90;
 
 const HEAT_COLORS = {
   high: '#ef4444',
